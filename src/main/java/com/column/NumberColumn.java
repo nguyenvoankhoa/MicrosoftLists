@@ -1,29 +1,18 @@
 package com.column;
-
-import com.column.factory.DataFactory;
-import com.column.factory.NumberFactory;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class NumberColumn implements IColumn<Number> {
-    private String name;
-    private static final ColumnType type = ColumnType.NUMBER;
+public class NumberColumn extends Column implements IColumn<Number> {
     private Number number;
 
     @Override
-    public Number getData() {
-        return this.number;
+    public Number getDefaultData() {
+        return number;
     }
-
     @Override
-    public void setData(Number data) {
-        this.number = data;
-    }
-
-    @Override
-    public DataFactory<?> getDataFactory() {
-        return new NumberFactory();
+    public ColumnType getType() {
+        return ColumnType.NUMBER;
     }
 }

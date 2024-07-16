@@ -1,29 +1,18 @@
 package com.column;
 
-import com.column.factory.DataFactory;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class YesNoColumn implements IColumn<Boolean> {
-    private String name;
-    private static final ColumnType type = ColumnType.YESNO;
-
+public class YesNoColumn extends Column implements IColumn<Boolean> {
     private Boolean data;
-
     @Override
-    public Boolean getData() {
-        return this.data;
+    public Boolean getDefaultData() {
+        return data;
     }
-
     @Override
-    public void setData(Boolean data) {
-        this.data = data;
-    }
-
-    @Override
-    public DataFactory<?> getDataFactory() {
-        return null;
+    public ColumnType getType() {
+        return ColumnType.YESNO;
     }
 }

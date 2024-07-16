@@ -1,7 +1,6 @@
 package com.column;
 
-import com.column.factory.DataFactory;
-import com.column.factory.TextFactory;
+import com.column.datatype.Text;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,25 +10,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TextColumn implements IColumn<String> {
+public class TextColumn extends Column implements IColumn<Text> {
+    private Text text;
 
-    public static final ColumnType type = ColumnType.TEXT;
-
-    private String name;
-    private String text;
-
-    @Override
-    public String getData() {
-        return this.text;
+    public ColumnType getType() {
+        return ColumnType.TEXT;
     }
 
     @Override
-    public void setData(String data) {
-        this.text = data;
-    }
-
-    @Override
-    public DataFactory<?> getDataFactory() {
-        return new TextFactory();
+    public Text getDefaultData() {
+        return text;
     }
 }

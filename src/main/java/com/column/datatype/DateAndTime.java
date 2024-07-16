@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.lang.reflect.Field;
 import java.sql.Time;
 import java.util.Date;
 
@@ -24,6 +23,7 @@ public class DateAndTime implements Data<DateAndTime> {
 
     @Override
     public void setData(DateAndTime data){
-
+         setDate(data.getDate());
+         setTime(data.getTime());
     }
 }

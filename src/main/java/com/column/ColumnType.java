@@ -4,6 +4,7 @@ public enum ColumnType {
     TEXT,
     CHOICE,
     DATE_AND_TIME,
+
     MULTIPLE_LINES,
     PERSON,
     NUMBER,

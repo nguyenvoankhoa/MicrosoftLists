@@ -1,6 +1,12 @@
 package com;
 
 
+import com.export.ExportCSV;
+import com.export.ExportHandler;
+import com.export.ExportResult;
+import com.export.FileType;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +47,8 @@ public class MicrosoftList {
         this.templates.add(smartList);
     }
 
-    public void exportToCSV(SmartList smartList) {
-    }
-
-    public void restore() {
+    public ExportResult exportToCSV(SmartList smartList, String filename) {
+        return ExportHandler.export(smartList, filename, FileType.CSV);
     }
 
     public void saveList(SmartList smartList) {

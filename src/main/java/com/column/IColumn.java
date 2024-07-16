@@ -7,9 +7,11 @@ public interface IColumn<T> {
 
     void setName(String name);
 
-    T getData();
+    T getDefaultData();
 
-    void setData(T data);
+    void setVisible(boolean data);
 
-    DataFactory<?> getDataFactory();
+    boolean isVisible();
+
+    ColumnType getType();
 }

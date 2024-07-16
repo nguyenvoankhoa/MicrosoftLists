@@ -3,8 +3,6 @@ package com.column.datatype;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.lang.reflect.Field;
-
 
 @Getter
 @Setter
@@ -22,11 +20,13 @@ public class Choice implements Data<Choice> {
 
     @Override
     public Choice getData() {
-        return null;
+        return this;
     }
 
     @Override
-    public void setData(Choice data){
-
+    public void setData(Choice data) {
+        setName(data.getName());
+        setShape(data.getShape());
+        setColor(data.getColor());
     }
 }

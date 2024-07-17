@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -62,11 +63,6 @@ class MicrosoftListsApplicationTests {
                 .orElse(null));
     }
 
-    @Test
-    void testChangeListView() {
-        smartList.setListView(ListView.TABLE);
-        assertEquals(ListView.TABLE, smartList.getListView());
-    }
 
     @Test
     void testAddMultipleColumn() {
@@ -104,21 +100,31 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testAddComment() {
-        smartList.getRows().get(0).getComments().add(new Comment("user 1", "new comment"));
-        assertEquals(1, smartList.getRows().get(0).getComments().stream().count());
+        Person person = new Person("Khoa", new byte[]{});
+        smartList.getRows().get(0).getComments().add(new Comment(person, "new comment"));
+        assertEquals(1, smartList.getRows().get(0).getComments().size());
     }
 
     @Test
     void testEditComment() {
-        smartList.getRows().get(0).getComments().add(new Comment("user 1", "new comment"));
+        Person person = new Person("Khoa", new byte[]{});
+        smartList.getRows().get(0).getComments().add(new Comment(person, "new comment"));
         smartList.getRows().get(0).getComments().get(0).setMessage("test edit comment");
         assertEquals("test edit comment", smartList.getRows().get(0).getComments().get(0).getMessage());
     }
 
     @Test
     void testCreateForm() {
-        smartList.createForm();
-        assertEquals(1, smartList.getForms().stream().count());
+        IColumn textCol = smartList.createNewColumn(ColumnType.TEXT);
+        IColumn timeCol = smartList.createNewColumn(ColumnType.DATE_AND_TIME);
+        IColumn choiceCol = smartList.createNewColumn(ColumnType.CHOICE);
+        List<IColumn> columns = new ArrayList<>();
+        columns.add(textCol);
+        columns.add(timeCol);
+        columns.add(choiceCol);
+
+        smartList.createForm(columns);
+        assertEquals(1, smartList.getForms().size());
     }
 
     @Test
@@ -148,6 +154,10 @@ class MicrosoftListsApplicationTests {
         smartList.createNewRow();
         smartList.addData(textCol, 2, new Text("c"));
         smartList.sortDesc(textCol);
+
+        assertEquals("a", ((Text) smartList.getRows().get(0).getDataList().get(0)).getText());
+        assertEquals("b", ((Text) smartList.getRows().get(1).getDataList().get(0)).getText());
+        assertEquals("c", ((Text) smartList.getRows().get(2).getDataList().get(0)).getText());
     }
 
     @Test
@@ -158,14 +168,31 @@ class MicrosoftListsApplicationTests {
         smartList.createNewRow();
         smartList.addData(textCol, 1, new Text("b"));
         smartList.createNewRow();
-        smartList.addData(textCol, 2, new Text("c"));
+        smartList.addData(textCol, 2, new Text("d"));
+        smartList.createNewRow();
+        smartList.addData(textCol, 3, new Text("c"));
         smartList.sortAsc(textCol);
+
+        assertEquals("d", ((Text) smartList.getRows().get(0).getDataList().get(0)).getText());
+        assertEquals("c", ((Text) smartList.getRows().get(1).getDataList().get(0)).getText());
+        assertEquals("b", ((Text) smartList.getRows().get(2).getDataList().get(0)).getText());
+        assertEquals("a", ((Text) smartList.getRows().get(3).getDataList().get(0)).getText());
     }
 
     @Test
     void testFilterColumn() {
-        IColumn column = smartList.getColumns().get(0);
-        smartList.filter(column, "abc");
+        IColumn textCol = smartList.createNewColumn(ColumnType.TEXT);
+        smartList.createNewRow();
+        smartList.addData(textCol, 0, new Text("a"));
+        smartList.createNewRow();
+        smartList.addData(textCol, 1, new Text("b"));
+        smartList.createNewRow();
+        smartList.addData(textCol, 2, new Text("c"));
+        List<Text> criteria = smartList.getListFilter(textCol);
+        List<Row> filteredRows = smartList.filter(textCol, criteria.get(0));
+
+        assertEquals(1, filteredRows.size());
+        assertEquals("a", ((Text) filteredRows.get(0).getDataList().get(0)).getImportantData());
     }
 
     @Test
@@ -181,60 +208,86 @@ class MicrosoftListsApplicationTests {
         smartList.addData(textCol, 3, new Text("c"));
         Map<Object, List<Row>> groupedRows = smartList.groupBy(textCol);
 
-    }
-
-    @Test
-    void testMoveColumn() {
+        assertNotNull(groupedRows);
+        assertEquals(3, groupedRows.size());
 
     }
 
     @Test
-    void testDoCalculation() {
+    void testMoveLeftColumn() {
+        IColumn textCol = smartList.createNewColumn(ColumnType.TEXT);
+        IColumn timeCol = smartList.createNewColumn(ColumnType.DATE_AND_TIME);
+        smartList.moveLeft(timeCol);
+        assertEquals(timeCol, smartList.getColumns().get(0));
+    }
+
+    @Test
+    void testMoveRightColumn() {
+        IColumn textCol = smartList.createNewColumn(ColumnType.TEXT);
+        IColumn timeCol = smartList.createNewColumn(ColumnType.DATE_AND_TIME);
+        IColumn choiceCol = smartList.createNewColumn(ColumnType.CHOICE);
+        IColumn personCol = smartList.createNewColumn(ColumnType.PERSON);
+        smartList.moveRight(timeCol);
+        assertEquals(timeCol, smartList.getColumns().get(2));
+    }
+
+    @Test
+    void testCount() {
+        IColumn textCol = smartList.createNewColumn(ColumnType.TEXT);
+        smartList.createNewRow();
+        smartList.addData(textCol, 0, new Text("a"));
+        smartList.createNewRow();
+        smartList.addData(textCol, 1, new Text("b"));
+        smartList.createNewRow();
+        smartList.addData(textCol, 2, new Text("c"));
+        smartList.createNewRow();
+        smartList.addData(textCol, 3, new Text("c"));
+        assertEquals(4, smartList.count(textCol));
 
     }
 
     @Test
     void testCreateView() {
+        assertTrue(smartList.createView(ViewType.LIST, "list view"));
+    }
 
+
+    @Test
+    void testAddPermission() {
+        Person person = new Person("Khoa", new byte[]{});
+        smartList.getPermissionManagement().addPermission(person, Permission.ADD);
+        List<Permission> permissions = smartList.getPermissionManagement().getMap().get(person);
+        assertNotNull(permissions);
+        assertTrue(permissions.contains(Permission.ADD));
     }
 
     @Test
-    void testSaveView() {
-
-    }
-
-    @Test
-    void testEditView() {
-
-    }
-
-    @Test
-    void testFormatView() {
-
-    }
-
-    @Test
-    void testSendLink() {
-
-    }
-
-    @Test
-    void testManageAccess() {
-
+    void testRemovePermission() {
+        Person person = new Person("Khoa", new byte[]{});
+        smartList.getPermissionManagement().addPermission(person, Permission.ADD);
+        smartList.getPermissionManagement().removePermission(person, Permission.ADD);
+        List<Permission> permissions = smartList.getPermissionManagement().getMap().get(person);
+        assertTrue(permissions.isEmpty());
     }
 
     @Test
     void testCreateRule() {
+        IColumn numberCol = smartList.createNewColumn(ColumnType.NUMBER);
+        smartList.createNewRow();
+        smartList.addData(numberCol, 0, new Number(15));
+        smartList.createNewRow();
+        smartList.addData(numberCol, 1, new Number(11));
+        smartList.createNewRow();
+        smartList.addData(numberCol, 2, new Number(5));
+        smartList.createNewRow();
+        smartList.addData(numberCol, 3, new Number(10));
 
+        Rule rule = new Rule(numberCol, Condition.GREATER_THAN, 10.0);
+
+        Number n1 = (Number) smartList.getData(numberCol, 0);
+        Number n2 = (Number) smartList.getData(numberCol, 2);
+        assertTrue(rule.evaluate(n1.getNum()));
+        assertFalse(rule.evaluate(n2.getNum()));
     }
 
-    @Test
-    void testManageRule() {
-
-    }
-
-    @Test
-    void testNotify() {
-
-    }
 }

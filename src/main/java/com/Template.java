@@ -14,7 +14,6 @@ import java.util.List;
 public class Template {
     private String title;
     private List<IColumn> columns;
-    private ListView listView;
 
     public Template(String title) {
         this.title = title;

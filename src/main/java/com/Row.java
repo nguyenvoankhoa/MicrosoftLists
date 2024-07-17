@@ -10,11 +10,11 @@ import java.util.List;
 @Setter
 @Getter
 public class Row {
-    private List<Data> data;
+    private List<Data> dataList;
     private List<Comment> comments;
 
     public Row() {
-        data = new ArrayList<>();
+        dataList = new ArrayList<>();
         comments = new ArrayList<>();
     }
 }

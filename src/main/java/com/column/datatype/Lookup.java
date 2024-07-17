@@ -10,4 +10,9 @@ public class Lookup implements Data<Lookup>{
     public void setData(Lookup data) {
 
     }
+
+    @Override
+    public Object getImportantData() {
+        return null;
+    }
 }

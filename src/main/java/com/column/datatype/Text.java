@@ -24,6 +24,11 @@ public class Text implements Data<Text>, Comparator<Text> {
         setText(data.getText());
     }
 
+    @Override
+    public Object getImportantData() {
+        return this.text;
+    }
+
 
     @Override
     public int compare(Text o1, Text o2) {

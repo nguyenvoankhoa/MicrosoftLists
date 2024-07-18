@@ -7,12 +7,14 @@ import lombok.Setter;
 @Setter
 public class YesNoColumn extends Column implements IColumn<Boolean> {
     private Boolean data;
+
+    public YesNoColumn(String name) {
+        super(name);
+        setType(ColumnType.YESNO);
+    }
+
     @Override
     public Boolean getDefaultData() {
         return data;
-    }
-    @Override
-    public ColumnType getType() {
-        return ColumnType.YESNO;
     }
 }

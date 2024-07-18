@@ -1,46 +1,53 @@
 package com;
 
-
-import com.export.ExportCSV;
+import com.service.JsonService;
 import com.export.ExportHandler;
 import com.export.ExportResult;
 import com.export.FileType;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class MicrosoftList {
 
-    public List<Template> templates;
-    public List<SmartList> listCollection;
-    public List<SmartList> favouriteCollection;
+    private List<Template> templates;
+    private List<SmartList> listCollection;
+    private List<SmartList> favouriteCollection;
 
-    public MicrosoftList() {
-        initDefaultTemplate();
+    private JsonService jsonService;
+
+    public MicrosoftList(String tplPath) {
+        initDefaultTemplate(tplPath);
     }
 
-    public void initDefaultTemplate() {
-        templates = new ArrayList<>();
-        templates.add(new Template("Issue Tracker"));
-        templates.add(new Template("Employee onboarding"));
-        templates.add(new Template("Asset manager"));
-        templates.add(new Template("Recruitment tracker"));
+    public void initDefaultTemplate(String tplPath) {
+        templates = JsonService.loadTemplatesFromJson(tplPath);
         listCollection = new ArrayList<>();
         favouriteCollection = new ArrayList<>();
     }
 
-    public void createList(String title) {
-        SmartList smartList = new SmartList(title);
-        this.listCollection.add(smartList);
+    public boolean createList(String name) {
+        return checkExist(name) == null && createNewList(name) != null;
     }
+
+    private SmartList createNewList(String name) {
+        PermissionManagement pm = new PermissionManagement();
+        SmartList sl = new SmartList(name, pm);
+        this.listCollection.add(sl);
+        return sl;
+    }
+
 
     public void addFavourite(SmartList smartList) {
         this.favouriteCollection.add(smartList);
     }
 
-    public void remove(String lId) {
-        this.listCollection.removeIf(l -> l.getId().equals(lId));
+    public void remove(String lName) {
+        this.listCollection.removeIf(l -> l.getName().equals(lName));
     }
 
     public void saveTemplate(Template smartList) {
@@ -51,7 +58,16 @@ public class MicrosoftList {
         return ExportHandler.export(smartList, filename, FileType.CSV);
     }
 
-    public void saveList(SmartList smartList) {
-        smartList.setSave(true);
+    public SmartList checkExist(String name) {
+        SmartList list = getListCollection().stream().filter(s -> s.getName().equals(name))
+                .findFirst().orElse(null);
+        return list;
     }
+
+    public SmartList createListFromTemplate(Template t, String name) {
+        SmartList sl = createNewList(name);
+        sl.setColumns(t.getColumns());
+        return sl;
+    }
+
 }

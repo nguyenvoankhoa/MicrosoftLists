@@ -1,14 +1,24 @@
 package com.column.datatype;
 
+import com.column.ColumnType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Comparator;
 
 @Setter
 @Getter
-public class HyperLink implements Data<HyperLink>, Comparator<HyperLink> {
+@AllArgsConstructor
+@NoArgsConstructor
+public class HyperLink implements IData<HyperLink>, Comparator<HyperLink> {
     private String link;
+    private ColumnType type = ColumnType.HYPERLINK;
+
+    public HyperLink(String link) {
+        this.link = link;
+    }
 
     @Override
     public HyperLink getData() {
@@ -23,6 +33,11 @@ public class HyperLink implements Data<HyperLink>, Comparator<HyperLink> {
     @Override
     public Object getImportantData() {
         return this.link;
+    }
+
+    @Override
+    public ColumnType getType() {
+        return ColumnType.HYPERLINK;
     }
 
     @Override

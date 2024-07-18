@@ -12,11 +12,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class Template {
-    private String title;
+    private String name;
     private List<IColumn> columns;
 
-    public Template(String title) {
-        this.title = title;
+    public Template(String name) {
+        this.name = name;
         this.columns = new ArrayList<>();
     }
 }

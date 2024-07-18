@@ -7,12 +7,13 @@ import lombok.Setter;
 public class NumberColumn extends Column implements IColumn<Number> {
     private Number number;
 
+    public NumberColumn(String name) {
+        super(name);
+        setType(ColumnType.NUMBER);
+    }
+
     @Override
     public Number getDefaultData() {
         return number;
-    }
-    @Override
-    public ColumnType getType() {
-        return ColumnType.NUMBER;
     }
 }

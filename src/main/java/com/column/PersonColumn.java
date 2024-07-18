@@ -9,13 +9,13 @@ import lombok.Setter;
 public class PersonColumn extends Column implements IColumn<Person> {
     private Person person;
 
-    @Override
-    public Person getDefaultData() {
-        return person;
+    public PersonColumn(String name) {
+        super(name);
+        setType(ColumnType.PERSON);
     }
 
     @Override
-    public ColumnType getType() {
-        return ColumnType.PERSON;
+    public Person getDefaultData() {
+        return person;
     }
 }

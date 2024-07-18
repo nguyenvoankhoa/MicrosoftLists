@@ -6,16 +6,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class HyperLinkColumn extends Column implements IColumn {
+public class HyperLinkColumn extends Column implements IColumn<HyperLink> {
     private HyperLink hyperLink;
 
-    @Override
-    public Object getDefaultData() {
-        return hyperLink;
+    public HyperLinkColumn(String name) {
+        super(name);
+        setType(ColumnType.HYPERLINK);
     }
 
     @Override
-    public ColumnType getType() {
-        return ColumnType.HYPERLINK;
+    public HyperLink getDefaultData() {
+        return hyperLink;
     }
 }

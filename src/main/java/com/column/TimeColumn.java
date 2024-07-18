@@ -9,12 +9,14 @@ import lombok.Setter;
 @Getter
 public class TimeColumn extends Column implements IColumn<DateAndTime> {
     private DateAndTime dateAndTime;
+
+    public TimeColumn(String name) {
+        super(name);
+        setType(ColumnType.DATE_AND_TIME);
+    }
+
     @Override
     public DateAndTime getDefaultData() {
         return dateAndTime;
-    }
-    @Override
-    public ColumnType getType() {
-        return ColumnType.DATE_AND_TIME;
     }
 }

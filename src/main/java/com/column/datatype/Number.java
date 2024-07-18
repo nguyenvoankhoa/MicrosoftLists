@@ -1,5 +1,6 @@
 package com.column.datatype;
 
+import com.column.ColumnType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,10 @@ import java.util.Comparator;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Number implements Data<Number>, Comparator<Number> {
+public class Number implements IData<Number>, Comparator<Number> {
     private double num;
     private byte[] icon;
-
+    private ColumnType type = ColumnType.NUMBER;
     public Number(double num) {
         this.num = num;
     }
@@ -33,6 +34,11 @@ public class Number implements Data<Number>, Comparator<Number> {
     @Override
     public Object getImportantData() {
         return this.num;
+    }
+
+    @Override
+    public ColumnType getType() {
+        return ColumnType.NUMBER;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.column.datatype;
 
+import com.column.ColumnType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,8 +8,13 @@ import java.util.Comparator;
 
 @Getter
 @Setter
-public class Rating implements Data<Rating>, Comparator<Rating> {
+public class Rating implements IData<Rating>, Comparator<Rating> {
     private double rate;
+    private ColumnType type = ColumnType.AVERAGE_RATING;
+
+    public Rating(double rate) {
+        this.rate = rate;
+    }
 
     @Override
     public Rating getData() {
@@ -23,6 +29,11 @@ public class Rating implements Data<Rating>, Comparator<Rating> {
     @Override
     public Object getImportantData() {
         return this.rate;
+    }
+
+    @Override
+    public ColumnType getType() {
+        return ColumnType.AVERAGE_RATING;
     }
 
     @Override

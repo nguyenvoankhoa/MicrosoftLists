@@ -4,16 +4,25 @@ import com.column.datatype.Choice;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
-public class ChoiceColumn extends Column implements IColumn<Choice> {
-    private Choice choice;
-    @Override
-    public Choice getDefaultData() {
-        return choice;
+public class ChoiceColumn extends Column implements IColumn<List<Choice>> {
+    private List<Choice> choices;
+    private boolean isMultiSelect;
+
+    public ChoiceColumn(String name) {
+        super(name);
+        choices = new ArrayList<>();
+        isMultiSelect = false;
+        setType(ColumnType.CHOICE);
     }
+
     @Override
-    public ColumnType getType() {
-        return ColumnType.CHOICE;
+    public List<Choice> getDefaultData() {
+        return choices;
     }
+
 }

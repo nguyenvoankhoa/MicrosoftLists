@@ -1,5 +1,6 @@
 package com.column.datatype;
 
+import com.column.ColumnType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +14,15 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DateAndTime implements Data<DateAndTime>, Comparator<DateAndTime> {
+public class DateAndTime implements IData<DateAndTime>, Comparator<DateAndTime> {
     private Date date;
     private Time time;
+    private ColumnType type = ColumnType.DATE_AND_TIME;
+
+    public DateAndTime(Date date, Time time) {
+        this.date = date;
+        this.time = time;
+    }
 
     @Override
     public DateAndTime getData() {
@@ -31,6 +38,11 @@ public class DateAndTime implements Data<DateAndTime>, Comparator<DateAndTime> {
     @Override
     public Object getImportantData() {
         return this.date;
+    }
+
+    @Override
+    public ColumnType getType() {
+        return ColumnType.DATE_AND_TIME;
     }
 
     @Override

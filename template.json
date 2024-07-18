@@ -1,0 +1,122 @@
+[
+  {
+    "title": "Issue Tracker",
+    "columns": [
+      {
+        "name": "Speaker",
+        "isVisible": true,
+        "type": "PERSON"
+      },
+      {
+        "name": "Price",
+        "isVisible": true,
+        "type": "NUMBER"
+      },
+      {
+        "name": "Link",
+        "isVisible": true,
+        "type": "HYPERLINK"
+      },
+      {
+        "name": "Is active",
+        "isVisible": true,
+        "type": "YESNO"
+      },
+      {
+        "name": "Speaker",
+        "isVisible": true,
+        "type": "PERSON"
+      }
+    ]
+  },
+  {
+    "title": "Asset Manager",
+    "columns": [
+      {
+        "name": "Speaker",
+        "isVisible": true,
+        "type": "PERSON"
+      },
+      {
+        "name": "Price",
+        "isVisible": true,
+        "type": "NUMBER"
+      },
+      {
+        "name": "Link",
+        "isVisible": true,
+        "type": "HYPERLINK"
+      },
+      {
+        "name": "Is active",
+        "isVisible": true,
+        "type": "YESNO"
+      },
+      {
+        "name": "Speaker",
+        "isVisible": true,
+        "type": "PERSON"
+      }
+    ]
+  },
+  {
+    "title": "Gift ideas",
+    "columns": [
+      {
+        "name": "Speaker",
+        "isVisible": true,
+        "type": "PERSON"
+      },
+      {
+        "name": "Price",
+        "isVisible": true,
+        "type": "NUMBER"
+      },
+      {
+        "name": "Link",
+        "isVisible": true,
+        "type": "HYPERLINK"
+      },
+      {
+        "name": "Is active",
+        "isVisible": true,
+        "type": "YESNO"
+      },
+      {
+        "name": "Speaker",
+        "isVisible": true,
+        "type": "PERSON"
+      }
+    ]
+  },
+  {
+    "title": "Content scheduler",
+    "columns": [
+      {
+        "name": "Speaker",
+        "isVisible": true,
+        "type": "PERSON"
+      },
+      {
+        "name": "Price",
+        "isVisible": true,
+        "type": "NUMBER"
+      },
+      {
+        "name": "Link",
+        "isVisible": true,
+        "type": "HYPERLINK"
+      },
+      {
+        "name": "Is active",
+        "isVisible": true,
+        "type": "YESNO"
+      },
+      {
+        "name": "Speaker",
+        "isVisible": true,
+        "type": "PERSON"
+      }
+    ]
+  }
+]

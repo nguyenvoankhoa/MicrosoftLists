@@ -1,17 +1,21 @@
 package com.column;
 
 import com.column.datatype.Rating;
+import lombok.Getter;
+import lombok.Setter;
 
-public class RatingColumn extends Column implements IColumn {
+@Getter
+@Setter
+public class RatingColumn extends Column implements IColumn<Rating> {
     private Rating rating;
 
-    @Override
-    public Object getDefaultData() {
-        return rating;
+    public RatingColumn(String name) {
+        super(name);
+        setType(ColumnType.AVERAGE_RATING);
     }
 
     @Override
-    public ColumnType getType() {
-        return ColumnType.AVERAGE_RATING;
+    public Rating getDefaultData() {
+        return rating;
     }
 }

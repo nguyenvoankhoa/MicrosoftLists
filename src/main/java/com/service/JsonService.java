@@ -21,47 +21,33 @@ public class JsonService {
     private JsonService() {
     }
 
-    public static boolean saveToJson(Template list, String filepath) {
+    public static boolean saveToJson(Template list, String filepath) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(list);
         Path path = Paths.get(filepath);
-        try {
-            Files.writeString(path, json);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        Files.writeString(path, json);
         return true;
     }
 
-    public static SmartList loadSmartListFromJson(String filePath) {
+    public static SmartList loadSmartListFromJson(String filePath) throws IOException {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(IColumn.class, new ColumnAdapter())
                 .registerTypeAdapter(IData.class, new DataAdapter())
                 .create();
         Path path = Paths.get(filePath);
-        try {
-            String json = Files.readString(path);
-            return gson.fromJson(json, SmartList.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        String json = Files.readString(path);
+        return gson.fromJson(json, SmartList.class);
     }
 
-    public static List<Template> loadTemplatesFromJson(String filePath) {
+    public static List<Template> loadTemplatesFromJson(String filePath) throws IOException {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(IColumn.class, new ColumnAdapter())
                 .registerTypeAdapter(IData.class, new DataAdapter())
                 .create();
         Path path = Paths.get(filePath);
-        try {
-            String json = Files.readString(path);
-            Type templateListType = new TypeToken<List<Template>>(){}.getType();
-            return gson.fromJson(json, templateListType);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        String json = Files.readString(path);
+        Type templateListType = new TypeToken<List<Template>>() {
+        }.getType();
+        return gson.fromJson(json, templateListType);
     }
 }

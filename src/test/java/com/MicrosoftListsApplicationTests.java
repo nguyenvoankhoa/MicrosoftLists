@@ -8,6 +8,7 @@ import com.export.ExportStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.util.*;
 
@@ -21,7 +22,7 @@ class MicrosoftListsApplicationTests {
 
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
         listPath = ConfigService.loadProperties("smartlist.file.name");
         templatePath = ConfigService.loadProperties("template.file.name");
         microsoftList = new MicrosoftList(templatePath);
@@ -169,7 +170,7 @@ class MicrosoftListsApplicationTests {
 
 
     @Test
-    void testSaveDataToJson() {
+    void testSaveDataToJson() throws IOException {
         smartList.createNewColumn(ColumnType.TEXT, "Title");
         smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
         ChoiceColumn column = (ChoiceColumn) smartList.createNewColumn(ColumnType.CHOICE, "Session type");
@@ -210,7 +211,7 @@ class MicrosoftListsApplicationTests {
 
 
     @Test
-    void testLoadDataFromJson() {
+    void testLoadDataFromJson() throws IOException {
         SmartList sl = microsoftList.getJsonService().loadSmartListFromJson(listPath);
         assertNotNull(sl);
     }

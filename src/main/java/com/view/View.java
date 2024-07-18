@@ -1,5 +1,6 @@
-package com;
+package com.view;
 
+import com.Template;
 import lombok.Getter;
 import lombok.Setter;
 

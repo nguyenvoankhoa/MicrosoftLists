@@ -3,8 +3,10 @@ package com;
 import com.column.*;
 import com.column.datatype.*;
 import com.column.datatype.Number;
+import com.permission.Permission;
 import com.service.ConfigService;
 import com.export.ExportStatus;
+import com.view.ViewType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -127,7 +129,7 @@ class MicrosoftListsApplicationTests {
         assertTrue(smartList.addRowData(text, dateAndTime, c1, person, number, link, active));
         assertFalse(smartList.addRowData(text, dateAndTime, c1, person, number, link, active, rating));
         assertTrue(smartList.addRowData(text, dateAndTime, c1, person, number, link));
-
+        assertTrue(smartList.addRowData(text, c1, person, number, link));
     }
 
     @Test

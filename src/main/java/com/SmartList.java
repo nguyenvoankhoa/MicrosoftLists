@@ -5,6 +5,9 @@ import com.column.ColumnType;
 import com.column.IColumn;
 import com.column.datatype.IData;
 import com.column.factory.DataFactory;
+import com.permission.PermissionManagement;
+import com.view.View;
+import com.view.ViewType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -49,12 +52,12 @@ public class SmartList extends Template {
     }
 
     public int getColumnIndexByName(String name) {
-        IColumn<Object> c = getColumnByName(name);
+        IColumn c = getColumnByName(name);
         return getColumnIndex(c);
     }
 
     public IColumn createNewColumn(ColumnType type, String name) {
-        IColumn<Object> c = getColumnByName(name);
+        IColumn c = getColumnByName(name);
         return Optional.ofNullable(c).orElseGet(() -> {
             ColumnFactory columnFactory = new ColumnFactory(name);
             IColumn<Object> column = columnFactory.getColumn(type);
@@ -85,7 +88,7 @@ public class SmartList extends Template {
         iDataList.get(cId).setData(data);
     }
 
-    public IColumn<Object> getColumnByName(String name) {
+    public IColumn getColumnByName(String name) {
         return getColumns().stream().filter(c -> c.getName().equals(name)).findFirst().orElse(null);
     }
 
@@ -139,20 +142,26 @@ public class SmartList extends Template {
                 .collect(Collectors.groupingBy(row -> row.getIDataList().get(cId).getImportantData()));
     }
 
-
     public boolean addRowData(IData... dList) {
         return Optional.of(dList.length)
                 .filter(this::checkSize)
                 .map(size -> {
                     int rId = createNewRow();
-                    IntStream.range(0, size).forEach(i -> {
-                        IData data = dList[i];
-                        IColumn column = getColumns().get(i);
-                        addData(column.getName(), rId, data);
-                    });
+                    addDataMatchColumns(rId, dList);
                     return true;
                 })
                 .orElse(false);
+    }
+
+    private void addDataMatchColumns(int rId, IData[] dList) {
+        int[] dataIndex = {0};
+        getColumns().stream()
+                .filter(column -> dataIndex[0] < dList.length)
+                .filter(column -> column.getType().equals(dList[dataIndex[0]].getType()))
+                .forEach(column -> {
+                    addData(column.getName(), rId, dList[dataIndex[0]]);
+                    dataIndex[0]++;
+                });
     }
 
     public boolean checkSize(int size) {
@@ -212,10 +221,9 @@ public class SmartList extends Template {
 
     public List<Row> getPage(int pageNumber, int pageSize) {
         int fromIndex = (pageNumber - 1) * pageSize;
-
         return rows.stream()
                 .skip(Math.max(0, fromIndex))
                 .limit(pageSize)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

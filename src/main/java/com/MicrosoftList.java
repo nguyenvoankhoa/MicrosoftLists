@@ -1,5 +1,6 @@
 package com;
 
+import com.permission.PermissionManagement;
 import com.service.JsonService;
 import com.export.ExportHandler;
 import com.export.ExportResult;
@@ -7,6 +8,7 @@ import com.export.FileType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +22,11 @@ public class MicrosoftList {
 
     private JsonService jsonService;
 
-    public MicrosoftList(String tplPath) {
+    public MicrosoftList(String tplPath) throws IOException {
         initDefaultTemplate(tplPath);
     }
 
-    public void initDefaultTemplate(String tplPath) {
+    public void initDefaultTemplate(String tplPath) throws IOException {
         templates = JsonService.loadTemplatesFromJson(tplPath);
         listCollection = new ArrayList<>();
         favouriteCollection = new ArrayList<>();
@@ -59,9 +61,8 @@ public class MicrosoftList {
     }
 
     public SmartList checkExist(String name) {
-        SmartList list = getListCollection().stream().filter(s -> s.getName().equals(name))
+        return getListCollection().stream().filter(s -> s.getName().equals(name))
                 .findFirst().orElse(null);
-        return list;
     }
 
     public SmartList createListFromTemplate(Template t, String name) {

@@ -1,4 +1,4 @@
-package com;
+package com.permission;
 
 import com.column.datatype.Person;
 

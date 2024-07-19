@@ -1,16 +1,17 @@
 package com.view;
 
-import com.Template;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class View extends Template {
+public class View {
+    private String title;
     private ViewType viewType;
+    private boolean isPublic;
 
-    public View(ViewType viewType, String title) {
-        super(title);
-        this.viewType = viewType;
+    public View(String title) {
+        this.title = title;
+        this.isPublic = true;
     }
 }

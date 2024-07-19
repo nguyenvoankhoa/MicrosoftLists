@@ -8,7 +8,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class DataFactory {
-    private Map<ColumnType, IData> factory = new EnumMap<>(ColumnType.class);
+    private final Map<ColumnType, IData> factory = new EnumMap<>(ColumnType.class);
 
     public DataFactory() {
         factory.put(ColumnType.TEXT, new Text());
@@ -23,7 +23,7 @@ public class DataFactory {
     }
 
 
-    public IData<Object> createData(ColumnType type) {
+    public IData createData(ColumnType type) {
         return factory.get(type);
     }
 }

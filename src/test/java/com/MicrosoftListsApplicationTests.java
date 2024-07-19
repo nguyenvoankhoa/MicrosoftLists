@@ -6,6 +6,7 @@ import com.column.datatype.Number;
 import com.permission.Permission;
 import com.service.ConfigService;
 import com.export.ExportStatus;
+import com.view.View;
 import com.view.ViewType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,8 +59,7 @@ class MicrosoftListsApplicationTests {
                 .orElse(null));
     }
 
-    // paging
-    // search
+
     @Test
     void testAddMultipleColumn() {
         smartList.createNewColumn(ColumnType.TEXT, "Title");
@@ -133,6 +133,22 @@ class MicrosoftListsApplicationTests {
     }
 
     @Test
+    void testRemoveColumn() {
+        smartList.createNewColumn(ColumnType.TEXT, "Title");
+        smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        Text text = new Text("text data");
+        Text text2 = new Text("text data2");
+        DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
+
+        smartList.addRowData(text, dateAndTime);
+        smartList.addRowData(text2, dateAndTime);
+
+        smartList.removeColumn("Title");
+        assertNull(Common.getColumnByName(smartList, "Title"));
+        assertEquals(1, smartList.getRows().get(0).getIDataList().size());
+    }
+
+    @Test
     void testPaging() {
         smartList.createNewColumn(ColumnType.TEXT, "Title");
         smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
@@ -161,13 +177,13 @@ class MicrosoftListsApplicationTests {
         smartList.addRowData(text, dateAndTime, c1, person, number, link, active);
         smartList.addRowData(text, dateAndTime, c1, person, number, link, active);
 
-        assertEquals(3, smartList.getPage(1, 4).size());
-        assertEquals(2, smartList.getPage(1, 2).size());
+        assertEquals(3, Common.getPage(smartList, 1, 4).size());
+        assertEquals(2, Common.getPage(smartList, 1, 2).size());
 
         smartList.addRowData(text, dateAndTime, c1, person, number, link, active);
         smartList.addRowData(text, dateAndTime, c1, person, number, link, active);
 
-        assertEquals(1, smartList.getPage(2, 4).size());
+        assertEquals(1, Common.getPage(smartList, 2, 4).size());
     }
 
 
@@ -228,7 +244,7 @@ class MicrosoftListsApplicationTests {
         smartList.addData("Title", 1, new Text("b"));
         smartList.createNewRow();
         smartList.addData("Title", 2, new Text("c"));
-        smartList.sortDesc("Title");
+        Common.sortDesc(smartList, "Title");
 
         assertEquals("a", ((Text) smartList.getRows().get(0).getIDataList().get(0)).getText());
         assertEquals("b", ((Text) smartList.getRows().get(1).getIDataList().get(0)).getText());
@@ -246,7 +262,7 @@ class MicrosoftListsApplicationTests {
         smartList.addData("Title", 2, new Text("d"));
         smartList.createNewRow();
         smartList.addData("Title", 3, new Text("c"));
-        smartList.sortAsc("Title");
+        Common.sortAsc(smartList, "Title");
 
         assertEquals("d", ((Text) smartList.getRows().get(0).getIDataList().get(0)).getText());
         assertEquals("c", ((Text) smartList.getRows().get(1).getIDataList().get(0)).getText());
@@ -263,8 +279,8 @@ class MicrosoftListsApplicationTests {
         smartList.addData("Title", 1, new Text("b"));
         smartList.createNewRow();
         smartList.addData("Title", 2, new Text("c"));
-        List<Object> criteria = smartList.getListFilter("Title");
-        List<Row> filteredRows = smartList.filter("Title", criteria.get(0));
+        List<Object> criteria = Common.getListFilter(smartList, "Title");
+        List<Row> filteredRows = Common.filter(smartList, "Title", criteria.get(0));
 
         assertEquals(1, filteredRows.size());
         assertEquals("a", ((Text) filteredRows.get(0).getIDataList().get(0)).getImportantData());
@@ -281,7 +297,7 @@ class MicrosoftListsApplicationTests {
         smartList.addData("Title", 2, new Text("c"));
         smartList.createNewRow();
         smartList.addData("Title", 3, new Text("c"));
-        Map<Object, List<Row>> groupedRows = smartList.groupBy("Title");
+        Map<Object, List<Row>> groupedRows = Common.groupBy(smartList, "Title");
 
         assertNotNull(groupedRows);
         assertEquals(3, groupedRows.size());
@@ -319,11 +335,6 @@ class MicrosoftListsApplicationTests {
         IColumn choiceCol = smartList.createNewColumn(ColumnType.CHOICE, "Session type");
         smartList.moveRight("Start day");
         assertEquals(timeCol, smartList.getColumns().get(2));
-    }
-
-    @Test
-    void testCreateView() {
-        assertTrue(smartList.createView(ViewType.LIST, "list view"));
     }
 
 
@@ -368,7 +379,7 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testExportListToCSV() {
-        assertEquals(ExportStatus.SUCCESS, microsoftList.exportToCSV(smartList, "list.csv").getStatus());
+        assertEquals(ExportStatus.SUCCESS, Common.exportToCSV(smartList, "list.csv").getStatus());
     }
 
     @Test
@@ -390,15 +401,22 @@ class MicrosoftListsApplicationTests {
     void testShowColumn() {
         smartList.createNewColumn(ColumnType.TEXT, "Title");
         smartList.showColumn("Title");
-        assertTrue(smartList.getColumnByName("Title").isVisible());
+        assertTrue(Common.getColumnByName(smartList, "Title").isVisible());
     }
 
     @Test
     void testHideColumn() {
         smartList.createNewColumn(ColumnType.TEXT, "Title");
         smartList.hideColumn("Title");
-        assertFalse(smartList.getColumnByName("Title").isVisible());
+        assertFalse(Common.getColumnByName(smartList, "Title").isVisible());
     }
 
-
+    @Test
+    void testCreateView() {
+        List<View> views = smartList.createBoardView(ViewType.LIST, "List view");
+        var view = views.stream().filter(v -> v.getTitle().equals("List view"))
+                .findFirst().orElse(null);
+        assertNotNull(view);
+        assertEquals(ViewType.LIST, view.getViewType());
+    }
 }

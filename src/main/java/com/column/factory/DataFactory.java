@@ -15,7 +15,7 @@ public class DataFactory {
         factory.put(ColumnType.DATE_AND_TIME, new DateAndTime());
         factory.put(ColumnType.NUMBER, new Number());
         factory.put(ColumnType.YESNO, new YesNo());
-        factory.put(ColumnType.CHOICE, new Choice());
+        factory.put(ColumnType.CHOICE, new MultipleChoice());
         factory.put(ColumnType.HYPERLINK, new HyperLink());
         factory.put(ColumnType.IMAGE, new Image());
         factory.put(ColumnType.LOOKUP, new Lookup());

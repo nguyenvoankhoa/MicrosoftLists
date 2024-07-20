@@ -6,6 +6,7 @@ import com.column.datatype.Number;
 import com.permission.Permission;
 import com.service.ConfigService;
 import com.export.ExportStatus;
+import com.service.JsonService;
 import com.view.View;
 import com.view.ViewType;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,7 @@ class MicrosoftListsApplicationTests {
     String listPath;
     String templatePath;
 
+    String csvPath;
 
     @BeforeEach
     public void setUp() throws IOException {
@@ -211,7 +213,7 @@ class MicrosoftListsApplicationTests {
         smartList.createNewRow();
 
         Text text = new Text("text data");
-        smartList.addData("Title", 0, text);
+        smartList.addData("Title", 0, c1);
         smartList.addData("Session type", 0, c1);
         DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
         smartList.addData("Start day", 0, dateAndTime);
@@ -224,13 +226,13 @@ class MicrosoftListsApplicationTests {
         YesNo active = new YesNo(true);
         smartList.addData("Is active", 0, active);
 
-        assertTrue(microsoftList.getJsonService().saveToJson(smartList, listPath));
+        assertTrue(JsonService.saveToJson(smartList, listPath));
     }
 
 
     @Test
     void testLoadDataFromJson() throws IOException {
-        SmartList sl = microsoftList.getJsonService().loadSmartListFromJson(listPath);
+        SmartList sl = JsonService.loadSmartListFromJson(listPath);
         assertNotNull(sl);
     }
 
@@ -321,22 +323,32 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testMoveLeftColumn() {
-        IColumn textCol = smartList.createNewColumn(ColumnType.TEXT, "Title");
-        IColumn timeCol = smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
-        IColumn choiceCol = smartList.createNewColumn(ColumnType.CHOICE, "Session type");
+        smartList.createNewColumn(ColumnType.TEXT, "Title");
+        smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        smartList.createNewColumn(ColumnType.CHOICE, "Session type");
         smartList.moveLeft("Start day");
-        assertEquals(timeCol, smartList.getColumns().get(0));
+
+        assertEquals(0, Common.getColumnIndexByName(smartList, "Start day"));
     }
 
     @Test
     void testMoveRightColumn() {
-        IColumn textCol = smartList.createNewColumn(ColumnType.TEXT, "Title");
-        IColumn timeCol = smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
-        IColumn choiceCol = smartList.createNewColumn(ColumnType.CHOICE, "Session type");
+        smartList.createNewColumn(ColumnType.TEXT, "Title");
+        smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        smartList.createNewColumn(ColumnType.CHOICE, "Session type");
         smartList.moveRight("Start day");
-        assertEquals(timeCol, smartList.getColumns().get(2));
+
+        assertEquals(2, Common.getColumnIndexByName(smartList, "Start day"));
     }
 
+    @Test
+    void testCreateView() {
+        List<View> views = smartList.createBoardView(ViewType.LIST, "List view");
+        var view = views.stream().filter(v -> v.getTitle().equals("List view"))
+                .findFirst().orElse(null);
+        assertNotNull(view);
+        assertEquals(ViewType.LIST, view.getViewType());
+    }
 
     @Test
     void testAddPermission() {
@@ -377,9 +389,11 @@ class MicrosoftListsApplicationTests {
         assertFalse(rule.evaluate(n2.getNum()));
     }
 
+
     @Test
-    void testExportListToCSV() {
-        assertEquals(ExportStatus.SUCCESS, Common.exportToCSV(smartList, "list.csv").getStatus());
+    void testExportListToCSV() throws IOException {
+        csvPath = ConfigService.loadProperties("csv.file.name");
+        assertEquals(ExportStatus.SUCCESS, Common.exportToCSV(smartList, csvPath).getStatus());
     }
 
     @Test
@@ -394,6 +408,11 @@ class MicrosoftListsApplicationTests {
 
         smartList.createForm(columns);
         assertEquals(1, smartList.getForms().size());
+    }
+
+    @Test
+    void testEditForm() {
+
     }
 
 
@@ -411,12 +430,5 @@ class MicrosoftListsApplicationTests {
         assertFalse(Common.getColumnByName(smartList, "Title").isVisible());
     }
 
-    @Test
-    void testCreateView() {
-        List<View> views = smartList.createBoardView(ViewType.LIST, "List view");
-        var view = views.stream().filter(v -> v.getTitle().equals("List view"))
-                .findFirst().orElse(null);
-        assertNotNull(view);
-        assertEquals(ViewType.LIST, view.getViewType());
-    }
+
 }

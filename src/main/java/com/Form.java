@@ -6,22 +6,26 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Getter
 @Setter
 public class Form {
+    private SmartList sm;
     private List<IColumn> columns;
 
-
-    public Form() {
-        this.columns = new ArrayList<>();
+    public Form(SmartList smartList, List<IColumn> columns) {
+        this.sm = smartList;
+        this.columns = columns;
     }
 
     public void addColumn(IColumn column) {
         this.columns.add(column);
+        sm.getColumns().add(column);
     }
 
     public void removeColumn(IColumn column) {
         this.columns.remove(column);
+        sm.removeColumn(column.getName());
     }
 
     public String generateFormRepresentation() {

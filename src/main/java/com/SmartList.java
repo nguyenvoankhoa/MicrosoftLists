@@ -34,11 +34,11 @@ public class SmartList extends Template {
 
 
     public void createForm(List<IColumn> columns) {
-        Form form = new Form();
+        Form form = new Form(this, columns);
         for (IColumn col : columns) {
             form.getColumns().add(col);
         }
-        forms.add(new Form());
+        forms.add(form);
     }
 
 
@@ -76,14 +76,13 @@ public class SmartList extends Template {
 
     public void addData(String name, int rId, Object data) {
         int cId = Common.getColumnIndexByName(this, name);
-        List<IData> iDataList = this.getRows().get(rId).getIDataList();
-        iDataList.get(cId).setData(data);
+        this.getRows().get(rId).addData(cId, data);
     }
 
 
     public Object getData(String name, int rId) {
         int cId = Common.getColumnIndexByName(this, name);
-        return this.getRows().get(rId).getIDataList().get(cId).getData();
+        return this.getRows().get(rId).getData(cId);
     }
 
 

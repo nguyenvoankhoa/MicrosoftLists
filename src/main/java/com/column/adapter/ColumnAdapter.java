@@ -4,11 +4,12 @@ import com.column.*;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ColumnAdapter  implements JsonSerializer<IColumn<?>>, JsonDeserializer<IColumn<?>> {
-    private static final Map<ColumnType, Class<? extends IColumn<?>>> typeRegistry = new HashMap<>();
+public class ColumnAdapter implements JsonSerializer<IColumn<?>>, JsonDeserializer<IColumn<?>> {
+    private static final Map<ColumnType, Class<? extends IColumn<?>>> typeRegistry = new EnumMap<>(ColumnType.class);
 
     static {
         typeRegistry.put(ColumnType.TEXT, TextColumn.class);

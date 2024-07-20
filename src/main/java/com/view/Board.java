@@ -7,12 +7,12 @@ import lombok.Setter;
 import java.util.List;
 @Getter
 @Setter
-public class Board {
+public class Board{
     String title;
-    List<Row> iDataList;
+    List<Row> rows;
 
-    public Board(String title, List<Row> iDataList) {
+    public Board(String title, List<Row> rows) {
         this.title = title;
-        this.iDataList = iDataList;
+        this.rows = rows;
     }
 }

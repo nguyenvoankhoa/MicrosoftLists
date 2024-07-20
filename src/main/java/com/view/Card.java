@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Card {
+public class Card{
     private IData data;
     private String shape;
     private String color;

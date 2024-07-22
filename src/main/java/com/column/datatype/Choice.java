@@ -45,11 +45,6 @@ public class Choice implements IData<Choice>, Comparator<Choice> {
     }
 
     @Override
-    public ColumnType getType() {
-        return ColumnType.CHOICE;
-    }
-
-    @Override
     public int compare(Choice o1, Choice o2) {
         return o2.getName().compareTo(o1.getName());
     }

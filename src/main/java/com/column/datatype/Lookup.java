@@ -15,7 +15,7 @@ public class Lookup implements IData<Lookup> {
 
     @Override
     public void setData(Lookup data) {
-
+        // lookup
     }
 
     @Override

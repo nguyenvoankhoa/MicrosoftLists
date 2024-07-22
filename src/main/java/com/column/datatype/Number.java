@@ -37,11 +37,6 @@ public class Number implements IData<Number>, Comparator<Number> {
     }
 
     @Override
-    public ColumnType getType() {
-        return ColumnType.NUMBER;
-    }
-
-    @Override
     public int compare(Number o1, Number o2) {
         return Comparator.comparing(Number::getNum)
                 .compare(o2, o1);

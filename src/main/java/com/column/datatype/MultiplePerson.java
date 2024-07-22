@@ -34,7 +34,13 @@ public class MultiplePerson implements IData<Object> {
     }
 
     private void addSinglePerson(Person choice) {
-        getPeople().get(0).setData(choice);
+        Optional.of(getPeople())
+                .filter(p -> !p.isEmpty())
+                .ifPresent(choices -> choices.get(0).setData(choice));
+
+        Optional.of(getPeople())
+                .filter(List::isEmpty)
+                .ifPresent(choices -> choices.add(choice));
     }
 
     private void addMultipleChoices(List<Person> people) {

@@ -34,7 +34,13 @@ public class MultipleChoice implements IData<Object> {
     }
 
     private void addSingleChoice(Choice choice) {
-        getChoices().get(0).setData(choice);
+        Optional.of(getChoices())
+                .filter(c -> !c.isEmpty())
+                .ifPresent(c -> c.get(0).setData(choice));
+
+        Optional.of(getChoices())
+                .filter(List::isEmpty)
+                .ifPresent(c -> c.add(choice));
     }
 
     private void addMultipleChoices(List<Choice> choices) {

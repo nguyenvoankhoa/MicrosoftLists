@@ -23,14 +23,17 @@ class MicrosoftListsApplicationTests {
     SmartList smartList;
     String listPath;
     String templatePath;
+    JsonService jsonService;
 
     @BeforeEach
     public void setUp() throws IOException {
         listPath = ConfigService.loadProperties("smartlist.file.name");
         templatePath = ConfigService.loadProperties("template.file.name");
-        microsoftList = new MicrosoftList(templatePath);
+        jsonService = new JsonService();
+        microsoftList = new MicrosoftList(templatePath, jsonService);
         microsoftList.createList("ABC");
         smartList = microsoftList.getListCollection().get(0);
+
     }
 
     @Test
@@ -124,12 +127,17 @@ class MicrosoftListsApplicationTests {
         Number number = new Number(4.5);
         HyperLink link = new HyperLink("facebook.com");
         YesNo active = new YesNo(true);
-        Rating rating = new Rating(3);
 
-        assertTrue(smartList.addRowData(text, dateAndTime, c1, person, number, link, active));
-        assertFalse(smartList.addRowData(text, dateAndTime, c1, person, number, link, active, rating));
-        assertTrue(smartList.addRowData(text, dateAndTime, c1, person, number, link));
-        assertTrue(smartList.addRowData(text, c1, person, number, link));
+        Map<String, Object> mVal = new HashMap<>();
+        mVal.put("Title", text);
+        mVal.put("Start day", dateAndTime);
+        mVal.put("Session type", choices);
+        mVal.put("Speaker", person);
+        mVal.put("Price", number);
+        mVal.put("Link", link);
+        mVal.put("Is active", active);
+
+        assertNotNull(smartList.addRowData(mVal));
     }
 
     @Test
@@ -224,13 +232,13 @@ class MicrosoftListsApplicationTests {
         YesNo active = new YesNo(true);
         smartList.addData("Is active", 0, active);
 
-        assertTrue(JsonService.saveToJson(smartList, listPath));
+        assertTrue(jsonService.saveToJson(smartList, listPath));
     }
 
 
     @Test
     void testLoadDataFromJson() throws IOException {
-        SmartList sl = JsonService.loadSmartListFromJson(listPath);
+        SmartList sl = jsonService.loadSmartListFromJson(listPath);
         assertNotNull(sl);
     }
 
@@ -341,7 +349,7 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testCreateView() {
-        List<View> views = smartList.createBoardView(ViewType.LIST, "List view");
+        List<View> views = smartList.createView(ViewType.LIST, "List view");
         var view = views.stream().filter(v -> v.getTitle().equals("List view"))
                 .findFirst().orElse(null);
         assertNotNull(view);

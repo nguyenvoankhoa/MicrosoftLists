@@ -71,14 +71,13 @@ public class SmartList extends Template {
     }
 
     public void addData(String name, int rId, Object data) {
-        Optional.ofNullable(Common.getColumnByName(this, name))
-                .filter(col -> col.checkConstraint(data))
-                .ifPresent(col -> {
-                    int cId = Common.getColumnIndex(this, col);
-                    this.getRows().get(rId).addData(cId, data);
-                });
-    }
+        IColumn<Object> column = Common.getColumnByName(this, name);
+        int cId = Common.getColumnIndex(this, column);
 
+        Optional.of(data)
+                .filter(column::checkConstraint)
+                .ifPresent(validData -> this.getRows().get(rId).addData(cId, validData));
+    }
 
     public Object getData(String name, int rId) {
         int cId = Common.getColumnIndexByName(this, name);
@@ -160,7 +159,7 @@ public class SmartList extends Template {
         column.setVisible(true);
     }
 
-    public List<View> createBoardView(ViewType viewType, Object... params) {
+    public List<View> createView(ViewType viewType, Object... params) {
         View v = new ViewFactory(this).createView(viewType, params);
         this.views.add(v);
         return this.views;

@@ -26,7 +26,7 @@ public class ColumnAdapter implements JsonSerializer<IColumn<?>>, JsonDeserializ
     @Override
     public JsonElement serialize(IColumn<?> src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = context.serialize(src).getAsJsonObject();
-        jsonObject.addProperty("type", src.getType().name());
+        jsonObject.addProperty("type", src.getColumnType().name());
         return jsonObject;
     }
 

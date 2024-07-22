@@ -26,6 +26,11 @@ public class NumberColumn extends Column implements IColumn<Number> {
     }
 
     @Override
+    public ColumnType getColumnType() {
+        return getType();
+    }
+
+    @Override
     public boolean checkConstraint(Number data) {
         Predicate<Number> requirePredicate = d -> !isRequire() || d != null;
         Predicate<Number> minValPredicate = d -> minVal == Double.MIN_VALUE || d.getNum() >= getMinVal();

@@ -27,6 +27,11 @@ public class ChoiceColumn extends Column implements IColumn<List<Choice>> {
     }
 
     @Override
+    public ColumnType getColumnType() {
+        return getType();
+    }
+
+    @Override
     public boolean checkConstraint(List<Choice> data) {
         Predicate<List<Choice>> requirePredicate = d -> !isRequire() || !d.isEmpty();
         Predicate<List<Choice>> multiSelectPredicate = d -> isMultiSelect() || d.size() <= 1;

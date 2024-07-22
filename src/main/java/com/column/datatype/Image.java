@@ -9,9 +9,10 @@ import java.util.Comparator;
 @Setter
 @Getter
 public class Image implements IData<Image>, Comparator<Image> {
-    private byte[] image;
+    private byte[] img;
     private int size;
     private ColumnType type = ColumnType.HYPERLINK;
+
     @Override
     public Image getData() {
         return this;
@@ -19,7 +20,7 @@ public class Image implements IData<Image>, Comparator<Image> {
 
     @Override
     public void setData(Image data) {
-        setImage(data.getImage());
+        setImg(data.getImg());
     }
 
     @Override

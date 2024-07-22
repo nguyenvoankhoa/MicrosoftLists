@@ -38,6 +38,7 @@ public class MicrosoftList {
         SmartList sl = new SmartList(name, pm);
         this.listCollection.add(sl);
         return sl;
+
     }
 
     public void addFavourite(SmartList smartList) {

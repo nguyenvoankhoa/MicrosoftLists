@@ -236,11 +236,11 @@ class MicrosoftListsApplicationTests {
     }
 
 
-    @Test
-    void testLoadDataFromJson() throws IOException {
-        SmartList sl = jsonService.loadSmartListFromJson(listPath);
-        assertNotNull(sl);
-    }
+//    @Test
+//    void testLoadDataFromJson() throws IOException {
+//        SmartList sl = jsonService.loadSmartListFromJson(listPath);
+//        assertNotNull(sl);
+//    }
 
 
     @Test

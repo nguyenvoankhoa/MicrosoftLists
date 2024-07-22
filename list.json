@@ -4,12 +4,12 @@
     {
       "iDataList": [
         {
-          "text": "text data",
+          "str": "text data",
           "type": "TEXT"
         },
         {
-          "date": "Jul 21, 2024, 11:08:11 PM",
-          "time": "11:08:11 PM",
+          "date": "Jul 22, 2024, 6:03:09 PM",
+          "time": "06:03:09 PM",
           "type": "DATE_AND_TIME"
         },
         {
@@ -18,13 +18,16 @@
               "name": "Option 1",
               "type": "CHOICE"
             }
-          ],
-          "isMultiple": true
+          ]
         },
         {
-          "name": "Khoa",
-          "image": [],
-          "type": "PERSON"
+          "people": [
+            {
+              "name": "Khoa",
+              "image": [],
+              "type": "PERSON"
+            }
+          ]
         },
         {
           "num": 4.5,
@@ -50,13 +53,16 @@
   "name": "ABC",
   "columns": [
     {
+      "maxLength": 2147483647,
       "name": "Title",
       "isVisible": true,
+      "isRequire": false,
       "type": "TEXT"
     },
     {
       "name": "Start day",
       "isVisible": true,
+      "isRequire": false,
       "type": "DATE_AND_TIME"
     },
     {
@@ -77,26 +83,34 @@
       "isMultiSelect": false,
       "name": "Session type",
       "isVisible": true,
+      "isRequire": false,
       "type": "CHOICE"
     },
     {
+      "isMultiSelect": false,
       "name": "Speaker",
       "isVisible": true,
+      "isRequire": false,
       "type": "PERSON"
     },
     {
+      "minVal": 4.9E-324,
+      "maxVal": 1.7976931348623157E308,
       "name": "Price",
       "isVisible": true,
+      "isRequire": false,
       "type": "NUMBER"
     },
     {
       "name": "Link",
       "isVisible": true,
+      "isRequire": false,
       "type": "HYPERLINK"
     },
     {
       "name": "Is active",
       "isVisible": true,
+      "isRequire": false,
       "type": "YESNO"
     }
   ]

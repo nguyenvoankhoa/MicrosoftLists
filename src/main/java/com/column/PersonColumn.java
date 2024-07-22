@@ -26,6 +26,11 @@ public class PersonColumn extends Column implements IColumn<List<Person>> {
     }
 
     @Override
+    public ColumnType getColumnType() {
+        return getType();
+    }
+
+    @Override
     public boolean checkConstraint(List<Person> data) {
         Predicate<List<Person>> requirePredicate = d -> !isRequire() || !d.isEmpty();
         Predicate<List<Person>> multiSelectPredicate = d -> isMultiSelect() || d.size() <= 1;

@@ -24,6 +24,11 @@ public class HyperLinkColumn extends Column implements IColumn<HyperLink> {
     }
 
     @Override
+    public ColumnType getColumnType() {
+        return getType();
+    }
+
+    @Override
     public boolean checkConstraint(HyperLink data) {
         Predicate<HyperLink> requirePredicate = d -> !isRequire() || d != null;
         return requirePredicate.test(data);

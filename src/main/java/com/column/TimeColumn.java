@@ -24,6 +24,11 @@ public class TimeColumn extends Column implements IColumn<DateAndTime> {
     }
 
     @Override
+    public ColumnType getColumnType() {
+        return getType();
+    }
+
+    @Override
     public boolean checkConstraint(DateAndTime data) {
         Predicate<DateAndTime> requirePredicate = d -> !isRequire() || d != null;
         return requirePredicate.test(data);

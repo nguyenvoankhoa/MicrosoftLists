@@ -22,6 +22,11 @@ public class YesNoColumn extends Column implements IColumn<YesNo> {
     }
 
     @Override
+    public ColumnType getColumnType() {
+        return getType();
+    }
+
+    @Override
     public boolean checkConstraint(YesNo data) {
         Predicate<YesNo> requirePredicate = d -> !isRequire() || d != null;
         return requirePredicate.test(data);

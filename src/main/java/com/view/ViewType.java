@@ -1,4 +1,4 @@
-package com;
+package com.view;
 
 public enum ViewType {
     LIST,

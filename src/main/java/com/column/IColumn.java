@@ -12,4 +12,6 @@ public interface IColumn<T> {
     boolean isVisible();
 
     ColumnType getType();
+
+    boolean checkConstraint(T data);
 }

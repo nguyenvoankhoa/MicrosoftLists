@@ -6,7 +6,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class ColumnFactory {
-    private Map<ColumnType, IColumn> factory = new EnumMap<>(ColumnType.class);
+    private final Map<ColumnType, IColumn> factory = new EnumMap<>(ColumnType.class);
 
     public ColumnFactory(String name) {
         factory.put(ColumnType.TEXT, new TextColumn(name));

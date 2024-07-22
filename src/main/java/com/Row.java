@@ -17,4 +17,14 @@ public class Row {
         iDataList = new ArrayList<>();
         comments = new ArrayList<>();
     }
+
+    public Row addData(int cId, Object data) {
+        getIDataList().get(cId).setData(data);
+        return this;
+    }
+
+    public Object getData(int cId){
+        return getIDataList().get(cId).getData();
+    }
+
 }

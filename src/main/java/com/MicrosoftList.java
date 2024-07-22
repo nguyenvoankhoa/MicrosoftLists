@@ -1,12 +1,11 @@
 package com;
 
+import com.permission.PermissionManagement;
 import com.service.JsonService;
-import com.export.ExportHandler;
-import com.export.ExportResult;
-import com.export.FileType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,18 +19,18 @@ public class MicrosoftList {
 
     private JsonService jsonService;
 
-    public MicrosoftList(String tplPath) {
+    public MicrosoftList(String tplPath) throws IOException {
         initDefaultTemplate(tplPath);
     }
 
-    public void initDefaultTemplate(String tplPath) {
+    public void initDefaultTemplate(String tplPath) throws IOException {
         templates = JsonService.loadTemplatesFromJson(tplPath);
         listCollection = new ArrayList<>();
         favouriteCollection = new ArrayList<>();
     }
 
     public boolean createList(String name) {
-        return checkExist(name) == null && createNewList(name) != null;
+        return Common.checkExist(this, name) == null && createNewList(name) != null;
     }
 
     private SmartList createNewList(String name) {
@@ -41,28 +40,14 @@ public class MicrosoftList {
         return sl;
     }
 
-
     public void addFavourite(SmartList smartList) {
         this.favouriteCollection.add(smartList);
-    }
-
-    public void remove(String lName) {
-        this.listCollection.removeIf(l -> l.getName().equals(lName));
     }
 
     public void saveTemplate(Template smartList) {
         this.templates.add(smartList);
     }
 
-    public ExportResult exportToCSV(SmartList smartList, String filename) {
-        return ExportHandler.export(smartList, filename, FileType.CSV);
-    }
-
-    public SmartList checkExist(String name) {
-        SmartList list = getListCollection().stream().filter(s -> s.getName().equals(name))
-                .findFirst().orElse(null);
-        return list;
-    }
 
     public SmartList createListFromTemplate(Template t, String name) {
         SmartList sl = createNewList(name);

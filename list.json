@@ -1,0 +1,103 @@
+{
+  "forms": [],
+  "rows": [
+    {
+      "iDataList": [
+        {
+          "text": "text data",
+          "type": "TEXT"
+        },
+        {
+          "date": "Jul 21, 2024, 11:08:11 PM",
+          "time": "11:08:11 PM",
+          "type": "DATE_AND_TIME"
+        },
+        {
+          "choices": [
+            {
+              "name": "Option 1",
+              "type": "CHOICE"
+            }
+          ],
+          "isMultiple": true
+        },
+        {
+          "name": "Khoa",
+          "image": [],
+          "type": "PERSON"
+        },
+        {
+          "num": 4.5,
+          "type": "NUMBER"
+        },
+        {
+          "link": "facebook.com",
+          "type": "HYPERLINK"
+        },
+        {
+          "isChosen": true,
+          "type": "YESNO"
+        }
+      ],
+      "comments": []
+    }
+  ],
+  "isSave": false,
+  "views": [],
+  "permissionManagement": {
+    "map": {}
+  },
+  "name": "ABC",
+  "columns": [
+    {
+      "name": "Title",
+      "isVisible": true,
+      "type": "TEXT"
+    },
+    {
+      "name": "Start day",
+      "isVisible": true,
+      "type": "DATE_AND_TIME"
+    },
+    {
+      "choices": [
+        {
+          "name": "Option 1",
+          "type": "CHOICE"
+        },
+        {
+          "name": "Option 3",
+          "type": "CHOICE"
+        },
+        {
+          "name": "Option 2",
+          "type": "CHOICE"
+        }
+      ],
+      "isMultiSelect": false,
+      "name": "Session type",
+      "isVisible": true,
+      "type": "CHOICE"
+    },
+    {
+      "name": "Speaker",
+      "isVisible": true,
+      "type": "PERSON"
+    },
+    {
+      "name": "Price",
+      "isVisible": true,
+      "type": "NUMBER"
+    },
+    {
+      "name": "Link",
+      "isVisible": true,
+      "type": "HYPERLINK"
+    },
+    {
+      "name": "Is active",
+      "isVisible": true,
+      "type": "YESNO"
+    }
+  ]
+}

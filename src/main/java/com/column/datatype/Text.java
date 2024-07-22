@@ -1,17 +1,15 @@
 package com.column.datatype;
 
 import com.column.ColumnType;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Comparator;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class Text implements IData<Text>, Comparator<Text> {
     private String text;
     private ColumnType type = ColumnType.TEXT;

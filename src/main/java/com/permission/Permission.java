@@ -1,4 +1,4 @@
-package com;
+package com.permission;
 
 public enum Permission {
     EDIT,

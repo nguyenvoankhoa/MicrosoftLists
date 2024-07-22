@@ -1,4 +1,4 @@
-package com;
+package com.permission;
 
 import com.column.datatype.Person;
 import lombok.Getter;
@@ -21,6 +21,6 @@ public class PermissionManagement implements IPermissionManagement {
 
     public void removePermission(Person p, Permission ps) {
         Optional.ofNullable(map.get(p))
-                .ifPresent(permiss -> permiss.remove(ps));
+                .ifPresent(permits -> permits.remove(ps));
     }
 }

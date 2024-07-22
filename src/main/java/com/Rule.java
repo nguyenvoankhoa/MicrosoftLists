@@ -1,23 +1,20 @@
 package com;
 
-import com.column.IColumn;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.DoublePredicate;
 
 @Setter
 @Getter
 public class Rule {
-    private IColumn<Object> column;
     private Condition condition;
     private double value;
-    private static final Map<Condition, DoublePredicate> conditionMap = new HashMap<>();
+    private Map<Condition, DoublePredicate> conditionMap = new EnumMap<>(Condition.class);
 
-    public Rule(IColumn<Object> column, Condition condition, double value) {
-        this.column = column;
+    public Rule(Condition condition, double value) {
         this.condition = condition;
         this.value = value;
         initializeConditionMap();

@@ -1,21 +1,31 @@
 package com.column;
 
+import com.column.datatype.Choice;
 import com.column.datatype.HyperLink;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.function.Predicate;
+
 @Getter
 @Setter
-public class HyperLinkColumn extends Column implements IColumn {
+public class HyperLinkColumn extends Column implements IColumn<HyperLink> {
     private HyperLink hyperLink;
 
+    public HyperLinkColumn(String name) {
+        super(name);
+        setType(ColumnType.HYPERLINK);
+    }
+
     @Override
-    public Object getDefaultData() {
+    public HyperLink getDefaultData() {
         return hyperLink;
     }
 
     @Override
-    public ColumnType getType() {
-        return ColumnType.HYPERLINK;
+    public boolean checkConstraint(HyperLink data) {
+        Predicate<HyperLink> requirePredicate = d -> !isRequire() || d != null;
+        return requirePredicate.test(data);
     }
 }

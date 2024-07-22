@@ -1,24 +1,35 @@
 package com.column;
 
+import com.Rule;
 import com.column.datatype.Text;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.function.Predicate;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class TextColumn extends Column implements IColumn<Text> {
     private Text text;
+    private int maxLength = Integer.MAX_VALUE;
 
-    public ColumnType getType() {
-        return ColumnType.TEXT;
+    private Rule rule;
+
+    public TextColumn(String name) {
+        super(name);
+        setType(ColumnType.TEXT);
     }
 
     @Override
     public Text getDefaultData() {
         return text;
+    }
+
+    @Override
+    public boolean checkConstraint(Text data) {
+        Predicate<Text> requirePredicate = d -> !isRequire() || d != null;
+        Predicate<Text> maxLengthPredicate = d -> maxLength == Integer.MAX_VALUE
+                || d.getText().length() <= getMaxLength();
+        return requirePredicate.and(maxLengthPredicate).test(data);
     }
 }

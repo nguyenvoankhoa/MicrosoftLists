@@ -1,5 +1,6 @@
 package com.column.datatype;
 
+import com.column.ColumnType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,10 +8,10 @@ import java.util.Comparator;
 
 @Setter
 @Getter
-public class Image implements Data<Image>, Comparator<Image> {
+public class Image implements IData<Image>, Comparator<Image> {
     private byte[] image;
     private int size;
-
+    private ColumnType type = ColumnType.HYPERLINK;
     @Override
     public Image getData() {
         return this;
@@ -24,6 +25,11 @@ public class Image implements Data<Image>, Comparator<Image> {
     @Override
     public Object getImportantData() {
         return this.size;
+    }
+
+    @Override
+    public ColumnType getType() {
+        return ColumnType.IMAGE;
     }
 
     @Override

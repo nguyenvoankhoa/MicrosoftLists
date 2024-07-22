@@ -1,18 +1,22 @@
 package com.column.datatype;
 
-import lombok.AllArgsConstructor;
+import com.column.ColumnType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Comparator;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class Text implements Data<Text>, Comparator<Text> {
+@NoArgsConstructor
+public class Text implements IData<Text>, Comparator<Text> {
     private String text;
+    private ColumnType type = ColumnType.TEXT;
+
+    public Text(String text) {
+        this.text = text;
+    }
 
     @Override
     public Text getData() {
@@ -27,6 +31,11 @@ public class Text implements Data<Text>, Comparator<Text> {
     @Override
     public Object getImportantData() {
         return this.text;
+    }
+
+    @Override
+    public ColumnType getType() {
+        return ColumnType.TEXT;
     }
 
 

@@ -1,14 +1,24 @@
 package com.column.datatype;
 
+import com.column.ColumnType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Comparator;
 
 @Setter
 @Getter
-public class YesNo implements Data<YesNo>, Comparator<YesNo> {
+@AllArgsConstructor
+@NoArgsConstructor
+public class YesNo implements IData<YesNo>, Comparator<YesNo> {
     private boolean isChosen;
+    private ColumnType type = ColumnType.YESNO;
+
+    public YesNo(boolean isChosen) {
+        this.isChosen = isChosen;
+    }
 
     @Override
     public YesNo getData() {
@@ -24,6 +34,7 @@ public class YesNo implements Data<YesNo>, Comparator<YesNo> {
     public Object getImportantData() {
         return this.isChosen;
     }
+
 
     @Override
     public int compare(YesNo o1, YesNo o2) {

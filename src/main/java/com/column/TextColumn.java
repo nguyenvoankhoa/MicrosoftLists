@@ -34,7 +34,7 @@ public class TextColumn extends Column implements IColumn<Text> {
     public boolean checkConstraint(Text data) {
         Predicate<Text> requirePredicate = d -> !isRequire() || d != null;
         Predicate<Text> maxLengthPredicate = d -> maxLength == Integer.MAX_VALUE
-                || d.getText().length() <= getMaxLength();
+                || d.getStr().length() <= getMaxLength();
         return requirePredicate.and(maxLengthPredicate).test(data);
     }
 }

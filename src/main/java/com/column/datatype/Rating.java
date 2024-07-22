@@ -31,10 +31,6 @@ public class Rating implements IData<Rating>, Comparator<Rating> {
         return this.rate;
     }
 
-    @Override
-    public ColumnType getType() {
-        return ColumnType.AVERAGE_RATING;
-    }
 
     @Override
     public int compare(Rating o1, Rating o2) {

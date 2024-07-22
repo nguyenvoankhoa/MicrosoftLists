@@ -41,11 +41,6 @@ public class DateAndTime implements IData<DateAndTime>, Comparator<DateAndTime> 
     }
 
     @Override
-    public ColumnType getType() {
-        return ColumnType.DATE_AND_TIME;
-    }
-
-    @Override
     public int compare(DateAndTime o1, DateAndTime o2) {
         return Comparator.comparing(DateAndTime::getDate)
                 .thenComparing(DateAndTime::getTime)

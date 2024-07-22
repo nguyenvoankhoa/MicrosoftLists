@@ -40,7 +40,7 @@ public class ViewFactory {
 
     public BoardView createBoardView(String title, IColumn column) {
         return Optional.of(column)
-                .filter(col -> col.getType().equals(ColumnType.CHOICE))
+                .filter(col -> col.getColumnType().equals(ColumnType.CHOICE))
                 .map(col -> {
                     Map<Object, List<Row>> choice = Common.groupBy(smartList, col.getName());
                     List<Board> boards = new ArrayList<>();

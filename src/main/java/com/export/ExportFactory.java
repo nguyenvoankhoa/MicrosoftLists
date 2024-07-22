@@ -11,7 +11,7 @@ public class ExportFactory {
     }
     static {
         exports.put(FileType.CSV, new ExportCSV());
-        exports.put(FileType.PowerBI, new ExportPowerBI());
+        exports.put(FileType.POWER_BI, new ExportPowerBI());
     }
 
     public static IExportable getExport(FileType type) {

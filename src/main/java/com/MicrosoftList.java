@@ -19,12 +19,12 @@ public class MicrosoftList {
 
     private JsonService jsonService;
 
-    public MicrosoftList(String tplPath) throws IOException {
-        initDefaultTemplate(tplPath);
+    public MicrosoftList(String tplPath, JsonService js) throws IOException {
+        initDefaultTemplate(js, tplPath);
     }
 
-    public void initDefaultTemplate(String tplPath) throws IOException {
-        templates = JsonService.loadTemplatesFromJson(tplPath);
+    public void initDefaultTemplate(JsonService js, String tplPath) throws IOException {
+        templates = js.loadTemplatesFromJson(tplPath);
         listCollection = new ArrayList<>();
         favouriteCollection = new ArrayList<>();
     }
@@ -38,7 +38,6 @@ public class MicrosoftList {
         SmartList sl = new SmartList(name, pm);
         this.listCollection.add(sl);
         return sl;
-
     }
 
     public void addFavourite(SmartList smartList) {

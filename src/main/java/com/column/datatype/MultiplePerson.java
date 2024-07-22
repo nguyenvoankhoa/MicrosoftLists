@@ -5,22 +5,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @Getter
 @Setter
-public class MultipleChoice implements IData<Object> {
-    List<Choice> choices;
+public class MultiplePerson implements IData<Object> {
+    List<Person> people;
 
-    public MultipleChoice() {
-        this.choices = new ArrayList<>();
+    public MultiplePerson() {
+        this.people = new ArrayList<>();
     }
 
     @Override
-    public Choice getData() {
-        return this.choices.get(0);
+    public Person getData() {
+        return this.people.get(0);
     }
 
     @Override
@@ -30,22 +29,22 @@ public class MultipleChoice implements IData<Object> {
                 .map(List.class::cast)
                 .ifPresentOrElse(
                         this::addMultipleChoices,
-                        () -> addSingleChoice((Choice) data)
+                        () -> addSinglePerson((Person) data)
                 );
     }
 
-    private void addSingleChoice(Choice choice) {
-        getChoices().get(0).setData(choice);
+    private void addSinglePerson(Person choice) {
+        getPeople().get(0).setData(choice);
     }
 
-    private void addMultipleChoices(List<Choice> choices) {
-        getChoices().addAll(choices);
+    private void addMultipleChoices(List<Person> people) {
+        getPeople().addAll(people);
     }
 
 
     @Override
     public Object getImportantData() {
-        return choices;
+        return people;
     }
 
     @Override

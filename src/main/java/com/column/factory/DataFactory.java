@@ -19,7 +19,7 @@ public class DataFactory {
         factory.put(ColumnType.HYPERLINK, new HyperLink());
         factory.put(ColumnType.IMAGE, new Image());
         factory.put(ColumnType.LOOKUP, new Lookup());
-        factory.put(ColumnType.PERSON, new Person());
+        factory.put(ColumnType.PERSON, new MultiplePerson());
     }
 
 

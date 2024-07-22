@@ -16,19 +16,6 @@ public class Common {
     private Common() {
     }
 
-    public static void sort(SmartList sl, IColumn<Object> column, boolean ascending) {
-        int cId = getColumnIndex(sl, column);
-
-        Comparator<Row> rowComparator = (row1, row2) -> {
-            IData<?> iData1 = row1.getIDataList().get(cId);
-            IData<?> iData2 = row2.getIDataList().get(cId);
-            Comparator<IData<?>> comparator = (Comparator<IData<?>>) iData1;
-            return ascending ? comparator.compare(iData1, iData2) : comparator.compare(iData2, iData1);
-        };
-
-        sl.getRows().sort(rowComparator);
-    }
-
 
     public static void sortDesc(SmartList sl, String name) {
         IColumn column = getColumnByName(sl, name);
@@ -57,7 +44,10 @@ public class Common {
     public static Map<Object, List<Row>> groupBy(SmartList sl, String colName) {
         int cId = getColumnIndexByName(sl, colName);
         return sl.getRows().stream()
-                .collect(Collectors.groupingBy(row -> row.getIDataList().get(cId).getImportantData()));
+                .collect(Collectors
+                        .groupingBy(row -> row.getIDataList()
+                                .get(cId)
+                                .getImportantData()));
     }
 
     public static List<Row> getPage(SmartList sl, int pageNumber, int pageSize) {
@@ -78,7 +68,10 @@ public class Common {
     }
 
     public static IColumn getColumnByName(SmartList sl, String name) {
-        return sl.getColumns().stream().filter(c -> c.getName().equals(name)).findFirst().orElse(null);
+        return sl.getColumns().stream()
+                .filter(c -> c.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
     public static int getColumnIndex(SmartList sl, IColumn<Object> column) {
@@ -91,5 +84,24 @@ public class Common {
     public static int getColumnIndexByName(SmartList sl, String name) {
         IColumn c = getColumnByName(sl, name);
         return getColumnIndex(sl, c);
+    }
+
+
+    public static Form getFormByName(SmartList sl, String name) {
+        return sl.getForms().stream().filter(f -> f.getName().equals(name))
+                .findFirst().orElse(null);
+    }
+
+    public static void sort(SmartList sl, IColumn<Object> column, boolean ascending) {
+        int cId = getColumnIndex(sl, column);
+
+        Comparator<Row> rowComparator = (row1, row2) -> {
+            IData<?> iData1 = row1.getIDataList().get(cId);
+            IData<?> iData2 = row2.getIDataList().get(cId);
+            Comparator<IData<?>> comparator = (Comparator<IData<?>>) iData1;
+            return ascending ? comparator.compare(iData1, iData2) : comparator.compare(iData2, iData1);
+        };
+
+        sl.getRows().sort(rowComparator);
     }
 }

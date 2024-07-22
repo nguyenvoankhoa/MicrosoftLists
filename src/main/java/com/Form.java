@@ -10,10 +10,12 @@ import java.util.List;
 @Getter
 @Setter
 public class Form {
+    private String name;
     private SmartList sm;
     private List<IColumn> columns;
 
-    public Form(SmartList smartList, List<IColumn> columns) {
+    public Form(SmartList smartList, List<IColumn> columns, String name) {
+        this.name = name;
         this.sm = smartList;
         this.columns = columns;
     }

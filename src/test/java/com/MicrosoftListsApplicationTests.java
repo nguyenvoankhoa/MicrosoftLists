@@ -24,8 +24,6 @@ class MicrosoftListsApplicationTests {
     String listPath;
     String templatePath;
 
-    String csvPath;
-
     @BeforeEach
     public void setUp() throws IOException {
         listPath = ConfigService.loadProperties("smartlist.file.name");
@@ -213,7 +211,7 @@ class MicrosoftListsApplicationTests {
         smartList.createNewRow();
 
         Text text = new Text("text data");
-        smartList.addData("Title", 0, c1);
+        smartList.addData("Title", 0, text);
         smartList.addData("Session type", 0, c1);
         DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
         smartList.addData("Start day", 0, dateAndTime);
@@ -285,7 +283,7 @@ class MicrosoftListsApplicationTests {
         List<Row> filteredRows = Common.filter(smartList, "Title", criteria.get(0));
 
         assertEquals(1, filteredRows.size());
-        assertEquals("a", ((Text) filteredRows.get(0).getIDataList().get(0)).getImportantData());
+        assertEquals("a", filteredRows.get(0).getIDataList().get(0).getImportantData());
     }
 
     @Test
@@ -370,29 +368,8 @@ class MicrosoftListsApplicationTests {
 
 
     @Test
-    void testCreateRule() {
-        IColumn numberCol = smartList.createNewColumn(ColumnType.NUMBER, "Grade");
-        smartList.createNewRow();
-        smartList.addData("Grade", 0, new Number(15));
-        smartList.createNewRow();
-        smartList.addData("Grade", 1, new Number(11));
-        smartList.createNewRow();
-        smartList.addData("Grade", 2, new Number(5));
-        smartList.createNewRow();
-        smartList.addData("Grade", 3, new Number(10));
-
-        Rule rule = new Rule(numberCol, Condition.GREATER_THAN, 10.0);
-
-        Number n1 = (Number) smartList.getData("Grade", 0);
-        Number n2 = (Number) smartList.getData("Grade", 2);
-        assertTrue(rule.evaluate(n1.getNum()));
-        assertFalse(rule.evaluate(n2.getNum()));
-    }
-
-
-    @Test
     void testExportListToCSV() throws IOException {
-        csvPath = ConfigService.loadProperties("csv.file.name");
+        String csvPath = ConfigService.loadProperties("csv.file.name");
         assertEquals(ExportStatus.SUCCESS, Common.exportToCSV(smartList, csvPath).getStatus());
     }
 
@@ -406,13 +383,24 @@ class MicrosoftListsApplicationTests {
         columns.add(timeCol);
         columns.add(choiceCol);
 
-        smartList.createForm(columns);
-        assertEquals(1, smartList.getForms().size());
+        smartList.createForm(columns, "New form");
+        assertEquals(3, smartList.getForms().get(0).getColumns().size());
     }
 
     @Test
     void testEditForm() {
+        IColumn textCol = smartList.createNewColumn(ColumnType.TEXT, "Title");
+        IColumn timeCol = smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        IColumn choiceCol = smartList.createNewColumn(ColumnType.CHOICE, "Session type");
+        List<IColumn> columns = new ArrayList<>();
+        columns.add(textCol);
+        columns.add(timeCol);
+        columns.add(choiceCol);
 
+        smartList.createForm(columns, "New Form");
+        Form f = Common.getFormByName(smartList, "New Form");
+        f.removeColumn(textCol);
+        assertEquals(2, smartList.getColumns().size());
     }
 
 

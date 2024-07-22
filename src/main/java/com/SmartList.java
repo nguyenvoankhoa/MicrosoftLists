@@ -33,14 +33,10 @@ public class SmartList extends Template {
     }
 
 
-    public void createForm(List<IColumn> columns) {
-        Form form = new Form(this, columns);
-        for (IColumn col : columns) {
-            form.getColumns().add(col);
-        }
+    public void createForm(List<IColumn> columns, String name) {
+        Form form = new Form(this, columns, name);
         forms.add(form);
     }
-
 
     public IColumn createNewColumn(ColumnType type, String name) {
         IColumn c = Common.getColumnByName(this, name);
@@ -75,8 +71,12 @@ public class SmartList extends Template {
     }
 
     public void addData(String name, int rId, Object data) {
-        int cId = Common.getColumnIndexByName(this, name);
-        this.getRows().get(rId).addData(cId, data);
+        Optional.ofNullable(Common.getColumnByName(this, name))
+                .filter(col -> col.checkConstraint(data))
+                .ifPresent(col -> {
+                    int cId = Common.getColumnIndex(this, col);
+                    this.getRows().get(rId).addData(cId, data);
+                });
     }
 
 
@@ -113,17 +113,24 @@ public class SmartList extends Template {
     }
 
 
+    public Row addRowData(Map<String, Object> mData) {
+        int rId = createNewRow();
+        for (Map.Entry<String, Object> entry : mData.entrySet()) {
+            addData(entry.getKey(), rId, entry.getValue());
+        }
+        return getRows().get(rId);
+    }
+
+
     public void moveColumn(IColumn col, int direction) {
         int cId = Common.getColumnIndex(this, col);
         int newIndex = cId + direction;
-        IColumn adjacentCol = getColumns().get(newIndex);
-        getColumns().set(newIndex, col);
-        getColumns().set(cId, adjacentCol);
+        List<IColumn> columns = getColumns();
+        Collections.swap(columns, cId, newIndex);
+
         for (Row row : getRows()) {
             List<IData> rowData = row.getIDataList();
-            IData temp = rowData.get(cId);
-            rowData.set(cId, rowData.get(newIndex));
-            rowData.set(newIndex, temp);
+            Collections.swap(rowData, cId, newIndex);
         }
     }
 

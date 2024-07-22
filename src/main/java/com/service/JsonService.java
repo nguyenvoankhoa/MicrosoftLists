@@ -9,6 +9,7 @@ import com.column.datatype.IData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -16,12 +17,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-
+@AllArgsConstructor
 public class JsonService {
-    private JsonService() {
-    }
 
-    public static boolean saveToJson(Template list, String filepath) throws IOException {
+    public boolean saveToJson(Template list, String filepath) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(list);
         Path path = Paths.get(filepath);
@@ -29,7 +28,7 @@ public class JsonService {
         return true;
     }
 
-    public static SmartList loadSmartListFromJson(String filePath) throws IOException {
+    public SmartList loadSmartListFromJson(String filePath) throws IOException {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(IColumn.class, new ColumnAdapter())
                 .registerTypeAdapter(IData.class, new DataAdapter())
@@ -39,15 +38,14 @@ public class JsonService {
         return gson.fromJson(json, SmartList.class);
     }
 
-    public static List<Template> loadTemplatesFromJson(String filePath) throws IOException {
+    public List<Template> loadTemplatesFromJson(String filePath) throws IOException {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(IColumn.class, new ColumnAdapter())
                 .registerTypeAdapter(IData.class, new DataAdapter())
                 .create();
         Path path = Paths.get(filePath);
         String json = Files.readString(path);
-        Type templateListType = new TypeToken<List<Template>>() {
-        }.getType();
+        Type templateListType = new TypeToken<List<Template>>() {}.getType();
         return gson.fromJson(json, templateListType);
     }
 }

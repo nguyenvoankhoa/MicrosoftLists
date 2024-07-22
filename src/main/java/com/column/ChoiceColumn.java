@@ -6,11 +6,14 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 @Setter
-public class ChoiceColumn extends Column implements IColumn<List<Choice>> {
+public class ChoiceColumn extends Column implements IColumn<Object> {
     private List<Choice> choices;
     private boolean isMultiSelect;
 
@@ -32,10 +35,26 @@ public class ChoiceColumn extends Column implements IColumn<List<Choice>> {
     }
 
     @Override
-    public boolean checkConstraint(List<Choice> data) {
+    public boolean checkConstraint(Object data) {
         Predicate<List<Choice>> requirePredicate = d -> !isRequire() || !d.isEmpty();
         Predicate<List<Choice>> multiSelectPredicate = d -> isMultiSelect() || d.size() <= 1;
-        return requirePredicate.test(data) && multiSelectPredicate.test(data);
+
+        return Optional.ofNullable(data)
+                .map(this::convertToList)
+                .map(list -> requirePredicate.and(multiSelectPredicate).test(list))
+                .orElse(false);
+    }
+
+    private List<Choice> convertToList(Object data) {
+        return Optional.ofNullable(data)
+                .flatMap(d -> Optional.of(d instanceof List)
+                        .filter(isList -> isList)
+                        .map(isList -> (List<Choice>) d)
+                        .or(() -> Optional.of(Stream.of(d)
+                                .filter(Choice.class::isInstance)
+                                .map(Choice.class::cast)
+                                .toList())))
+                .orElseGet(List::of);
     }
 
 }

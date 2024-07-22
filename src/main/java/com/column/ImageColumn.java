@@ -23,6 +23,11 @@ public class ImageColumn extends Column implements IColumn<Image> {
     }
 
     @Override
+    public ColumnType getColumnType() {
+        return getType();
+    }
+
+    @Override
     public boolean checkConstraint(Image data) {
         Predicate<Image> requirePredicate = d -> !isRequire() || d != null;
         return requirePredicate.test(data);

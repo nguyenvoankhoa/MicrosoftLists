@@ -23,6 +23,11 @@ public class RatingColumn extends Column implements IColumn<Rating> {
     }
 
     @Override
+    public ColumnType getColumnType() {
+        return getType();
+    }
+
+    @Override
     public boolean checkConstraint(Rating data) {
         Predicate<Rating> requirePredicate = d -> !isRequire() || d != null;
         return requirePredicate.test(data);

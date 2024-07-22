@@ -46,7 +46,7 @@ public class SmartList extends Template {
             getColumns().add(column);
             for (Row row : rows) {
                 DataFactory df = new DataFactory();
-                row.getIDataList().add(df.createData(column.getType()));
+                row.getIDataList().add(df.createData(column.getColumnType()));
             }
             return column;
         });
@@ -65,7 +65,7 @@ public class SmartList extends Template {
         List<IData> rowData = newRow.getIDataList();
         for (IColumn column : getColumns()) {
             DataFactory df = new DataFactory();
-            rowData.add(df.createData(column.getType()));
+            rowData.add(df.createData(column.getColumnType()));
         }
         return getRows().size() - 1;
     }
@@ -101,7 +101,7 @@ public class SmartList extends Template {
         int[] dataIndex = {0};
         getColumns().stream()
                 .filter(column -> dataIndex[0] < dList.length)
-                .filter(column -> column.getType().equals(dList[dataIndex[0]].getType()))
+                .filter(column -> column.getColumnType().equals(dList[dataIndex[0]].getType()))
                 .forEach(column -> {
                     addData(column.getName(), rId, dList[dataIndex[0]]);
                     dataIndex[0]++;

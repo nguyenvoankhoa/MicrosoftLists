@@ -16,6 +16,11 @@ public class LookupColumn extends Column implements IColumn {
     }
 
     @Override
+    public ColumnType getColumnType() {
+        return getType();
+    }
+
+    @Override
     public ColumnType getType() {
         return null;
     }

@@ -35,10 +35,6 @@ public class HyperLink implements IData<HyperLink>, Comparator<HyperLink> {
         return this.link;
     }
 
-    @Override
-    public ColumnType getType() {
-        return ColumnType.HYPERLINK;
-    }
 
     @Override
     public int compare(HyperLink o1, HyperLink o2) {

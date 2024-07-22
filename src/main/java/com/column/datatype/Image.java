@@ -29,11 +29,6 @@ public class Image implements IData<Image>, Comparator<Image> {
     }
 
     @Override
-    public ColumnType getType() {
-        return ColumnType.IMAGE;
-    }
-
-    @Override
     public int compare(Image o1, Image o2) {
         return Comparator.comparing(Image::getSize)
                 .compare(o2, o1);

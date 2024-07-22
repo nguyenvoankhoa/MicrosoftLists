@@ -11,11 +11,11 @@ import java.util.Comparator;
 @Setter
 @NoArgsConstructor
 public class Text implements IData<Text>, Comparator<Text> {
-    private String text;
+    private String str;
     private ColumnType type = ColumnType.TEXT;
 
     public Text(String text) {
-        this.text = text;
+        this.str = text;
     }
 
     @Override
@@ -25,22 +25,17 @@ public class Text implements IData<Text>, Comparator<Text> {
 
     @Override
     public void setData(Text data) {
-        setText(data.getText());
+        setStr(data.getStr());
     }
 
     @Override
     public Object getImportantData() {
-        return this.text;
-    }
-
-    @Override
-    public ColumnType getType() {
-        return ColumnType.TEXT;
+        return this.str;
     }
 
 
     @Override
     public int compare(Text o1, Text o2) {
-        return o2.getText().compareTo(o1.getText());
+        return o2.getStr().compareTo(o1.getStr());
     }
 }

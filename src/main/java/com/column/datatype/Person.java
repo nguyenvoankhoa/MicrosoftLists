@@ -38,10 +38,6 @@ public class Person implements IData<Person>, Comparator<Person> {
         return this.name;
     }
 
-    @Override
-    public ColumnType getType() {
-        return ColumnType.PERSON;
-    }
 
     @Override
     public int compare(Person o1, Person o2) {

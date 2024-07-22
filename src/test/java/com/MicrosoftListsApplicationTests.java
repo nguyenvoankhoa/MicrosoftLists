@@ -92,7 +92,7 @@ class MicrosoftListsApplicationTests {
         smartList.addData("Is active", 0, active);
 
 
-        assertEquals(text.getText(), ((Text) smartList.getData("Title", 0)).getText());
+        assertEquals(text.getStr(), ((Text) smartList.getData("Title", 0)).getStr());
         assertEquals(choice.getName(), ((Choice) smartList.getData("Session type", 0)).getName());
         assertEquals(dateAndTime.getDate(), ((DateAndTime) smartList.getData("Start day", 0)).getDate());
         assertEquals(person.getName(), ((Person) smartList.getData("Speaker", 0)).getName());
@@ -246,9 +246,9 @@ class MicrosoftListsApplicationTests {
         smartList.addData("Title", 2, new Text("c"));
         Common.sortDesc(smartList, "Title");
 
-        assertEquals("a", ((Text) smartList.getRows().get(0).getIDataList().get(0)).getText());
-        assertEquals("b", ((Text) smartList.getRows().get(1).getIDataList().get(0)).getText());
-        assertEquals("c", ((Text) smartList.getRows().get(2).getIDataList().get(0)).getText());
+        assertEquals("a", ((Text) smartList.getRows().get(0).getIDataList().get(0)).getStr());
+        assertEquals("b", ((Text) smartList.getRows().get(1).getIDataList().get(0)).getStr());
+        assertEquals("c", ((Text) smartList.getRows().get(2).getIDataList().get(0)).getStr());
     }
 
     @Test
@@ -264,10 +264,10 @@ class MicrosoftListsApplicationTests {
         smartList.addData("Title", 3, new Text("c"));
         Common.sortAsc(smartList, "Title");
 
-        assertEquals("d", ((Text) smartList.getRows().get(0).getIDataList().get(0)).getText());
-        assertEquals("c", ((Text) smartList.getRows().get(1).getIDataList().get(0)).getText());
-        assertEquals("b", ((Text) smartList.getRows().get(2).getIDataList().get(0)).getText());
-        assertEquals("a", ((Text) smartList.getRows().get(3).getIDataList().get(0)).getText());
+        assertEquals("d", ((Text) smartList.getRows().get(0).getIDataList().get(0)).getStr());
+        assertEquals("c", ((Text) smartList.getRows().get(1).getIDataList().get(0)).getStr());
+        assertEquals("b", ((Text) smartList.getRows().get(2).getIDataList().get(0)).getStr());
+        assertEquals("a", ((Text) smartList.getRows().get(3).getIDataList().get(0)).getStr());
     }
 
     @Test

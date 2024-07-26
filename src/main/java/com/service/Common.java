@@ -35,6 +35,10 @@ public class Common {
                 .distinct()
                 .toList();
     }
+    public static long count(SmartList sl, String colName) {
+        int cId = Common.getColumnIndexByName(sl, colName);
+        return sl.getRows().stream().filter(l -> l.getIDataList().get(cId) != null).count();
+    }
 
     public static List<Row> filter(SmartList sl, String colName, Object criteria) {
         int cId = getColumnIndexByName(sl, colName);

@@ -329,7 +329,7 @@ class MicrosoftListsApplicationTests {
         sls.addData("Title", 2, new Text("c"));
         sls.createNewRow();
         sls.addData("Title", 3, new Text("c"));
-        assertEquals(4, sls.count("Title"));
+        assertEquals(4, Common.count(smartList, "Title"));
 
     }
 
@@ -355,10 +355,7 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testCreateView() {
-        List<View> views = sls.createView(ViewType.LIST, "List view");
-        var view = views.stream().filter(v -> v.getTitle().equals("List view"))
-                .findFirst().orElse(null);
-        assertNotNull(view);
+        View view = sls.createView(ViewType.LIST, "List view");
         assertEquals(ViewType.LIST, view.getViewType());
     }
 

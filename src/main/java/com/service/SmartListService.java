@@ -144,11 +144,6 @@ public class SmartListService {
         moveColumn(col, 1);
     }
 
-    public long count(String colName) {
-        int cId = Common.getColumnIndexByName(sl, colName);
-        return sl.getRows().stream().filter(l -> l.getIDataList().get(cId) != null).count();
-    }
-
 
     public void hideColumn(String colName) {
         IColumn<?> column = Common.getColumnByName(sl, colName);
@@ -160,9 +155,10 @@ public class SmartListService {
         column.setVisible(true);
     }
 
-    public List<View> createView(ViewType viewType, Object... params) {
+    public View createView(ViewType viewType, Object... params) {
         View v = new ViewFactory(sl).createView(viewType, params);
         sl.getViews().add(v);
-        return sl.getViews();
+        return v;
     }
+
 }

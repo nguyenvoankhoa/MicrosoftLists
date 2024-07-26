@@ -5,9 +5,14 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigService {
+
+    private ConfigService() {
+    }
+
     public static String loadProperties(String path) throws IOException {
         Properties properties = new Properties();
-        try (InputStream input = ConfigService.class.getClassLoader().getResourceAsStream("application.properties")) {
+        try (InputStream input = ConfigService.class.getClassLoader()
+                .getResourceAsStream("application.properties")) {
             properties.load(input);
             return properties.getProperty(path);
         }

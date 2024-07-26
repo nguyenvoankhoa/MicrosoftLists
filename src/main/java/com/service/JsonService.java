@@ -1,15 +1,17 @@
 package com.service;
 
-import com.SmartList;
-import com.Template;
-import com.column.IColumn;
-import com.column.adapter.ColumnAdapter;
-import com.column.adapter.DataAdapter;
-import com.column.datatype.IData;
+import com.model.MicrosoftList;
+import com.model.SmartList;
+import com.model.Template;
+import com.model.column.IColumn;
+import com.service.adapter.ColumnAdapter;
+import com.service.adapter.DataAdapter;
+import com.model.datatype.IData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.AllArgsConstructor;
+import org.apache.commons.logging.Log;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -17,26 +19,46 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 @AllArgsConstructor
 public class JsonService {
+    private static final Logger LOGGER = Logger.getLogger(JsonService.class.getName());
 
-    public boolean saveToJson(Template list, String filepath) throws IOException {
+    public boolean saveToJson(MicrosoftList ml, String filepath) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(list);
+        String json = gson.toJson(ml);
         Path path = Paths.get(filepath);
-        Files.writeString(path, json);
-        return true;
+        try {
+            Files.writeString(path, json);
+            LOGGER.log(Level.INFO, "Successfully saved MicrosoftList to JSON file at {0}", filepath);
+            return true;
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to save MicrosoftList to JSON file at " + filepath, e);
+            return false;
+        }
     }
 
-    public SmartList loadSmartListFromJson(String filePath) throws IOException {
+    public MicrosoftList loadListsFromJson(String filePath) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(IColumn.class, new ColumnAdapter())
                 .registerTypeAdapter(IData.class, new DataAdapter())
                 .create();
         Path path = Paths.get(filePath);
-        String json = Files.readString(path);
-        return gson.fromJson(json, SmartList.class);
+        try {
+            String json = Files.readString(path);
+            Type listType = new TypeToken<MicrosoftList>() {}.getType();
+            MicrosoftList ml = gson.fromJson(json, listType);
+            return ml;
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to load SmartList from JSON file at " + filePath, e);
+            return null;
+        }
     }
+
+
 
     public List<Template> loadTemplatesFromJson(String filePath) throws IOException {
         Gson gson = new GsonBuilder()
@@ -46,6 +68,7 @@ public class JsonService {
         Path path = Paths.get(filePath);
         String json = Files.readString(path);
         Type templateListType = new TypeToken<List<Template>>() {}.getType();
-        return gson.fromJson(json, templateListType);
+        List<Template> templates = gson.fromJson(json, templateListType);
+        return templates;
     }
 }

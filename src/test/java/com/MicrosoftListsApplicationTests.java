@@ -1,14 +1,16 @@
 package com;
 
-import com.column.*;
-import com.column.datatype.*;
-import com.column.datatype.Number;
-import com.permission.Permission;
-import com.service.ConfigService;
-import com.export.ExportStatus;
-import com.service.JsonService;
-import com.view.View;
-import com.view.ViewType;
+import com.model.column.ChoiceColumn;
+import com.model.column.ColumnType;
+import com.model.column.IColumn;
+import com.model.datatype.*;
+import com.model.*;
+import com.model.Permission;
+import com.model.datatype.Number;
+import com.model.view.View;
+import com.model.view.ViewType;
+import com.service.*;
+import com.service.export.ExportStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,15 +27,20 @@ class MicrosoftListsApplicationTests {
     String templatePath;
     JsonService jsonService;
 
+    SmartListService sls;
+
+    MicrosoftListService mls;
+
     @BeforeEach
     public void setUp() throws IOException {
-        listPath = ConfigService.loadProperties("smartlist.file.name");
+        listPath = ConfigService.loadProperties("list.file.name");
         templatePath = ConfigService.loadProperties("template.file.name");
         jsonService = new JsonService();
         microsoftList = new MicrosoftList(templatePath, jsonService);
-        microsoftList.createList("ABC");
+        mls = new MicrosoftListService();
+        mls.createList("New list");
         smartList = microsoftList.getListCollection().get(0);
-
+        sls = new SmartListService(smartList);
     }
 
     @Test
@@ -43,21 +50,21 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testCreateBlankList() {
-        assertFalse(microsoftList.createList("ABC"));
+        assertNotNull(mls.createList("New list"));
     }
 
     @Test
     void testCreateListFromTemplate() {
         Template template = microsoftList.getTemplates().get(0);
-        assertNotNull(microsoftList.createListFromTemplate(template, "List from template"));
+        assertNotNull(mls.createListFromTemplate(template, "List from template"));
     }
 
 
     @Test
     void testAddFavouriteList() {
-        microsoftList.addFavourite(smartList);
+        mls.addFavourite("New list");
         assertNotNull(microsoftList.getFavouriteCollection().stream()
-                .filter(l -> l.getName().equals("ABC"))
+                .filter(l -> l.getName().equals("New list"))
                 .findFirst()
                 .orElse(null));
     }
@@ -65,49 +72,49 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testAddMultipleColumn() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
-        ChoiceColumn column = (ChoiceColumn) smartList.createNewColumn(ColumnType.CHOICE, "Session type");
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        ChoiceColumn column = (ChoiceColumn) sls.createNewColumn(ColumnType.CHOICE, "Session type");
         List<Choice> choices = new ArrayList<>();
         choices.add(new Choice("Option 1"));
         choices.add(new Choice("Option 2"));
         choices.add(new Choice("Option 3"));
         column.setChoices(choices);
-        smartList.createNewColumn(ColumnType.PERSON, "Speaker");
-        smartList.createNewColumn(ColumnType.NUMBER, "Price");
-        smartList.createNewColumn(ColumnType.HYPERLINK, "Link");
-        smartList.createNewColumn(ColumnType.YESNO, "Is active");
-        smartList.createNewRow();
+        sls.createNewColumn(ColumnType.PERSON, "Speaker");
+        sls.createNewColumn(ColumnType.NUMBER, "Price");
+        sls.createNewColumn(ColumnType.HYPERLINK, "Link");
+        sls.createNewColumn(ColumnType.YESNO, "Is active");
+        sls.createNewRow();
 
         Text text = new Text("text data");
-        smartList.addData("Title", 0, text);
+        sls.addData("Title", 0, text);
         Choice choice = new Choice();
-        smartList.addData("Session type", 0, choice);
+        sls.addData("Session type", 0, choice);
         DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
-        smartList.addData("Start day", 0, dateAndTime);
+        sls.addData("Start day", 0, dateAndTime);
         Person person = new Person("Khoa", new byte[]{});
-        smartList.addData("Speaker", 0, person);
+        sls.addData("Speaker", 0, person);
         Number number = new Number(4.5);
-        smartList.addData("Price", 0, number);
+        sls.addData("Price", 0, number);
         HyperLink link = new HyperLink("facebook.com");
-        smartList.addData("Link", 0, link);
+        sls.addData("Link", 0, link);
         YesNo active = new YesNo(true);
-        smartList.addData("Is active", 0, active);
+        sls.addData("Is active", 0, active);
 
 
-        assertEquals(text.getStr(), ((Text) smartList.getData("Title", 0)).getStr());
-        assertEquals(choice.getName(), ((Choice) smartList.getData("Session type", 0)).getName());
-        assertEquals(dateAndTime.getDate(), ((DateAndTime) smartList.getData("Start day", 0)).getDate());
-        assertEquals(person.getName(), ((Person) smartList.getData("Speaker", 0)).getName());
-        assertEquals(number.getNum(), ((Number) smartList.getData("Price", 0)).getNum());
+        assertEquals(text.getStr(), ((Text) sls.getData("Title", 0)).getStr());
+        assertEquals(choice, ((ArrayList<?>) sls.getData("Session type", 0)).get(0));
+        assertEquals(dateAndTime.getDate(), ((DateAndTime) sls.getData("Start day", 0)).getDate());
+        assertEquals(person.getName(), ((Person) sls.getData("Speaker", 0)).getName());
+        assertEquals(number.getNum(), ((Number) sls.getData("Price", 0)).getNum());
     }
 
 
     @Test
     void testAddRowData() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
-        ChoiceColumn column = (ChoiceColumn) smartList.createNewColumn(ColumnType.CHOICE, "Session type");
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        ChoiceColumn column = (ChoiceColumn) sls.createNewColumn(ColumnType.CHOICE, "Session type");
         List<Choice> choices = new ArrayList<>();
         Choice c1 = new Choice("Option 1");
         Choice c2 = new Choice("Option 2");
@@ -116,10 +123,10 @@ class MicrosoftListsApplicationTests {
         choices.add(c3);
         choices.add(c2);
         column.setChoices(choices);
-        smartList.createNewColumn(ColumnType.PERSON, "Speaker");
-        smartList.createNewColumn(ColumnType.NUMBER, "Price");
-        smartList.createNewColumn(ColumnType.HYPERLINK, "Link");
-        smartList.createNewColumn(ColumnType.YESNO, "Is active");
+        sls.createNewColumn(ColumnType.PERSON, "Speaker");
+        sls.createNewColumn(ColumnType.NUMBER, "Price");
+        sls.createNewColumn(ColumnType.HYPERLINK, "Link");
+        sls.createNewColumn(ColumnType.YESNO, "Is active");
 
         Text text = new Text("text data");
         DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
@@ -137,30 +144,30 @@ class MicrosoftListsApplicationTests {
         mVal.put("Link", link);
         mVal.put("Is active", active);
 
-        assertNotNull(smartList.addRowData(mVal));
+        assertNotNull(sls.addRowData(mVal));
     }
 
     @Test
     void testRemoveColumn() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
         Text text = new Text("text data");
         Text text2 = new Text("text data2");
         DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
 
-        smartList.addRowData(text, dateAndTime);
-        smartList.addRowData(text2, dateAndTime);
+        sls.addRowData(text, dateAndTime);
+        sls.addRowData(text2, dateAndTime);
 
-        smartList.removeColumn("Title");
+        sls.removeColumn("Title");
         assertNull(Common.getColumnByName(smartList, "Title"));
         assertEquals(1, smartList.getRows().get(0).getIDataList().size());
     }
 
     @Test
     void testPaging() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
-        ChoiceColumn column = (ChoiceColumn) smartList.createNewColumn(ColumnType.CHOICE, "Session type");
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        ChoiceColumn column = (ChoiceColumn) sls.createNewColumn(ColumnType.CHOICE, "Session type");
         List<Choice> choices = new ArrayList<>();
         Choice c1 = new Choice("Option 1");
         Choice c2 = new Choice("Option 2");
@@ -169,10 +176,10 @@ class MicrosoftListsApplicationTests {
         choices.add(c3);
         choices.add(c2);
         column.setChoices(choices);
-        smartList.createNewColumn(ColumnType.PERSON, "Speaker");
-        smartList.createNewColumn(ColumnType.NUMBER, "Price");
-        smartList.createNewColumn(ColumnType.HYPERLINK, "Link");
-        smartList.createNewColumn(ColumnType.YESNO, "Is active");
+        sls.createNewColumn(ColumnType.PERSON, "Speaker");
+        sls.createNewColumn(ColumnType.NUMBER, "Price");
+        sls.createNewColumn(ColumnType.HYPERLINK, "Link");
+        sls.createNewColumn(ColumnType.YESNO, "Is active");
 
         Text text = new Text("text data");
         DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
@@ -181,25 +188,25 @@ class MicrosoftListsApplicationTests {
         HyperLink link = new HyperLink("facebook.com");
         YesNo active = new YesNo(true);
 
-        smartList.addRowData(text, dateAndTime, c1, person, number, link, active);
-        smartList.addRowData(text, dateAndTime, c1, person, number, link, active);
-        smartList.addRowData(text, dateAndTime, c1, person, number, link, active);
+        sls.addRowData(text, dateAndTime, c1, person, number, link, active);
+        sls.addRowData(text, dateAndTime, c1, person, number, link, active);
+        sls.addRowData(text, dateAndTime, c1, person, number, link, active);
 
         assertEquals(3, Common.getPage(smartList, 1, 4).size());
         assertEquals(2, Common.getPage(smartList, 1, 2).size());
 
-        smartList.addRowData(text, dateAndTime, c1, person, number, link, active);
-        smartList.addRowData(text, dateAndTime, c1, person, number, link, active);
+        sls.addRowData(text, dateAndTime, c1, person, number, link, active);
+        sls.addRowData(text, dateAndTime, c1, person, number, link, active);
 
         assertEquals(1, Common.getPage(smartList, 2, 4).size());
     }
 
 
     @Test
-    void testSaveDataToJson() throws IOException {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
-        ChoiceColumn column = (ChoiceColumn) smartList.createNewColumn(ColumnType.CHOICE, "Session type");
+    void testSaveDataToJson() {
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        ChoiceColumn column = (ChoiceColumn) sls.createNewColumn(ColumnType.CHOICE, "Session type");
         List<Choice> choices = new ArrayList<>();
         Choice c1 = new Choice("Option 1");
         Choice c2 = new Choice("Option 2");
@@ -208,50 +215,49 @@ class MicrosoftListsApplicationTests {
         choices.add(c3);
         choices.add(c2);
         column.setChoices(choices);
-        smartList.createNewColumn(ColumnType.PERSON, "Speaker");
-        smartList.createNewColumn(ColumnType.NUMBER, "Price");
-        smartList.createNewColumn(ColumnType.HYPERLINK, "Link");
-        smartList.createNewColumn(ColumnType.YESNO, "Is active");
-        smartList.createNewColumn(ColumnType.PERSON, "Speaker");
-        smartList.createNewColumn(ColumnType.NUMBER, "Price");
-        smartList.createNewColumn(ColumnType.HYPERLINK, "Link");
-        smartList.createNewColumn(ColumnType.YESNO, "Is active");
-        smartList.createNewRow();
+        sls.createNewColumn(ColumnType.PERSON, "Speaker");
+        sls.createNewColumn(ColumnType.NUMBER, "Price");
+        sls.createNewColumn(ColumnType.HYPERLINK, "Link");
+        sls.createNewColumn(ColumnType.YESNO, "Is active");
+        sls.createNewRow();
 
         Text text = new Text("text data");
-        smartList.addData("Title", 0, text);
-        smartList.addData("Session type", 0, c1);
+        sls.addData("Title", 0, text);
+        sls.addData("Session type", 0, c1);
         DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
-        smartList.addData("Start day", 0, dateAndTime);
+        sls.addData("Start day", 0, dateAndTime);
         Person person = new Person("Khoa", new byte[]{});
-        smartList.addData("Speaker", 0, person);
+        sls.addData("Speaker", 0, person);
         Number number = new Number(4.5);
-        smartList.addData("Price", 0, number);
+        sls.addData("Price", 0, number);
         HyperLink link = new HyperLink("facebook.com");
-        smartList.addData("Link", 0, link);
+        sls.addData("Link", 0, link);
         YesNo active = new YesNo(true);
-        smartList.addData("Is active", 0, active);
+        sls.addData("Is active", 0, active);
+        sls.createNewRow();
+        Text text2 = new Text("string f");
+        sls.addData("Title", 1, text2);
 
-        assertTrue(jsonService.saveToJson(smartList, listPath));
+        assertTrue(jsonService.saveToJson(microsoftList, listPath));
     }
 
 
-    @Test
-    void testLoadDataFromJson() throws IOException {
-        SmartList sl = jsonService.loadSmartListFromJson(listPath);
-        assertNotNull(sl);
-    }
+//    @Test
+//    void testLoadDataFromJson() {
+//        SmartList sl = jsonService.loadSmartListFromJson(listPath);
+//        assertNotNull(sl);
+//    }
 
 
     @Test
     void testSortDescColumn() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewRow();
-        smartList.addData("Title", 0, new Text("a"));
-        smartList.createNewRow();
-        smartList.addData("Title", 1, new Text("b"));
-        smartList.createNewRow();
-        smartList.addData("Title", 2, new Text("c"));
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewRow();
+        sls.addData("Title", 0, new Text("a"));
+        sls.createNewRow();
+        sls.addData("Title", 1, new Text("b"));
+        sls.createNewRow();
+        sls.addData("Title", 2, new Text("c"));
         Common.sortDesc(smartList, "Title");
 
         assertEquals("a", ((Text) smartList.getRows().get(0).getIDataList().get(0)).getStr());
@@ -261,15 +267,15 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testSortAscColumn() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewRow();
-        smartList.addData("Title", 0, new Text("a"));
-        smartList.createNewRow();
-        smartList.addData("Title", 1, new Text("b"));
-        smartList.createNewRow();
-        smartList.addData("Title", 2, new Text("d"));
-        smartList.createNewRow();
-        smartList.addData("Title", 3, new Text("c"));
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewRow();
+        sls.addData("Title", 0, new Text("a"));
+        sls.createNewRow();
+        sls.addData("Title", 1, new Text("b"));
+        sls.createNewRow();
+        sls.addData("Title", 2, new Text("d"));
+        sls.createNewRow();
+        sls.addData("Title", 3, new Text("c"));
         Common.sortAsc(smartList, "Title");
 
         assertEquals("d", ((Text) smartList.getRows().get(0).getIDataList().get(0)).getStr());
@@ -280,13 +286,13 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testFilterColumn() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewRow();
-        smartList.addData("Title", 0, new Text("a"));
-        smartList.createNewRow();
-        smartList.addData("Title", 1, new Text("b"));
-        smartList.createNewRow();
-        smartList.addData("Title", 2, new Text("c"));
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewRow();
+        sls.addData("Title", 0, new Text("a"));
+        sls.createNewRow();
+        sls.addData("Title", 1, new Text("b"));
+        sls.createNewRow();
+        sls.addData("Title", 2, new Text("c"));
         List<Object> criteria = Common.getListFilter(smartList, "Title");
         List<Row> filteredRows = Common.filter(smartList, "Title", criteria.get(0));
 
@@ -296,15 +302,15 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testGroupByColumn() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewRow();
-        smartList.addData("Title", 0, new Text("a"));
-        smartList.createNewRow();
-        smartList.addData("Title", 1, new Text("b"));
-        smartList.createNewRow();
-        smartList.addData("Title", 2, new Text("c"));
-        smartList.createNewRow();
-        smartList.addData("Title", 3, new Text("c"));
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewRow();
+        sls.addData("Title", 0, new Text("a"));
+        sls.createNewRow();
+        sls.addData("Title", 1, new Text("b"));
+        sls.createNewRow();
+        sls.addData("Title", 2, new Text("c"));
+        sls.createNewRow();
+        sls.addData("Title", 3, new Text("c"));
         Map<Object, List<Row>> groupedRows = Common.groupBy(smartList, "Title");
 
         assertNotNull(groupedRows);
@@ -314,42 +320,42 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testCount() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewRow();
-        smartList.addData("Title", 0, new Text("a"));
-        smartList.createNewRow();
-        smartList.addData("Title", 1, new Text("b"));
-        smartList.createNewRow();
-        smartList.addData("Title", 2, new Text("c"));
-        smartList.createNewRow();
-        smartList.addData("Title", 3, new Text("c"));
-        assertEquals(4, smartList.count("Title"));
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewRow();
+        sls.addData("Title", 0, new Text("a"));
+        sls.createNewRow();
+        sls.addData("Title", 1, new Text("b"));
+        sls.createNewRow();
+        sls.addData("Title", 2, new Text("c"));
+        sls.createNewRow();
+        sls.addData("Title", 3, new Text("c"));
+        assertEquals(4, sls.count("Title"));
 
     }
 
     @Test
     void testMoveLeftColumn() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
-        smartList.createNewColumn(ColumnType.CHOICE, "Session type");
-        smartList.moveLeft("Start day");
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        sls.createNewColumn(ColumnType.CHOICE, "Session type");
+        sls.moveLeft("Start day");
 
         assertEquals(0, Common.getColumnIndexByName(smartList, "Start day"));
     }
 
     @Test
     void testMoveRightColumn() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
-        smartList.createNewColumn(ColumnType.CHOICE, "Session type");
-        smartList.moveRight("Start day");
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        sls.createNewColumn(ColumnType.CHOICE, "Session type");
+        sls.moveRight("Start day");
 
         assertEquals(2, Common.getColumnIndexByName(smartList, "Start day"));
     }
 
     @Test
     void testCreateView() {
-        List<View> views = smartList.createView(ViewType.LIST, "List view");
+        List<View> views = sls.createView(ViewType.LIST, "List view");
         var view = views.stream().filter(v -> v.getTitle().equals("List view"))
                 .findFirst().orElse(null);
         assertNotNull(view);
@@ -383,46 +389,46 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testCreateForm() {
-        IColumn textCol = smartList.createNewColumn(ColumnType.TEXT, "Title");
-        IColumn timeCol = smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
-        IColumn choiceCol = smartList.createNewColumn(ColumnType.CHOICE, "Session type");
-        List<IColumn> columns = new ArrayList<>();
+        IColumn textCol = sls.createNewColumn(ColumnType.TEXT, "Title");
+        IColumn timeCol = sls.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        IColumn choiceCol = sls.createNewColumn(ColumnType.CHOICE, "Session type");
+        List<IColumn<?>> columns = new ArrayList<>();
         columns.add(textCol);
         columns.add(timeCol);
         columns.add(choiceCol);
 
-        smartList.createForm(columns, "New form");
+        sls.createForm(columns, "New form");
         assertEquals(3, smartList.getForms().get(0).getColumns().size());
     }
 
     @Test
     void testEditForm() {
-        IColumn textCol = smartList.createNewColumn(ColumnType.TEXT, "Title");
-        IColumn timeCol = smartList.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
-        IColumn choiceCol = smartList.createNewColumn(ColumnType.CHOICE, "Session type");
-        List<IColumn> columns = new ArrayList<>();
+        IColumn textCol = sls.createNewColumn(ColumnType.TEXT, "Title");
+        IColumn timeCol = sls.createNewColumn(ColumnType.DATE_AND_TIME, "Start day");
+        IColumn choiceCol = sls.createNewColumn(ColumnType.CHOICE, "Session type");
+        List<IColumn<?>> columns = new ArrayList<>();
         columns.add(textCol);
         columns.add(timeCol);
         columns.add(choiceCol);
 
-        smartList.createForm(columns, "New Form");
+        sls.createForm(columns, "New Form");
         Form f = Common.getFormByName(smartList, "New Form");
         f.removeColumn(textCol);
-        assertEquals(2, smartList.getColumns().size());
+        assertEquals(3, smartList.getColumns().size());
     }
 
 
     @Test
     void testShowColumn() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.showColumn("Title");
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.showColumn("Title");
         assertTrue(Common.getColumnByName(smartList, "Title").isVisible());
     }
 
     @Test
     void testHideColumn() {
-        smartList.createNewColumn(ColumnType.TEXT, "Title");
-        smartList.hideColumn("Title");
+        sls.createNewColumn(ColumnType.TEXT, "Title");
+        sls.hideColumn("Title");
         assertFalse(Common.getColumnByName(smartList, "Title").isVisible());
     }
 

@@ -1,5 +1,4 @@
 {
-  "forms": [],
   "rows": [
     {
       "iDataList": [
@@ -35,64 +34,6 @@
         }
       ],
       "comments": []
-    }
-  ],
-  "isSave": false,
-  "views": [],
-  "permissionManagement": {
-    "map": {}
-  },
-  "name": "ABC",
-  "columns": [
-    {
-      "name": "Title",
-      "isVisible": true,
-      "type": "TEXT"
-    },
-    {
-      "name": "Start day",
-      "isVisible": true,
-      "type": "DATE_AND_TIME"
-    },
-    {
-      "choices": [
-        {
-          "name": "Option 1",
-          "type": "CHOICE"
-        },
-        {
-          "name": "Option 3",
-          "type": "CHOICE"
-        },
-        {
-          "name": "Option 2",
-          "type": "CHOICE"
-        }
-      ],
-      "isMultiSelect": false,
-      "name": "Session type",
-      "isVisible": true,
-      "type": "CHOICE"
-    },
-    {
-      "name": "Speaker",
-      "isVisible": true,
-      "type": "PERSON"
-    },
-    {
-      "name": "Price",
-      "isVisible": true,
-      "type": "NUMBER"
-    },
-    {
-      "name": "Link",
-      "isVisible": true,
-      "type": "HYPERLINK"
-    },
-    {
-      "name": "Is active",
-      "isVisible": true,
-      "type": "YESNO"
     }
   ]
 }

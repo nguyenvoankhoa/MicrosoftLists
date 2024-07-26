@@ -4,27 +4,32 @@
     {
       "iDataList": [
         {
-          "text": "text data",
+          "str": "text data",
           "type": "TEXT"
         },
         {
-          "date": "Jul 21, 2024, 11:08:11 PM",
-          "time": "11:08:11 PM",
+          "date": "Jul 23, 2024, 3:42:12 PM",
+          "time": "03:42:12 PM",
           "type": "DATE_AND_TIME"
         },
         {
           "choices": [
             {
               "name": "Option 1",
-              "type": "CHOICE"
+              "type": "SINGLE_CHOICE"
             }
           ],
-          "isMultiple": true
+          "type": "CHOICE"
         },
         {
-          "name": "Khoa",
-          "image": [],
-          "type": "PERSON"
+          "people": [
+            {
+              "name": "Khoa",
+              "image": [],
+              "type": "PERSON"
+            }
+          ],
+          "type": "PEOPLE"
         },
         {
           "num": 4.5,
@@ -40,6 +45,37 @@
         }
       ],
       "comments": []
+    },
+    {
+      "iDataList": [
+        {
+          "str": "string f",
+          "type": "TEXT"
+        },
+        {
+          "type": "DATE_AND_TIME"
+        },
+        {
+          "choices": [],
+          "type": "CHOICE"
+        },
+        {
+          "people": [],
+          "type": "PEOPLE"
+        },
+        {
+          "num": 0.0,
+          "type": "NUMBER"
+        },
+        {
+          "type": "HYPERLINK"
+        },
+        {
+          "isChosen": false,
+          "type": "YESNO"
+        }
+      ],
+      "comments": []
     }
   ],
   "isSave": false,
@@ -47,56 +83,67 @@
   "permissionManagement": {
     "map": {}
   },
-  "name": "ABC",
+  "name": "New list",
   "columns": [
     {
+      "maxLength": 2147483647,
       "name": "Title",
       "isVisible": true,
+      "isRequire": false,
       "type": "TEXT"
     },
     {
       "name": "Start day",
       "isVisible": true,
+      "isRequire": false,
       "type": "DATE_AND_TIME"
     },
     {
       "choices": [
         {
           "name": "Option 1",
-          "type": "CHOICE"
+          "type": "SINGLE_CHOICE"
         },
         {
           "name": "Option 3",
-          "type": "CHOICE"
+          "type": "SINGLE_CHOICE"
         },
         {
           "name": "Option 2",
-          "type": "CHOICE"
+          "type": "SINGLE_CHOICE"
         }
       ],
       "isMultiSelect": false,
       "name": "Session type",
       "isVisible": true,
+      "isRequire": false,
       "type": "CHOICE"
     },
     {
+      "isMultiSelect": false,
       "name": "Speaker",
       "isVisible": true,
+      "isRequire": false,
       "type": "PERSON"
     },
     {
+      "minVal": 4.9E-324,
+      "maxVal": 1.7976931348623157E308,
       "name": "Price",
       "isVisible": true,
+      "isRequire": false,
       "type": "NUMBER"
     },
     {
       "name": "Link",
       "isVisible": true,
+      "isRequire": false,
       "type": "HYPERLINK"
     },
     {
       "name": "Is active",
       "isVisible": true,
+      "isRequire": false,
       "type": "YESNO"
     }
   ]

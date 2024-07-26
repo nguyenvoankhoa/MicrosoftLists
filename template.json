@@ -1,6 +1,6 @@
 [
   {
-    "title": "Issue Tracker",
+    "name": "Issue Tracker",
     "columns": [
       {
         "name": "Speaker",
@@ -30,7 +30,7 @@
     ]
   },
   {
-    "title": "Asset Manager",
+    "name": "Asset Manager",
     "columns": [
       {
         "name": "Speaker",
@@ -60,7 +60,7 @@
     ]
   },
   {
-    "title": "Gift ideas",
+    "name": "Gift ideas",
     "columns": [
       {
         "name": "Speaker",
@@ -90,7 +90,7 @@
     ]
   },
   {
-    "title": "Content scheduler",
+    "name": "Content scheduler",
     "columns": [
       {
         "name": "Speaker",

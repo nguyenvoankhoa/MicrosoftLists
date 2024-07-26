@@ -35,10 +35,7 @@ public class SmartListController {
     }
 
 
-    @PostMapping
-    public ResponseEntity addRowData(@RequestBody List<RowDataRequest> requests) {
 
-    }
 
     @GetMapping
     public ResponseEntity getColumnFilter(@RequestBody String colName, String listName) {
@@ -46,6 +43,12 @@ public class SmartListController {
         sls = new SmartListService(sl);
         List<Object> filters = Common.getListFilter(sl, colName);
         return ResponseEntity.ok(filters);
+    }
+
+
+    @PostMapping
+    public ResponseEntity addRowData(@RequestBody List<RowDataRequest> requests) {
+         // add data to list by row
     }
 
 

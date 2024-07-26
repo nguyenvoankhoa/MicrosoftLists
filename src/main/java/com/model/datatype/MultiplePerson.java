@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class MultiplePerson implements IData<Object> {
+public class MultiplePerson implements IData<List<Person>> {
     List<Person> people;
 
     private ColumnType type = ColumnType.PEOPLE;
@@ -20,12 +20,12 @@ public class MultiplePerson implements IData<Object> {
     }
 
     @Override
-    public Person getData() {
-        return this.people.get(0);
+    public List<Person> getData() {
+        return this.people;
     }
 
     @Override
-    public void setData(Object data) {
+    public void setData(List<Person> data) {
         Optional.ofNullable(data)
                 .filter(List.class::isInstance)
                 .map(List.class::cast)
@@ -55,9 +55,5 @@ public class MultiplePerson implements IData<Object> {
         return people;
     }
 
-    @Override
-    public ColumnType getType() {
-        return ColumnType.CHOICE;
-    }
 
 }

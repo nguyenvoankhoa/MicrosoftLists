@@ -8,17 +8,18 @@
           "type": "TEXT"
         },
         {
-          "date": "Jul 22, 2024, 6:07:37 PM",
-          "time": "06:07:37 PM",
+          "date": "Jul 23, 2024, 3:42:12 PM",
+          "time": "03:42:12 PM",
           "type": "DATE_AND_TIME"
         },
         {
           "choices": [
             {
               "name": "Option 1",
-              "type": "CHOICE"
+              "type": "SINGLE_CHOICE"
             }
-          ]
+          ],
+          "type": "CHOICE"
         },
         {
           "people": [
@@ -27,7 +28,8 @@
               "image": [],
               "type": "PERSON"
             }
-          ]
+          ],
+          "type": "PEOPLE"
         },
         {
           "num": 4.5,
@@ -43,6 +45,37 @@
         }
       ],
       "comments": []
+    },
+    {
+      "iDataList": [
+        {
+          "str": "string f",
+          "type": "TEXT"
+        },
+        {
+          "type": "DATE_AND_TIME"
+        },
+        {
+          "choices": [],
+          "type": "CHOICE"
+        },
+        {
+          "people": [],
+          "type": "PEOPLE"
+        },
+        {
+          "num": 0.0,
+          "type": "NUMBER"
+        },
+        {
+          "type": "HYPERLINK"
+        },
+        {
+          "isChosen": false,
+          "type": "YESNO"
+        }
+      ],
+      "comments": []
     }
   ],
   "isSave": false,
@@ -50,7 +83,7 @@
   "permissionManagement": {
     "map": {}
   },
-  "name": "ABC",
+  "name": "New list",
   "columns": [
     {
       "maxLength": 2147483647,
@@ -69,15 +102,15 @@
       "choices": [
         {
           "name": "Option 1",
-          "type": "CHOICE"
+          "type": "SINGLE_CHOICE"
         },
         {
           "name": "Option 3",
-          "type": "CHOICE"
+          "type": "SINGLE_CHOICE"
         },
         {
           "name": "Option 2",
-          "type": "CHOICE"
+          "type": "SINGLE_CHOICE"
         }
       ],
       "isMultiSelect": false,

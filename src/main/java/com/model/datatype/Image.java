@@ -2,16 +2,22 @@ package com.model.datatype;
 
 import com.model.column.ColumnType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Comparator;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class Image implements IData<Image>, Comparator<Image> {
     private byte[] img;
     private int size;
     private ColumnType type = ColumnType.HYPERLINK;
+
+    public Image(byte[] img) {
+        this.img = img;
+    }
 
     @Override
     public Image getData() {

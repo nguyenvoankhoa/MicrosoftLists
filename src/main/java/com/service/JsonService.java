@@ -1,7 +1,6 @@
 package com.service;
 
 import com.model.MicrosoftList;
-import com.model.SmartList;
 import com.model.Template;
 import com.model.column.IColumn;
 import com.service.adapter.ColumnAdapter;
@@ -11,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.AllArgsConstructor;
-import org.apache.commons.logging.Log;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -20,7 +18,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 @AllArgsConstructor
@@ -36,7 +33,7 @@ public class JsonService {
             LOGGER.log(Level.INFO, "Successfully saved MicrosoftList to JSON file at {0}", filepath);
             return true;
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Failed to save MicrosoftList to JSON file at " + filepath, e);
+            LOGGER.log(Level.SEVERE, "Failed to save MicrosoftList to JSON file at {0} , {1}" + filepath, e);
             return false;
         }
     }
@@ -49,15 +46,14 @@ public class JsonService {
         Path path = Paths.get(filePath);
         try {
             String json = Files.readString(path);
-            Type listType = new TypeToken<MicrosoftList>() {}.getType();
-            MicrosoftList ml = gson.fromJson(json, listType);
-            return ml;
+            Type listType = new TypeToken<MicrosoftList>() {
+            }.getType();
+            return gson.fromJson(json, listType);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load SmartList from JSON file at " + filePath, e);
             return null;
         }
     }
-
 
 
     public List<Template> loadTemplatesFromJson(String filePath) throws IOException {
@@ -67,8 +63,8 @@ public class JsonService {
                 .create();
         Path path = Paths.get(filePath);
         String json = Files.readString(path);
-        Type templateListType = new TypeToken<List<Template>>() {}.getType();
-        List<Template> templates = gson.fromJson(json, templateListType);
-        return templates;
+        Type templateListType = new TypeToken<List<Template>>() {
+        }.getType();
+        return gson.fromJson(json, templateListType);
     }
 }

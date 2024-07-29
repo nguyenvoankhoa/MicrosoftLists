@@ -1,60 +1,49 @@
 package com.service;
 
+import com.exception.ExistException;
+import com.exception.NotFoundException;
 import com.model.MicrosoftList;
 import com.model.SmartList;
 import com.model.Template;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@NoArgsConstructor
+@Component
 public class MicrosoftListService {
-    @Value("list.file.name")
-    String listPath;
 
-    private MicrosoftList microsoftList;
-
-    public MicrosoftListService() {
-        JsonService js = new JsonService();
-        this.microsoftList = js.loadListsFromJson(listPath);
-    }
-
-    public SmartList createList(String name) {
-        if (Common.checkExist(microsoftList, name)) {
-            return null;
+    public SmartList createList(MicrosoftList ml, String name) {
+        if (Common.checkExist(ml, name)) {
+            throw new ExistException();
         }
-        return createNewList(name);
+        return createNewList(ml, name);
     }
 
-    private SmartList createNewList(String name) {
-        PermissionManagement pm = new PermissionManagement();
-        SmartList sl = new SmartList(name, pm);
-        microsoftList.getListCollection().add(sl);
+    private SmartList createNewList(MicrosoftList ml, String name) {
+        SmartList sl = new SmartList(name);
+        ml.getListCollection().add(sl);
         return sl;
     }
 
-    public boolean addFavourite(String name) {
-        SmartList sl = getListByName(name);
-        if (sl != null) {
-            microsoftList.getFavouriteCollection().add(sl);
-            return true;
-        }
-        return false;
-    }
-
-    public void saveTemplate(Template smartList) {
-        microsoftList.getTemplates().add(smartList);
+    public MicrosoftList addFavourite(MicrosoftList ml, String name) {
+        SmartList sl = getListByName(ml, name);
+        ml.getFavouriteCollection().add(sl);
+        return ml;
     }
 
 
-    public SmartList createListFromTemplate(Template t, String name) {
-        SmartList sl = createNewList(name);
+    public SmartList createListFromTemplate(MicrosoftList ml, Template t, String name) {
+        SmartList sl = createNewList(ml, name);
         sl.setColumns(t.getColumns());
         return sl;
     }
 
 
-    public SmartList getListByName(String name) {
-        return microsoftList.getListCollection().stream()
+    public SmartList getListByName(MicrosoftList ml, String name) {
+        return ml.getListCollection().stream()
                 .filter(l -> l.getName().equals(name))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(NotFoundException::new);
     }
+
 }

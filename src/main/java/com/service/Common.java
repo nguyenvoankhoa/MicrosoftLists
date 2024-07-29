@@ -1,5 +1,7 @@
 package com.service;
 
+import com.exception.ExistException;
+import com.exception.NotFoundException;
 import com.model.Form;
 import com.model.MicrosoftList;
 import com.model.Row;
@@ -18,15 +20,28 @@ public class Common {
     private Common() {
     }
 
-
-    public static void sortDesc(SmartList sl, String name) {
-        IColumn column = getColumnByName(sl, name);
-        sort(sl, column, false);
+    public static void handleExist(Object o) {
+        if (o != null) {
+            throw new ExistException();
+        }
     }
 
-    public static void sortAsc(SmartList sl, String name) {
+    public static void checkNonExist(Object o) {
+        if (o == null) {
+            throw new NotFoundException();
+        }
+    }
+
+    public static SmartList sortDesc(SmartList sl, String name) {
         IColumn column = getColumnByName(sl, name);
-        sort(sl, column, true);
+        checkNonExist(column);
+        return sort(sl, column, false);
+    }
+
+    public static SmartList sortAsc(SmartList sl, String name) {
+        IColumn column = getColumnByName(sl, name);
+        checkNonExist(column);
+        return sort(sl, column, true);
     }
 
     public static List<Object> getListFilter(SmartList sl, String colName) {
@@ -34,6 +49,11 @@ public class Common {
         return sl.getRows().stream().map(l -> l.getIDataList().get(cId).getImportantData())
                 .distinct()
                 .toList();
+    }
+
+    public static long count(SmartList sl, String colName) {
+        int cId = Common.getColumnIndexByName(sl, colName);
+        return sl.getRows().stream().filter(l -> l.getIDataList().get(cId) != null).count();
     }
 
     public static List<Row> filter(SmartList sl, String colName, Object criteria) {
@@ -52,13 +72,7 @@ public class Common {
                                 .getImportantData()));
     }
 
-    public static List<Row> getPage(SmartList sl, int pageNumber, int pageSize) {
-        int fromIndex = (pageNumber - 1) * pageSize;
-        return sl.getRows().stream()
-                .skip(Math.max(0, fromIndex))
-                .limit(pageSize)
-                .toList();
-    }
+
 
     public static boolean checkExist(MicrosoftList ml, String name) {
         return ml.getListCollection().stream().anyMatch(s -> s.getName().equals(name));
@@ -68,7 +82,7 @@ public class Common {
         return ExportHandler.export(smartList, filename, FileType.CSV);
     }
 
-    public static IColumn<?> getColumnByName(SmartList sl, String name) {
+    public static IColumn getColumnByName(SmartList sl, String name) {
         return sl.getColumns().stream()
                 .filter(c -> c.getName().equals(name))
                 .findFirst()
@@ -84,6 +98,7 @@ public class Common {
 
     public static int getColumnIndexByName(SmartList sl, String name) {
         IColumn c = getColumnByName(sl, name);
+        checkNonExist(c);
         return getColumnIndex(sl, c);
     }
 
@@ -93,19 +108,17 @@ public class Common {
                 .findFirst().orElse(null);
     }
 
-    public static void sort(SmartList sl, IColumn<Object> column, boolean ascending) {
+    public static SmartList sort(SmartList sl, IColumn<Object> column, boolean ascending) {
         int cId = getColumnIndex(sl, column);
-
         Comparator<Row> rowComparator = (row1, row2) -> {
             IData<?> iData1 = row1.getIDataList().get(cId);
             IData<?> iData2 = row2.getIDataList().get(cId);
             Comparator<IData<?>> comparator = (Comparator<IData<?>>) iData1;
             return ascending ? comparator.compare(iData1, iData2) : comparator.compare(iData2, iData1);
         };
-
         sl.getRows().sort(rowComparator);
+        return sl;
     }
-
 
 
 }

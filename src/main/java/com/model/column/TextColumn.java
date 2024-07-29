@@ -37,4 +37,9 @@ public class TextColumn extends Column implements IColumn<Text> {
                 || d.getStr().length() <= getMaxLength();
         return requirePredicate.and(maxLengthPredicate).test(data);
     }
+
+    @Override
+    public Text createSimpleData(Object data) {
+        return new Text((String) data);
+    }
 }

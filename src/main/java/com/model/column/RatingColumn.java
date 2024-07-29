@@ -31,4 +31,9 @@ public class RatingColumn extends Column implements IColumn<Rating> {
         Predicate<Rating> requirePredicate = d -> !isRequire() || d != null;
         return requirePredicate.test(data);
     }
+
+    @Override
+    public Rating createSimpleData(Object data) {
+        return new Rating((Double) data);
+    }
 }

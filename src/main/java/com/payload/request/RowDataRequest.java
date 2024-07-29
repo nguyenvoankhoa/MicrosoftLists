@@ -1,8 +1,12 @@
 package com.payload.request;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
-public class RowDataRequest {
-    List<AddDataRequest> colData;
-    int colNum;
+@Getter
+@Setter
+public class RowDataRequest extends BaseRequest {
+    List<AddDataRequest> rowData;
 }

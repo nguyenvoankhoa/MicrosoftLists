@@ -31,4 +31,9 @@ public class HyperLinkColumn extends Column implements IColumn<HyperLink> {
         Predicate<HyperLink> requirePredicate = d -> !isRequire() || d != null;
         return requirePredicate.test(data);
     }
+
+    @Override
+    public HyperLink createSimpleData(Object data) {
+        return new HyperLink((String) data);
+    }
 }

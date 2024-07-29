@@ -31,4 +31,9 @@ public class ImageColumn extends Column implements IColumn<Image> {
         Predicate<Image> requirePredicate = d -> !isRequire() || d != null;
         return requirePredicate.test(data);
     }
+
+    @Override
+    public Image createSimpleData(Object data) {
+        return new Image((byte[]) data);
+    }
 }

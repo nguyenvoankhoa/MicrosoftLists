@@ -28,4 +28,9 @@ public class LookupColumn extends Column implements IColumn {
         Predicate<Object> requirePredicate = d -> !isRequire() || d != null;
         return requirePredicate.test(data);
     }
+
+    @Override
+    public Object createSimpleData(Object data) {
+        return null;
+    }
 }

@@ -1,33 +1,43 @@
 package com.controller;
 
-import com.model.SmartList;
-import com.service.MicrosoftListService;
+import com.service.ControllerService;
+import com.view.MicrosoftListDTO;
+import com.view.SmartListDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/microsoft-lists")
 public class MicrosoftListController {
-    MicrosoftListService mls;
 
-    @PostMapping
-    public ResponseEntity<SmartList> createList(@RequestBody String name) {
-        SmartList sl = mls.createList(name);
-        if (sl == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return ResponseEntity.ok(sl);
+    private final ControllerService controllerService;
+
+    @Autowired
+    public MicrosoftListController(ControllerService controllerService) {
+        this.controllerService = controllerService;
     }
 
-    @PostMapping()
-    public ResponseEntity addFavouriteList(@RequestBody String name) {
-        if (!mls.addFavourite(name)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return ResponseEntity.ok(null);
+
+    @GetMapping
+    public ResponseEntity<MicrosoftListDTO> getMicrosoftList() {
+        MicrosoftListDTO dto = controllerService.getMicrosoftList();
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
+
+    @PostMapping("lists")
+    public ResponseEntity<SmartListDTO> createList(@RequestBody String name) {
+        SmartListDTO dto = controllerService.createList(name);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @PostMapping("favourite-lists")
+    public ResponseEntity<MicrosoftListDTO> addFavouriteList(@RequestBody String name) {
+        MicrosoftListDTO dto = controllerService.addFavouriteList(name);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+
 }

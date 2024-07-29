@@ -1,6 +1,5 @@
 package com.service.factory;
 
-import com.column.*;
 import com.model.column.*;
 
 import java.util.EnumMap;

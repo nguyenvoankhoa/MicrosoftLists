@@ -26,27 +26,7 @@ public class MultiplePerson implements IData<List<Person>> {
 
     @Override
     public void setData(List<Person> data) {
-        Optional.ofNullable(data)
-                .filter(List.class::isInstance)
-                .map(List.class::cast)
-                .ifPresentOrElse(
-                        this::addMultipleChoices,
-                        () -> addSinglePerson((Person) data)
-                );
-    }
-
-    private void addSinglePerson(Person choice) {
-        Optional.of(getPeople())
-                .filter(p -> !p.isEmpty())
-                .ifPresent(choices -> choices.get(0).setData(choice));
-
-        Optional.of(getPeople())
-                .filter(List::isEmpty)
-                .ifPresent(choices -> choices.add(choice));
-    }
-
-    private void addMultipleChoices(List<Person> people) {
-        getPeople().addAll(people);
+        setPeople(data);
     }
 
 

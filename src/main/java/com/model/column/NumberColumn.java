@@ -38,5 +38,10 @@ public class NumberColumn extends Column implements IColumn<Number> {
         return requirePredicate.and(minValPredicate).and(maxValPredicate).test(data);
     }
 
+    @Override
+    public Number createSimpleData(Object data) {
+        return new Number((Double) data);
+    }
+
 
 }

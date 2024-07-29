@@ -12,12 +12,15 @@ import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class DateAndTime implements IData<DateAndTime>, Comparator<DateAndTime> {
     private Date date;
     private Time time;
     private ColumnType type = ColumnType.DATE_AND_TIME;
+
+    public DateAndTime(Date date) {
+        this.date = date;
+    }
 
     public DateAndTime(Date date, Time time) {
         this.date = date;
@@ -30,9 +33,9 @@ public class DateAndTime implements IData<DateAndTime>, Comparator<DateAndTime> 
     }
 
     @Override
-    public void setData(DateAndTime data){
-         setDate(data.getDate());
-         setTime(data.getTime());
+    public void setData(DateAndTime data) {
+        setDate(data.getDate());
+        setTime(data.getTime());
     }
 
     @Override

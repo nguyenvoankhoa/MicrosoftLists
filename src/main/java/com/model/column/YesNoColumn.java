@@ -31,4 +31,9 @@ public class YesNoColumn extends Column implements IColumn<YesNo> {
         Predicate<YesNo> requirePredicate = d -> !isRequire() || d != null;
         return requirePredicate.test(data);
     }
+
+    @Override
+    public YesNo createSimpleData(Object data) {
+        return new YesNo((Boolean) data);
+    }
 }

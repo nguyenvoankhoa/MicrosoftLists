@@ -39,4 +39,9 @@ public class PersonColumn extends Column implements IColumn<List<Person>> {
         Predicate<List<Person>> multiSelectPredicate = d -> isMultiSelect() || d.size() <= 1;
         return requirePredicate.and(multiSelectPredicate).test(data);
     }
+
+    @Override
+    public List<Person> createSimpleData(Object data) {
+        return null;
+    }
 }

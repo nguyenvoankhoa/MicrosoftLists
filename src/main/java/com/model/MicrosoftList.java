@@ -17,4 +17,5 @@ public class MicrosoftList {
         this.listCollection = new ArrayList<>();
         this.favouriteCollection = new ArrayList<>();
     }
+
 }

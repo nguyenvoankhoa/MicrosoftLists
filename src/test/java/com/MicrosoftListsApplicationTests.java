@@ -89,19 +89,19 @@ class MicrosoftListsApplicationTests {
         sls.createNewRow(smartList);
 
         Text text = new Text("text data");
-        sls.addData(smartList, "Title", 0, text);
+        sls.addDataSimple(smartList, "Title", 0, text);
         Choice choice = new Choice();
-        sls.addData(smartList, "Session type", 0, choice);
+        sls.addDataSimple(smartList, "Session type", 0, choice);
         DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
-        sls.addData(smartList, "Start day", 0, dateAndTime);
+        sls.addDataSimple(smartList, "Start day", 0, dateAndTime);
         Person person = new Person("Khoa", new byte[]{});
-        sls.addData(smartList, "Speaker", 0, person);
+        sls.addDataSimple(smartList, "Speaker", 0, person);
         Number number = new Number(4.5);
-        sls.addData(smartList, "Price", 0, number);
+        sls.addDataSimple(smartList, "Price", 0, number);
         HyperLink link = new HyperLink("facebook.com");
-        sls.addData(smartList, "Link", 0, link);
+        sls.addDataSimple(smartList, "Link", 0, link);
         YesNo active = new YesNo(true);
-        sls.addData(smartList, "Is active", 0, active);
+        sls.addDataSimple(smartList, "Is active", 0, active);
 
 
         assertEquals(text.getStr(), ((Text) sls.getData(smartList, "Title", 0)).getStr());
@@ -165,44 +165,6 @@ class MicrosoftListsApplicationTests {
         assertEquals(1, smartList.getRows().get(0).getIDataList().size());
     }
 
-    @Test
-    void testPaging() {
-        sls.createNewColumn(smartList, ColumnType.TEXT, "Title");
-        sls.createNewColumn(smartList, ColumnType.DATE_AND_TIME, "Start day");
-        ChoiceColumn column = (ChoiceColumn) sls.createNewColumn(smartList, ColumnType.CHOICE, "Session type");
-        List<Choice> choices = new ArrayList<>();
-        Choice c1 = new Choice("Option 1");
-        Choice c2 = new Choice("Option 2");
-        Choice c3 = new Choice("Option 3");
-        choices.add(c1);
-        choices.add(c3);
-        choices.add(c2);
-        column.setChoices(choices);
-        sls.createNewColumn(smartList, ColumnType.PERSON, "Speaker");
-        sls.createNewColumn(smartList, ColumnType.NUMBER, "Price");
-        sls.createNewColumn(smartList, ColumnType.HYPERLINK, "Link");
-        sls.createNewColumn(smartList, ColumnType.YESNO, "Is active");
-
-        Text text = new Text("text data");
-        DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
-        Person person = new Person("Khoa", new byte[]{});
-        Number number = new Number(4.5);
-        HyperLink link = new HyperLink("facebook.com");
-        YesNo active = new YesNo(true);
-
-        sls.addRowData(smartList, text, dateAndTime, c1, person, number, link, active);
-        sls.addRowData(smartList, text, dateAndTime, c1, person, number, link, active);
-        sls.addRowData(smartList, text, dateAndTime, c1, person, number, link, active);
-
-        assertEquals(3, Common.getPage(smartList, 1, 4).size());
-        assertEquals(2, Common.getPage(smartList, 1, 2).size());
-
-        sls.addRowData(smartList, text, dateAndTime, c1, person, number, link, active);
-        sls.addRowData(smartList, text, dateAndTime, c1, person, number, link, active);
-
-        assertEquals(1, Common.getPage(smartList, 2, 4).size());
-    }
-
 
     @Test
     void testSaveDataToJson() {
@@ -225,21 +187,21 @@ class MicrosoftListsApplicationTests {
         sls.createNewRow(smartList);
 
         Text text = new Text("text data");
-        sls.addData(smartList, "Title", 0, text);
-        sls.addData(smartList, "Session type", 0, c1);
+        sls.addDataSimple(smartList, "Title", 0, text);
+        sls.addDataSimple(smartList, "Session type", 0, c1);
         DateAndTime dateAndTime = new DateAndTime(new Date(), new Time(System.currentTimeMillis()));
-        sls.addData(smartList, "Start day", 0, dateAndTime);
+        sls.addDataSimple(smartList, "Start day", 0, dateAndTime);
         Person person = new Person("Khoa", new byte[]{});
-        sls.addData(smartList, "Speaker", 0, person);
+        sls.addDataSimple(smartList, "Speaker", 0, person);
         Number number = new Number(4.5);
-        sls.addData(smartList, "Price", 0, number);
+        sls.addDataSimple(smartList, "Price", 0, number);
         HyperLink link = new HyperLink("facebook.com");
-        sls.addData(smartList, "Link", 0, link);
+        sls.addDataSimple(smartList, "Link", 0, link);
         YesNo active = new YesNo(true);
-        sls.addData(smartList, "Is active", 0, active);
+        sls.addDataSimple(smartList, "Is active", 0, active);
         sls.createNewRow(smartList);
         Text text2 = new Text("string f");
-        sls.addData(smartList, "Title", 1, text2);
+        sls.addDataSimple(smartList, "Title", 1, text2);
 
         assertTrue(jsonService.saveToJson(microsoftList, listPath));
     }
@@ -256,11 +218,11 @@ class MicrosoftListsApplicationTests {
     void testSortDescColumn() {
         sls.createNewColumn(smartList, ColumnType.TEXT, "Title");
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 0, new Text("a"));
+        sls.addDataSimple(smartList, "Title", 0, new Text("a"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 1, new Text("b"));
+        sls.addDataSimple(smartList, "Title", 1, new Text("b"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 2, new Text("c"));
+        sls.addDataSimple(smartList, "Title", 2, new Text("c"));
         Common.sortDesc(smartList, "Title");
 
         assertEquals("a", ((Text) smartList.getRows().get(0).getIDataList().get(0)).getStr());
@@ -272,13 +234,13 @@ class MicrosoftListsApplicationTests {
     void testSortAscColumn() {
         sls.createNewColumn(smartList, ColumnType.TEXT, "Title");
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 0, new Text("a"));
+        sls.addDataSimple(smartList, "Title", 0, new Text("a"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 1, new Text("b"));
+        sls.addDataSimple(smartList, "Title", 1, new Text("b"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 2, new Text("d"));
+        sls.addDataSimple(smartList, "Title", 2, new Text("d"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 3, new Text("c"));
+        sls.addDataSimple(smartList, "Title", 3, new Text("c"));
         Common.sortAsc(smartList, "Title");
 
         assertEquals("d", ((Text) smartList.getRows().get(0).getIDataList().get(0)).getStr());
@@ -291,11 +253,11 @@ class MicrosoftListsApplicationTests {
     void testFilterColumn() {
         sls.createNewColumn(smartList, ColumnType.TEXT, "Title");
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 0, new Text("a"));
+        sls.addDataSimple(smartList, "Title", 0, new Text("a"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 1, new Text("b"));
+        sls.addDataSimple(smartList, "Title", 1, new Text("b"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 2, new Text("c"));
+        sls.addDataSimple(smartList, "Title", 2, new Text("c"));
         List<Object> criteria = Common.getListFilter(smartList, "Title");
         List<Row> filteredRows = Common.filter(smartList, "Title", criteria.get(0));
 
@@ -307,13 +269,13 @@ class MicrosoftListsApplicationTests {
     void testGroupByColumn() {
         sls.createNewColumn(smartList, ColumnType.TEXT, "Title");
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 0, new Text("a"));
+        sls.addDataSimple(smartList, "Title", 0, new Text("a"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 1, new Text("b"));
+        sls.addDataSimple(smartList, "Title", 1, new Text("b"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 2, new Text("c"));
+        sls.addDataSimple(smartList, "Title", 2, new Text("c"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 3, new Text("c"));
+        sls.addDataSimple(smartList, "Title", 3, new Text("c"));
         Map<Object, List<Row>> groupedRows = Common.groupBy(smartList, "Title");
 
         assertNotNull(groupedRows);
@@ -325,13 +287,13 @@ class MicrosoftListsApplicationTests {
     void testCount() {
         sls.createNewColumn(smartList, ColumnType.TEXT, "Title");
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 0, new Text("a"));
+        sls.addDataSimple(smartList, "Title", 0, new Text("a"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 1, new Text("b"));
+        sls.addDataSimple(smartList, "Title", 1, new Text("b"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 2, new Text("c"));
+        sls.addDataSimple(smartList, "Title", 2, new Text("c"));
         sls.createNewRow(smartList);
-        sls.addData(smartList, "Title", 3, new Text("c"));
+        sls.addDataSimple(smartList, "Title", 3, new Text("c"));
         assertEquals(4, Common.count(smartList, "Title"));
 
     }

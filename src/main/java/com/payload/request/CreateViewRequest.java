@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateViewRequest extends BaseRequest{
+public class CreateViewRequest extends BaseRequest {
     ViewType viewType;
-
+    Object[] data;
 }

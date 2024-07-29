@@ -7,6 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RowDataRequest extends BaseRequest {
-    List<AddDataRequest> rowData;
+public class CreateFormRequest extends BaseRequest {
+    String formName;
+    List<String> columns;
 }

@@ -1,5 +1,7 @@
 package com.service;
 
+import com.exception.ExistException;
+import com.exception.NotFoundException;
 import com.model.MicrosoftList;
 import com.model.SmartList;
 import com.model.Template;
@@ -10,40 +12,38 @@ import org.springframework.stereotype.Component;
 @Component
 public class MicrosoftListService {
 
-    public SmartList createList(MicrosoftList mls, String name) {
-        if (Common.checkExist(mls, name)) {
-            return null;
+    public SmartList createList(MicrosoftList ml, String name) {
+        if (Common.checkExist(ml, name)) {
+            throw new ExistException();
         }
-        return createNewList(mls, name);
+        return createNewList(ml, name);
     }
 
-    private SmartList createNewList(MicrosoftList mls, String name) {
+    private SmartList createNewList(MicrosoftList ml, String name) {
         SmartList sl = new SmartList(name);
-        mls.getListCollection().add(sl);
+        ml.getListCollection().add(sl);
         return sl;
     }
 
-    public boolean addFavourite(MicrosoftList mls, String name) {
-        SmartList sl = getListByName(mls, name);
-        if (sl != null) {
-            mls.getFavouriteCollection().add(sl);
-            return true;
-        }
-        return false;
+    public MicrosoftList addFavourite(MicrosoftList ml, String name) {
+        SmartList sl = getListByName(ml, name);
+        ml.getFavouriteCollection().add(sl);
+        return ml;
     }
 
 
-    public SmartList createListFromTemplate(MicrosoftList mls, Template t, String name) {
-        SmartList sl = createNewList(mls, name);
+    public SmartList createListFromTemplate(MicrosoftList ml, Template t, String name) {
+        SmartList sl = createNewList(ml, name);
         sl.setColumns(t.getColumns());
         return sl;
     }
 
 
-    public SmartList getListByName(MicrosoftList mls, String name) {
-        return mls.getListCollection().stream()
+    public SmartList getListByName(MicrosoftList ml, String name) {
+        return ml.getListCollection().stream()
                 .filter(l -> l.getName().equals(name))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(NotFoundException::new);
     }
+
 }

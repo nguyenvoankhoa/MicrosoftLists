@@ -14,4 +14,6 @@ public interface IColumn<T> {
     ColumnType getColumnType();
 
     boolean checkConstraint(T data);
+
+    T createSimpleData(Object data);
 }

@@ -26,7 +26,6 @@ public class Form {
 
     public void removeColumn(IColumn<?> column) {
         this.columns.remove(column);
-//        sm.removeColumn(column.getName());
     }
 
     public String generateFormRepresentation() {

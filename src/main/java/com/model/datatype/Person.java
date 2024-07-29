@@ -22,6 +22,10 @@ public class Person implements IData<Person>, Comparator<Person> {
         this.image = image;
     }
 
+    public Person(String name) {
+        this.name = name;
+    }
+
     @Override
     public Person getData() {
         return this;

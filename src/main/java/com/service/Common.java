@@ -1,5 +1,7 @@
 package com.service;
 
+import com.exception.ExistException;
+import com.exception.NotFoundException;
 import com.model.Form;
 import com.model.MicrosoftList;
 import com.model.Row;
@@ -18,14 +20,27 @@ public class Common {
     private Common() {
     }
 
+    public static void handleExist(Object o) {
+        if (o != null) {
+            throw new ExistException();
+        }
+    }
+
+    public static void checkNonExist(Object o) {
+        if (o == null) {
+            throw new NotFoundException();
+        }
+    }
 
     public static SmartList sortDesc(SmartList sl, String name) {
         IColumn column = getColumnByName(sl, name);
+        checkNonExist(column);
         return sort(sl, column, false);
     }
 
     public static SmartList sortAsc(SmartList sl, String name) {
         IColumn column = getColumnByName(sl, name);
+        checkNonExist(column);
         return sort(sl, column, true);
     }
 
@@ -57,13 +72,7 @@ public class Common {
                                 .getImportantData()));
     }
 
-    public static List<Row> getPage(SmartList sl, int pageNumber, int pageSize) {
-        int fromIndex = (pageNumber - 1) * pageSize;
-        return sl.getRows().stream()
-                .skip(Math.max(0, fromIndex))
-                .limit(pageSize)
-                .toList();
-    }
+
 
     public static boolean checkExist(MicrosoftList ml, String name) {
         return ml.getListCollection().stream().anyMatch(s -> s.getName().equals(name));
@@ -73,7 +82,7 @@ public class Common {
         return ExportHandler.export(smartList, filename, FileType.CSV);
     }
 
-    public static IColumn<?> getColumnByName(SmartList sl, String name) {
+    public static IColumn getColumnByName(SmartList sl, String name) {
         return sl.getColumns().stream()
                 .filter(c -> c.getName().equals(name))
                 .findFirst()
@@ -89,6 +98,7 @@ public class Common {
 
     public static int getColumnIndexByName(SmartList sl, String name) {
         IColumn c = getColumnByName(sl, name);
+        checkNonExist(c);
         return getColumnIndex(sl, c);
     }
 

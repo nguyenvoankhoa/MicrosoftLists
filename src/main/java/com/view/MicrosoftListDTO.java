@@ -1,6 +1,5 @@
 package com.view;
 
-import com.model.MicrosoftList;
 import com.model.Template;
 import lombok.Getter;
 import lombok.Setter;

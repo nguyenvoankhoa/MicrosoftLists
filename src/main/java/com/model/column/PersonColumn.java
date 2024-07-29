@@ -6,9 +6,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 @Getter
 @Setter
@@ -42,6 +40,9 @@ public class PersonColumn extends Column implements IColumn<List<Person>> {
 
     @Override
     public List<Person> createSimpleData(Object data) {
-        return null;
+        List<String> lists = (List<String>) data;
+        return lists.stream()
+                .map(Person::new)
+                .toList();
     }
 }

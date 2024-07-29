@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class ColumnToDTOMapper {
+    private ColumnToDTOMapper(){}
 
     private static final Map<Class<? extends IColumn<?>>, Function<IColumn<?>, Object>> mapper = new HashMap<>();
 

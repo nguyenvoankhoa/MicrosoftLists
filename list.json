@@ -1,15 +1,261 @@
 {
-  "forms": [],
-  "rows": [
+  "templates": [
     {
-      "iDataList": [
+      "name": "Issue Tracker",
+      "columns": [
         {
-          "str": "text data",
+          "isMultiSelect": false,
+          "name": "Speaker",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "PERSON"
+        },
+        {
+          "minVal": 0.0,
+          "maxVal": 0.0,
+          "name": "Price",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "NUMBER"
+        },
+        {
+          "name": "Link",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "HYPERLINK"
+        },
+        {
+          "name": "Is active",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "YESNO"
+        },
+        {
+          "isMultiSelect": false,
+          "name": "Speaker",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "PERSON"
+        }
+      ]
+    },
+    {
+      "name": "Asset Manager",
+      "columns": [
+        {
+          "isMultiSelect": false,
+          "name": "Speaker",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "PERSON"
+        },
+        {
+          "minVal": 0.0,
+          "maxVal": 0.0,
+          "name": "Price",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "NUMBER"
+        },
+        {
+          "name": "Link",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "HYPERLINK"
+        },
+        {
+          "name": "Is active",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "YESNO"
+        },
+        {
+          "isMultiSelect": false,
+          "name": "Speaker",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "PERSON"
+        }
+      ]
+    },
+    {
+      "name": "Gift ideas",
+      "columns": [
+        {
+          "isMultiSelect": false,
+          "name": "Speaker",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "PERSON"
+        },
+        {
+          "minVal": 0.0,
+          "maxVal": 0.0,
+          "name": "Price",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "NUMBER"
+        },
+        {
+          "name": "Link",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "HYPERLINK"
+        },
+        {
+          "name": "Is active",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "YESNO"
+        },
+        {
+          "isMultiSelect": false,
+          "name": "Speaker",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "PERSON"
+        }
+      ]
+    },
+    {
+      "name": "Content scheduler",
+      "columns": [
+        {
+          "isMultiSelect": false,
+          "name": "Speaker",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "PERSON"
+        },
+        {
+          "minVal": 0.0,
+          "maxVal": 0.0,
+          "name": "Price",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "NUMBER"
+        },
+        {
+          "name": "Link",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "HYPERLINK"
+        },
+        {
+          "name": "Is active",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "YESNO"
+        },
+        {
+          "isMultiSelect": false,
+          "name": "Speaker",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "PERSON"
+        }
+      ]
+    }
+  ],
+  "listCollection": [
+    {
+      "forms": [],
+      "rows": [
+        {
+          "iDataList": [
+            {
+              "str": "text data",
+              "type": "TEXT"
+            },
+            {
+              "date": "Jul 26, 2024, 4:16:58 PM",
+              "time": "04:16:58 PM",
+              "type": "DATE_AND_TIME"
+            },
+            {
+              "choices": [
+                {
+                  "name": "Option 1",
+                  "type": "SINGLE_CHOICE"
+                }
+              ],
+              "type": "CHOICE"
+            },
+            {
+              "people": [
+                {
+                  "name": "Khoa",
+                  "image": [],
+                  "type": "PERSON"
+                }
+              ],
+              "type": "PEOPLE"
+            },
+            {
+              "num": 4.5,
+              "type": "NUMBER"
+            },
+            {
+              "link": "facebook.com",
+              "type": "HYPERLINK"
+            },
+            {
+              "isChosen": true,
+              "type": "YESNO"
+            }
+          ],
+          "comments": []
+        },
+        {
+          "iDataList": [
+            {
+              "str": "string f",
+              "type": "TEXT"
+            },
+            {
+              "type": "DATE_AND_TIME"
+            },
+            {
+              "choices": [],
+              "type": "CHOICE"
+            },
+            {
+              "people": [],
+              "type": "PEOPLE"
+            },
+            {
+              "num": 0.0,
+              "type": "NUMBER"
+            },
+            {
+              "type": "HYPERLINK"
+            },
+            {
+              "isChosen": false,
+              "type": "YESNO"
+            }
+          ],
+          "comments": []
+        }
+      ],
+      "isSave": false,
+      "views": [],
+      "permissionManagement": {
+        "map": {}
+      },
+      "name": "New list",
+      "columns": [
+        {
+          "maxLength": 2147483647,
+          "name": "Title",
+          "isVisible": true,
+          "isRequire": false,
           "type": "TEXT"
         },
         {
-          "date": "Jul 23, 2024, 3:42:12 PM",
-          "time": "03:42:12 PM",
+          "name": "Start day",
+          "isVisible": true,
+          "isRequire": false,
           "type": "DATE_AND_TIME"
         },
         {
@@ -17,134 +263,52 @@
             {
               "name": "Option 1",
               "type": "SINGLE_CHOICE"
-            }
-          ],
-          "type": "CHOICE"
-        },
-        {
-          "people": [
+            },
             {
-              "name": "Khoa",
-              "image": [],
-              "type": "PERSON"
+              "name": "Option 3",
+              "type": "SINGLE_CHOICE"
+            },
+            {
+              "name": "Option 2",
+              "type": "SINGLE_CHOICE"
             }
           ],
-          "type": "PEOPLE"
-        },
-        {
-          "num": 4.5,
-          "type": "NUMBER"
-        },
-        {
-          "link": "facebook.com",
-          "type": "HYPERLINK"
-        },
-        {
-          "isChosen": true,
-          "type": "YESNO"
-        }
-      ],
-      "comments": []
-    },
-    {
-      "iDataList": [
-        {
-          "str": "string f",
-          "type": "TEXT"
-        },
-        {
-          "type": "DATE_AND_TIME"
-        },
-        {
-          "choices": [],
+          "isMultiSelect": false,
+          "name": "Session type",
+          "isVisible": true,
+          "isRequire": false,
           "type": "CHOICE"
         },
         {
           "people": [],
-          "type": "PEOPLE"
+          "isMultiSelect": false,
+          "name": "Speaker",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "PERSON"
         },
         {
-          "num": 0.0,
+          "minVal": 4.9E-324,
+          "maxVal": 1.7976931348623157E308,
+          "name": "Price",
+          "isVisible": true,
+          "isRequire": false,
           "type": "NUMBER"
         },
         {
+          "name": "Link",
+          "isVisible": true,
+          "isRequire": false,
           "type": "HYPERLINK"
         },
         {
-          "isChosen": false,
+          "name": "Is active",
+          "isVisible": true,
+          "isRequire": false,
           "type": "YESNO"
         }
-      ],
-      "comments": []
+      ]
     }
   ],
-  "isSave": false,
-  "views": [],
-  "permissionManagement": {
-    "map": {}
-  },
-  "name": "New list",
-  "columns": [
-    {
-      "maxLength": 2147483647,
-      "name": "Title",
-      "isVisible": true,
-      "isRequire": false,
-      "type": "TEXT"
-    },
-    {
-      "name": "Start day",
-      "isVisible": true,
-      "isRequire": false,
-      "type": "DATE_AND_TIME"
-    },
-    {
-      "choices": [
-        {
-          "name": "Option 1",
-          "type": "SINGLE_CHOICE"
-        },
-        {
-          "name": "Option 3",
-          "type": "SINGLE_CHOICE"
-        },
-        {
-          "name": "Option 2",
-          "type": "SINGLE_CHOICE"
-        }
-      ],
-      "isMultiSelect": false,
-      "name": "Session type",
-      "isVisible": true,
-      "isRequire": false,
-      "type": "CHOICE"
-    },
-    {
-      "isMultiSelect": false,
-      "name": "Speaker",
-      "isVisible": true,
-      "isRequire": false,
-      "type": "PERSON"
-    },
-    {
-      "minVal": 4.9E-324,
-      "maxVal": 1.7976931348623157E308,
-      "name": "Price",
-      "isVisible": true,
-      "isRequire": false,
-      "type": "NUMBER"
-    },
-    {
-      "name": "Link",
-      "isVisible": true,
-      "isRequire": false,
-      "type": "HYPERLINK"
-    },
-    {
-      "name": "Is active",
-      "isVisible": true,
-      "isRequire": false,
-      "type": "YESNO"
-    }
-  ]
+  "favouriteCollection": []
 }

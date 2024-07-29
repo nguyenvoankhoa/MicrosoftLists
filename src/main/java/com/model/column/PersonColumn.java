@@ -4,6 +4,7 @@ import com.model.datatype.Person;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -11,13 +12,14 @@ import java.util.stream.Stream;
 
 @Getter
 @Setter
-public class PersonColumn extends Column implements IColumn<Object> {
+public class PersonColumn extends Column implements IColumn<List<Person>> {
     private List<Person> people;
     private boolean isMultiSelect;
 
     public PersonColumn(String name) {
         super(name);
         isMultiSelect = false;
+        this.people = new ArrayList<>();
         setType(ColumnType.PERSON);
     }
 
@@ -32,25 +34,9 @@ public class PersonColumn extends Column implements IColumn<Object> {
     }
 
     @Override
-    public boolean checkConstraint(Object data) {
+    public boolean checkConstraint(List<Person> data) {
         Predicate<List<Person>> requirePredicate = d -> !isRequire() || !d.isEmpty();
         Predicate<List<Person>> multiSelectPredicate = d -> isMultiSelect() || d.size() <= 1;
-
-        return Optional.ofNullable(data)
-                .map(this::convertToList)
-                .map(list -> requirePredicate.and(multiSelectPredicate).test(list))
-                .orElse(false);
-    }
-
-    private List<Person> convertToList(Object data) {
-        return Optional.ofNullable(data)
-                .flatMap(d -> Optional.of(d instanceof List)
-                        .filter(isList -> isList)
-                        .map(isList -> (List<Person>) d)
-                        .or(() -> Optional.of(Stream.of(d)
-                                .filter(Person.class::isInstance)
-                                .map(Person.class::cast)
-                                .toList())))
-                .orElseGet(List::of);
+        return requirePredicate.and(multiSelectPredicate).test(data);
     }
 }

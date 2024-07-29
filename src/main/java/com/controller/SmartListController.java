@@ -5,89 +5,132 @@ import com.model.Row;
 import com.model.SmartList;
 import com.model.column.ColumnType;
 import com.model.column.IColumn;
-import com.model.view.View;
 import com.model.view.ViewType;
-import com.payload.request.RowDataRequest;
-import com.service.Common;
-import com.service.JsonService;
-import com.service.MicrosoftListService;
-import com.service.SmartListService;
-import org.springframework.beans.factory.annotation.Value;
+import com.payload.request.*;
+import com.service.*;
+import com.service.controller.ControllerService;
+import com.view.RowDTO;
+import com.view.SmartListDTO;
+import com.view.mapper.ColumnToDTOMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/smart-lists")
 public class SmartListController {
-    @Value("list.file.name")
-    String mlsPath;
+    private ControllerService cs;
+    private MicrosoftList ml;
+    private static final Logger LOGGER = Logger.getLogger(SmartListController.class.getName());
 
-    MicrosoftListService mls;
+    public SmartListController(ControllerService cs) {
+        JsonService js = new JsonService();
+        try {
+            String listPath = ConfigService.loadProperties("list.file.name");
+            ml = js.loadListsFromJson(listPath);
+            MicrosoftListService mls = new MicrosoftListService();
+            SmartListService sls = new SmartListService();
+            cs = new ControllerService(mls, sls);
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to load MicrosoftList to JSON file ", e);
+        }
+        this.cs = cs;
+    }
 
-    SmartListService sls;
-
-    @PostMapping
-    public ResponseEntity addColumn(ColumnType colType, String colName, String listName) {
-        SmartList sl = mls.getListByName(listName);
-        sls = new SmartListService(sl);
-        IColumn col = sls.createNewColumn(colType, colName);
-        return ResponseEntity.ok(col);
+    @PostMapping("column")
+    public ResponseEntity<?> addColumn(@RequestBody AddColumnRequest addReq) {
+        IColumn<?> col = cs.addColumn(ml, addReq);
+        var column = ColumnToDTOMapper.map(col);
+        return new ResponseEntity<>(column, HttpStatus.OK);
     }
 
 
-    @GetMapping
-    public ResponseEntity getColumnFilter(@RequestBody String colName, String listName) {
-        SmartList sl = mls.getListByName(listName);
-        List<Object> filters = Common.getListFilter(sl, colName);
-        return ResponseEntity.ok(filters);
+    @GetMapping("filters")
+    public ResponseEntity<List<Object>> getColumnFilters(@RequestBody ColumnRequest cr) {
+        List<Object> filters = cs.getFilters(ml, cr);
+        return new ResponseEntity<>(filters, HttpStatus.OK);
     }
 
 
-    @GetMapping
-    public ResponseEntity filterColumn(@RequestBody String colName, Object filter, String listName) {
-        SmartList sl = mls.getListByName(listName);
-        List<Row> filteredRows = Common.filter(sl, "Title", filter);
-        return ResponseEntity.ok(filteredRows);
+    @GetMapping("filter-by")
+    public ResponseEntity<List<RowDTO>> filterColumn(@RequestBody FilterRequest fr) {
+        List<Row> rows = cs.filterByColumn(ml, fr);
+        var listRow = rows.stream().map(RowDTO::new).toList();
+        return new ResponseEntity<>(listRow, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity groupByColumn(@RequestBody String colName, String listName) {
-        SmartList sl = mls.getListByName(listName);
-        Map<Object, List<Row>> groupedRows = Common.groupBy(sl, colName);
-        return ResponseEntity.ok(groupedRows);
+    @GetMapping("group-by")
+    public ResponseEntity groupByColumn(@RequestBody ColumnRequest cr) {
+        Map<Object, List<Row>> groupedRows = cs.groupByColumn(ml, cr);
+        return new ResponseEntity<>(groupedRows, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity countColumn(@RequestBody String colName, String listName) {
-        SmartList sl = mls.getListByName(listName);
-        long colNum = Common.count(sl, colName);
-        return ResponseEntity.ok(colNum);
+    @GetMapping("count")
+    public ResponseEntity<Long> countColumn(@RequestBody ColumnRequest cr) {
+        long colNum = cs.countByColumn(ml, cr);
+        return new ResponseEntity<>(colNum, HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity moveLeftColumn(@RequestBody String colName, String listName) {
-        SmartList sl = mls.getListByName(listName);
-        sls = new SmartListService(sl);
-        sls.moveLeft(colName);
-        return ResponseEntity.ok(sl);
+    @GetMapping()
+    public ResponseEntity getListSorted(@RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
+                                        @RequestParam(name = "order", defaultValue = "asc") String order,
+                                        @RequestParam(name = "listName") String listName,
+                                        @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
+                                        @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
+        var list = cs.sort(ml, listName, order, sortBy);
+        list.setRows(Common.getPage(list, pageNum, pageSize));
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity moveRightColumn(@RequestBody String colName, String listName) {
-        SmartList sl = mls.getListByName(listName);
-        sls = new SmartListService(sl);
-        sls.moveRight(colName);
-        return ResponseEntity.ok(sl);
+
+    @PutMapping("move-left")
+    public ResponseEntity<SmartListDTO> moveLeftColumn(@RequestBody ColumnRequest cr) {
+        SmartList sl = cs.moveLeft(ml, cr);
+        var listDto = new SmartListDTO(sl);
+        return new ResponseEntity<>(listDto, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PutMapping("move-right")
+    public ResponseEntity<SmartListDTO> moveRightColumn(@RequestBody ColumnRequest cr) {
+        SmartList sl = cs.moveRight(ml, cr);
+        var listDto = new SmartListDTO(sl);
+        return new ResponseEntity<>(listDto, HttpStatus.OK);
+    }
+
+    @PostMapping("row-data")
     public ResponseEntity addRowData(@RequestBody List<RowDataRequest> requests) {
         // add data to list by row
         return null;
+    }
+
+    @PostMapping("single-data")
+    public ResponseEntity addSingleData(@RequestBody AddSingleDataRequest request) {
+        SmartList sl = cs.addSingleData(ml, request);
+        return new ResponseEntity<>(sl, HttpStatus.OK);
+    }
+
+    @GetMapping("/column-type")
+    public ResponseEntity<ColumnType[]> getColumnTypes() {
+        ColumnType[] columnTypes = ColumnType.values();
+        return new ResponseEntity<>(columnTypes, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/view-type")
+    public ResponseEntity<ViewType[]> getViewTypes() {
+        ViewType[] viewTypes = ViewType.values();
+        return new ResponseEntity<>(viewTypes, HttpStatus.OK);
+    }
+
+    @PostMapping("views")
+    public ResponseEntity createView(){
+
     }
 
 }

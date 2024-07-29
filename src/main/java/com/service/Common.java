@@ -19,14 +19,14 @@ public class Common {
     }
 
 
-    public static void sortDesc(SmartList sl, String name) {
+    public static SmartList sortDesc(SmartList sl, String name) {
         IColumn column = getColumnByName(sl, name);
-        sort(sl, column, false);
+        return sort(sl, column, false);
     }
 
-    public static void sortAsc(SmartList sl, String name) {
+    public static SmartList sortAsc(SmartList sl, String name) {
         IColumn column = getColumnByName(sl, name);
-        sort(sl, column, true);
+        return sort(sl, column, true);
     }
 
     public static List<Object> getListFilter(SmartList sl, String colName) {
@@ -35,6 +35,7 @@ public class Common {
                 .distinct()
                 .toList();
     }
+
     public static long count(SmartList sl, String colName) {
         int cId = Common.getColumnIndexByName(sl, colName);
         return sl.getRows().stream().filter(l -> l.getIDataList().get(cId) != null).count();
@@ -97,19 +98,17 @@ public class Common {
                 .findFirst().orElse(null);
     }
 
-    public static void sort(SmartList sl, IColumn<Object> column, boolean ascending) {
+    public static SmartList sort(SmartList sl, IColumn<Object> column, boolean ascending) {
         int cId = getColumnIndex(sl, column);
-
         Comparator<Row> rowComparator = (row1, row2) -> {
             IData<?> iData1 = row1.getIDataList().get(cId);
             IData<?> iData2 = row2.getIDataList().get(cId);
             Comparator<IData<?>> comparator = (Comparator<IData<?>>) iData1;
             return ascending ? comparator.compare(iData1, iData2) : comparator.compare(iData2, iData1);
         };
-
         sl.getRows().sort(rowComparator);
+        return sl;
     }
-
 
 
 }

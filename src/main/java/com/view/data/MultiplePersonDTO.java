@@ -5,7 +5,6 @@ import com.model.datatype.MultiplePerson;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -16,7 +15,7 @@ public class MultiplePersonDTO {
     public MultiplePersonDTO(MultiplePerson multiplePerson) {
         this.people = multiplePerson.getData().stream()
                 .map(PersonDTO::new)
-                .collect(Collectors.toList());
+                .toList();
         this.type = multiplePerson.getType();
     }
 }

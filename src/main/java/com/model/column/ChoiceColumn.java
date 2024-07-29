@@ -40,12 +40,10 @@ public class ChoiceColumn extends Column implements IColumn<List<Choice>> {
 
     @Override
     public List<Choice> createSimpleData(Object data) {
-        List<Choice> choices = new ArrayList<>();
         List<String> lists = (List<String>) data;
-        for (String str : lists) {
-            choices.add(new Choice(str));
-        }
-        return choices;
+        return lists.stream()
+                .map(Choice::new)
+                .toList();
     }
 
 }

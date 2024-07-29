@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class DataToDTOMapper {
+    private DataToDTOMapper(){}
 
     private static final Map<Class<? extends IData<?>>, Function<IData<?>, Object>> mapper = new HashMap<>();
 

@@ -1,15 +1,17 @@
 package com.service;
 
+import com.factory.ViewFactory;
 import com.model.Form;
 import com.model.Row;
 import com.model.SmartList;
 import com.model.column.ColumnType;
 import com.model.column.IColumn;
 import com.model.datatype.IData;
-import com.service.factory.ColumnFactory;
-import com.service.factory.DataFactory;
+import com.factory.ColumnFactory;
+import com.factory.DataFactory;
 import com.model.view.View;
 import com.model.view.ViewType;
+import com.util.Common;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +43,7 @@ public class SmartListService {
 
     public IColumn createNewColumn(SmartList sl, ColumnType type, String name) {
         IColumn c = Common.getColumnByName(sl, name);
-        Common.handleExist(c);
+        Common.checkExist(c);
         ColumnFactory columnFactory = new ColumnFactory(name);
         IColumn<?> column = columnFactory.getColumn(type);
         sl.getColumns().add(column);

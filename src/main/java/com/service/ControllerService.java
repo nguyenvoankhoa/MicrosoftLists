@@ -3,12 +3,15 @@ package com.service;
 import com.model.MicrosoftList;
 import com.model.Row;
 import com.model.SmartList;
+import com.model.Template;
 import com.model.column.IColumn;
-import com.payload.request.*;
-import com.view.MicrosoftListDTO;
-import com.view.RowDTO;
-import com.view.SmartListDTO;
-import com.view.mapper.ModelMapper;
+import com.util.Common;
+import com.util.ConfigLoader;
+import com.dto.MicrosoftListDTO;
+import com.dto.RowDTO;
+import com.dto.SmartListDTO;
+import com.dto.mapper.ModelMapper;
+import com.dto.request.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +25,21 @@ import java.util.logging.Logger;
 @Service
 public class ControllerService {
     private static final Logger LOGGER = Logger.getLogger(ControllerService.class.getName());
-    private final MicrosoftListService microsoftListService;
-    private final SmartListService smartListService;
+    private MicrosoftListService microsoftListService;
+    private SmartListService smartListService;
     private ModelMapper mapper;
     private MicrosoftList microsoftList;
+    private String listPath;
+    private JsonService jsonService;
 
     @Autowired
-    public ControllerService(MicrosoftListService microsoftListService, SmartListService smartListService, JsonService jsonService) {
-        this.mapper = new ModelMapper();
+    public ControllerService(MicrosoftListService microsoftListService, SmartListService smartListService, JsonService jsonService, ModelMapper mapper) {
+        this.mapper = mapper;
         this.microsoftListService = microsoftListService;
         this.smartListService = smartListService;
-
+        this.jsonService = jsonService;
         try {
-            String listPath = ConfigService.loadProperties("list.file.name");
+            listPath = ConfigLoader.loadProperties("list.file.name");
             this.microsoftList = jsonService.loadListsFromJson(listPath);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load MicrosoftList from JSON file ", e);
@@ -47,19 +52,22 @@ public class ControllerService {
 
     public MicrosoftListDTO addFavouriteList(String name) {
         MicrosoftList ml = microsoftListService.addFavourite(microsoftList, name);
+        jsonService.saveToJson(ml, listPath);
         return mapper.mapMicrosoftList(ml);
     }
 
 
     public SmartListDTO createList(String name) {
         SmartList sl = microsoftListService.createList(microsoftList, name);
+        jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
 
 
     public Object addColumn(AddColumnRequest addReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, addReq.getListName());
-        IColumn column = smartListService.createNewColumn(sl, addReq.getColType(), addReq.getColName());
+        IColumn<?> column = smartListService.createNewColumn(sl, addReq.getColType(), addReq.getColName());
+        jsonService.saveToJson(microsoftList, listPath);
         return mapper.getColumnToDTOMapper().map(column);
     }
 
@@ -72,7 +80,7 @@ public class ControllerService {
     public List<RowDTO> filterByColumn(FilterRequest filterReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, filterReq.getListName());
         List<Row> rows = Common.filter(sl, filterReq.getColName(), filterReq.getFilter());
-        return rows.stream().map(r -> mapper.mapRow(r)).toList();
+        return rows.stream().map(mapper::mapRow).toList();
     }
 
     public Map<Object, List<Row>> groupByColumn(ColumnRequest colReq) {
@@ -88,18 +96,21 @@ public class ControllerService {
     public SmartListDTO moveLeft(ColumnRequest colReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, colReq.getListName());
         sl = smartListService.moveLeft(sl, colReq.getColName());
+        jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
 
     public SmartListDTO moveRight(ColumnRequest colReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, colReq.getListName());
         sl = smartListService.moveRight(sl, colReq.getColName());
+        jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
 
     public SmartListDTO addSingleData(AddSingleDataRequest request) {
         SmartList sl = microsoftListService.getListByName(microsoftList, request.getListName());
         sl = smartListService.addDataSimple(sl, request.getColName(), request.getRowId(), request.getData());
+        jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
 
@@ -130,6 +141,7 @@ public class ControllerService {
     public SmartListDTO createView(CreateViewRequest request) {
         SmartList sl = microsoftListService.getListByName(microsoftList, request.getListName());
         smartListService.createView(sl, request.getViewType(), request.getData());
+        jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
 
@@ -140,6 +152,7 @@ public class ControllerService {
             mData.put(req.getColName(), req.getData());
         }
         sl = smartListService.addRowData(sl, mData);
+        jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
 
@@ -147,8 +160,15 @@ public class ControllerService {
     public SmartListDTO removeColumn(ColumnRequest cr) {
         SmartList sl = microsoftListService.getListByName(microsoftList, cr.getListName());
         sl = smartListService.removeColumn(sl, cr.getColName());
+        jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
 
 
+    public SmartListDTO createListFromTemplate(TemplateToListRequest request) {
+        Template t = microsoftListService.getTemplateByName(microsoftList, request.getTemplateName());
+        SmartList sl = microsoftListService.createListFromTemplate(microsoftList, t, request.getListName());
+        jsonService.saveToJson(microsoftList, listPath);
+        return mapper.mapSmartList(sl);
+    }
 }

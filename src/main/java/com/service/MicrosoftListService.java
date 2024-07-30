@@ -5,6 +5,7 @@ import com.exception.NotFoundException;
 import com.model.MicrosoftList;
 import com.model.SmartList;
 import com.model.Template;
+import com.util.Common;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class MicrosoftListService {
 
     public SmartList createList(MicrosoftList ml, String name) {
-        if (Common.checkExist(ml, name)) {
+        if (Common.checkExistName(ml, name)) {
             throw new ExistException();
         }
         return createNewList(ml, name);
@@ -26,8 +27,11 @@ public class MicrosoftListService {
     }
 
     public MicrosoftList addFavourite(MicrosoftList ml, String name) {
-        SmartList sl = getListByName(ml, name);
-        ml.getFavouriteCollection().add(sl);
+        String listName = ml.getFavouriteCollection().stream()
+                .filter(c -> c.equals(name)).findFirst()
+                .orElse(null);
+        Common.checkExist(listName);
+        ml.getFavouriteCollection().add(name);
         return ml;
     }
 
@@ -44,6 +48,14 @@ public class MicrosoftListService {
                 .filter(l -> l.getName().equals(name))
                 .findFirst()
                 .orElseThrow(NotFoundException::new);
+    }
+
+
+    public Template getTemplateByName(MicrosoftList ml, String name) {
+        return ml.getTemplates().stream()
+                .filter(t -> t.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 public class MicrosoftList {
     private List<Template> templates;
     private List<SmartList> listCollection;
-    private List<SmartList> favouriteCollection;
+    private List<String> favouriteCollection;
 
     public MicrosoftList() {
         this.templates = new ArrayList<>();

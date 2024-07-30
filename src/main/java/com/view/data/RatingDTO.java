@@ -11,9 +11,5 @@ public class RatingDTO {
     private double rate;
     private ColumnType type;
 
-    public RatingDTO(Rating rating) {
-        this.rate = rating.getRate();
-        this.type = rating.getType();
-    }
 }
 

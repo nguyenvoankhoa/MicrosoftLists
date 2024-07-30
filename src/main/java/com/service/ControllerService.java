@@ -57,9 +57,10 @@ public class ControllerService {
     }
 
 
-    public IColumn addColumn(AddColumnRequest addReq) {
+    public Object addColumn(AddColumnRequest addReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, addReq.getListName());
-        return smartListService.createNewColumn(sl, addReq.getColType(), addReq.getColName());
+        IColumn column = smartListService.createNewColumn(sl, addReq.getColType(), addReq.getColName());
+        return mapper.getColumnToDTOMapper().map(column);
     }
 
 
@@ -102,20 +103,28 @@ public class ControllerService {
         return mapper.mapSmartList(sl);
     }
 
-    public SmartListDTO sort(String listName, String order, String colName) {
-        SmartList sl = microsoftListService.getListByName(microsoftList, listName);
+    public SmartListDTO sortWithPaging(SmartList sl, String order, String colName) {
         sl = "asc".equalsIgnoreCase(order) ? Common.sortAsc(sl, colName) : Common.sortDesc(sl, colName);
         return mapper.mapSmartList(sl);
     }
 
-    public SmartListDTO getPage(SmartListDTO sl, int pageNumber, int pageSize) {
+    public SmartList getPage(String listName, int pageNumber, int pageSize) {
+        SmartList sl = microsoftListService.getListByName(microsoftList, listName);
         int fromIndex = pageNumber * pageSize;
-        List<RowDTO> rows = sl.getRows().stream()
+        List<Row> rows = sl.getRows().stream()
                 .skip(fromIndex)
                 .limit(pageSize)
                 .toList();
         sl.setRows(rows);
         return sl;
+    }
+
+    public SmartListDTO getSortedAndPagedSmartList(String listName, String sortBy, String order, int pageNum, int pageSize) {
+        SmartList list = getPage(listName, pageNum, pageSize);
+        if (sortBy != null && !sortBy.isEmpty() && order != null && !order.isEmpty()) {
+            return sortWithPaging(list, order, sortBy);
+        }
+        return mapper.mapSmartList(list);
     }
 
     public SmartListDTO createView(CreateViewRequest request) {

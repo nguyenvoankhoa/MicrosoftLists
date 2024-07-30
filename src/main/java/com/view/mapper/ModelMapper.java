@@ -6,8 +6,20 @@ import com.model.SmartList;
 import com.view.MicrosoftListDTO;
 import com.view.RowDTO;
 import com.view.SmartListDTO;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class ModelMapper {
+
+    private final ColumnToDTOMapper columnToDTOMapper;
+    private final DataToDTOMapper dataToDTOMapper;
+
+    public ModelMapper() {
+        this.columnToDTOMapper = new ColumnToDTOMapper();
+        this.dataToDTOMapper = new DataToDTOMapper();
+    }
 
     public SmartListDTO mapSmartList(SmartList sl) {
         SmartListDTO dto = new SmartListDTO();
@@ -16,11 +28,10 @@ public class ModelMapper {
                 .map(this::mapRow)
                 .toList());
         dto.setColumns(sl.getColumns().stream()
-                .map(ColumnToDTOMapper::map)
+                .map(columnToDTOMapper::map)
                 .toList());
         return dto;
     }
-
 
     public MicrosoftListDTO mapMicrosoftList(MicrosoftList microsoftList) {
         MicrosoftListDTO dto = new MicrosoftListDTO();
@@ -37,8 +48,9 @@ public class ModelMapper {
     public RowDTO mapRow(Row row) {
         RowDTO dto = new RowDTO();
         dto.setIDataList(row.getIDataList().stream()
-                .map(DataToDTOMapper::map)
+                .map(dataToDTOMapper::map)
                 .toList());
         return dto;
     }
 }
+

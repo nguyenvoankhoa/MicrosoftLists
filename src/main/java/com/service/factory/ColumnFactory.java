@@ -21,7 +21,7 @@ public class ColumnFactory {
         factory.put(ColumnType.AVERAGE_RATING, new RatingColumn(name));
     }
 
-    public IColumn<?> getColumn(ColumnType type) {
+    public IColumn getColumn(ColumnType type) {
         return factory.get(type);
     }
 }

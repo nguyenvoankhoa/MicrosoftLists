@@ -10,9 +10,4 @@ import lombok.Setter;
 public class HyperLinkDTO {
     private String link;
     private ColumnType type;
-
-    public HyperLinkDTO(HyperLink hyperLink) {
-        this.link = hyperLink.getLink();
-        this.type = hyperLink.getType();
-    }
 }

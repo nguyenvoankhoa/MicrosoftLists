@@ -1,6 +1,7 @@
 package com.model.column;
 
 import com.model.datatype.YesNo;
+import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,9 +28,9 @@ public class YesNoColumn extends Column implements IColumn<YesNo> {
     }
 
     @Override
-    public boolean checkConstraint(YesNo data) {
+    public void checkConstraint(Object data) {
         Predicate<YesNo> requirePredicate = d -> !isRequire() || d != null;
-        return requirePredicate.test(data);
+        Common.checkValid(requirePredicate.test((YesNo) data));
     }
 
     @Override

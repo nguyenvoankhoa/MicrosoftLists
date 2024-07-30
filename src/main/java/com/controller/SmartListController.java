@@ -3,10 +3,10 @@ package com.controller;
 import com.model.Row;
 import com.model.column.ColumnType;
 import com.model.view.ViewType;
-import com.payload.request.*;
 import com.service.ControllerService;
-import com.view.RowDTO;
-import com.view.SmartListDTO;
+import com.dto.RowDTO;
+import com.dto.SmartListDTO;
+import com.dto.request.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,63 +35,70 @@ public class SmartListController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PostMapping("row")
+    @PostMapping("rows")
     public ResponseEntity<SmartListDTO> addRowData(@RequestBody RowDataRequest request) {
         SmartListDTO dto = controllerService.addRowData(request);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PostMapping("single-data")
+    @PostMapping("data")
     public ResponseEntity<SmartListDTO> addSingleData(@RequestBody AddSingleDataRequest request) {
         SmartListDTO dto = controllerService.addSingleData(request);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @GetMapping("column-type")
+    @GetMapping("column-types")
     public ResponseEntity<ColumnType[]> getColumnTypes() {
         ColumnType[] columnTypes = ColumnType.values();
         return new ResponseEntity<>(columnTypes, HttpStatus.OK);
     }
-    @PostMapping("columns")
+
+    @PostMapping("columns/get")
+    public ResponseEntity<Object> getColumn(@RequestBody ColumnRequest request){
+        var column = controllerService.getColumn(request);
+        return new ResponseEntity<>(column, HttpStatus.OK);
+    }
+
+    @PostMapping("columns/create")
     public ResponseEntity<Object> createColumn(@RequestBody AddColumnRequest addReq) {
         var column = controllerService.addColumn(addReq);
         return new ResponseEntity<>(column, HttpStatus.OK);
     }
 
 
-    @GetMapping("filters")
+    @PostMapping("filters")
     public ResponseEntity<List<Object>> getColumnFilters(@RequestBody ColumnRequest cr) {
         List<Object> filters = controllerService.getFilters(cr);
         return new ResponseEntity<>(filters, HttpStatus.OK);
     }
 
 
-    @GetMapping("filter-by")
+    @PostMapping("filter")
     public ResponseEntity<List<RowDTO>> filterColumn(@RequestBody FilterRequest fr) {
         List<RowDTO> rows = controllerService.filterByColumn(fr);
         return new ResponseEntity<>(rows, HttpStatus.OK);
     }
 
-    @GetMapping("group-by")
+    @PostMapping("group")
     public ResponseEntity<Map<Object, List<Row>>> groupByColumn(@RequestBody ColumnRequest cr) {
         Map<Object, List<Row>> groupedRows = controllerService.groupByColumn(cr);
         return new ResponseEntity<>(groupedRows, HttpStatus.OK);
     }
 
-    @GetMapping("count")
+    @PostMapping("count")
     public ResponseEntity<Long> countColumn(@RequestBody ColumnRequest cr) {
         long colNum = controllerService.countByColumn(cr);
         return new ResponseEntity<>(colNum, HttpStatus.OK);
     }
 
 
-    @PutMapping("move-left")
+    @PutMapping("columns/move-left")
     public ResponseEntity<SmartListDTO> moveLeftColumn(@RequestBody ColumnRequest cr) {
         SmartListDTO dto = controllerService.moveLeft(cr);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PutMapping("move-right")
+    @PutMapping("columns/move-right")
     public ResponseEntity<SmartListDTO> moveRightColumn(@RequestBody ColumnRequest cr) {
         SmartListDTO dto = controllerService.moveRight(cr);
         return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -105,7 +112,7 @@ public class SmartListController {
     }
 
 
-    @GetMapping("view-type")
+    @GetMapping("view-types")
     public ResponseEntity<ViewType[]> getViewTypes() {
         ViewType[] viewTypes = ViewType.values();
         return new ResponseEntity<>(viewTypes, HttpStatus.OK);

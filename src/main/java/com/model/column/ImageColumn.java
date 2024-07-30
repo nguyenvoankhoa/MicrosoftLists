@@ -1,6 +1,7 @@
 package com.model.column;
 
 import com.model.datatype.Image;
+import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,9 +28,9 @@ public class ImageColumn extends Column implements IColumn<Image> {
     }
 
     @Override
-    public boolean checkConstraint(Image data) {
+    public void checkConstraint(Object data) {
         Predicate<Image> requirePredicate = d -> !isRequire() || d != null;
-        return requirePredicate.test(data);
+        Common.checkValid(requirePredicate.test((Image) data));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.model.column;
 
 import com.model.datatype.HyperLink;
+import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,9 +28,9 @@ public class HyperLinkColumn extends Column implements IColumn<HyperLink> {
     }
 
     @Override
-    public boolean checkConstraint(HyperLink data) {
+    public void checkConstraint(Object data) {
         Predicate<HyperLink> requirePredicate = d -> !isRequire() || d != null;
-        return requirePredicate.test(data);
+        Common.checkValid(requirePredicate.test((HyperLink) data));
     }
 
     @Override

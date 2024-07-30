@@ -1,6 +1,7 @@
 package com.model.column;
 
 import com.model.datatype.Rating;
+import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,10 @@ import java.util.function.Predicate;
 @Setter
 public class RatingColumn extends Column implements IColumn<Rating> {
     private Rating rating;
+
+    private double maxRate = 5;
+
+    private double minRate = 0;
 
     public RatingColumn(String name) {
         super(name);
@@ -27,9 +32,10 @@ public class RatingColumn extends Column implements IColumn<Rating> {
     }
 
     @Override
-    public boolean checkConstraint(Rating data) {
+    public void checkConstraint(Object data) {
         Predicate<Rating> requirePredicate = d -> !isRequire() || d != null;
-        return requirePredicate.test(data);
+        Predicate<Rating> minMaxPredicate = d -> d.getRate() <= maxRate && d.getRate() >= minRate;
+        Common.checkValid(requirePredicate.and(minMaxPredicate).test((Rating) data));
     }
 
     @Override

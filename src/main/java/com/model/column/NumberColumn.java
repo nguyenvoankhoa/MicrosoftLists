@@ -1,6 +1,7 @@
 package com.model.column;
 
 import com.model.datatype.Number;
+import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,11 +32,11 @@ public class NumberColumn extends Column implements IColumn<Number> {
     }
 
     @Override
-    public boolean checkConstraint(Number data) {
+    public void checkConstraint(Object data) {
         Predicate<Number> requirePredicate = d -> !isRequire() || d != null;
         Predicate<Number> minValPredicate = d -> minVal == Double.MIN_VALUE || d.getNum() >= getMinVal();
         Predicate<Number> maxValPredicate = d -> maxVal == Double.MAX_VALUE || d.getNum() <= getMaxVal();
-        return requirePredicate.and(minValPredicate).and(maxValPredicate).test(data);
+        Common.checkValid(requirePredicate.and(minValPredicate).and(maxValPredicate).test((Number) data));
     }
 
     @Override

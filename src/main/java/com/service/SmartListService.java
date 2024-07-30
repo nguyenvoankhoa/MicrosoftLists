@@ -41,7 +41,7 @@ public class SmartListService {
 
     public IColumn createNewColumn(SmartList sl, ColumnType type, String name) {
         IColumn c = Common.getColumnByName(sl, name);
-        Common.checkNonExist(c);
+        Common.handleExist(c);
         ColumnFactory columnFactory = new ColumnFactory(name);
         IColumn<?> column = columnFactory.getColumn(type);
         sl.getColumns().add(column);
@@ -81,11 +81,9 @@ public class SmartListService {
         IColumn<?> column = Common.getColumnByName(sl, name);
         Common.checkNonExist(column);
         if (checkSameType(column, data)) {
-            addData(sl, rId, column.createSimpleData(data), column);
-        } else {
-            addData(sl, rId, column.createSimpleData(convertToList(data)), column);
+            return addData(sl, rId, column.createSimpleData(data), column);
         }
-        return addData(sl, rId, column.createSimpleData(data), column);
+        return addData(sl, rId, column.createSimpleData(convertToList(data)), column);
     }
 
 

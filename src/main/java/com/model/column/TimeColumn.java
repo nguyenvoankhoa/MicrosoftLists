@@ -4,13 +4,18 @@ import com.model.datatype.DateAndTime;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Setter
 @Getter
 public class TimeColumn extends Column implements IColumn<DateAndTime> {
+    private static final Logger LOGGER = Logger.getLogger(TimeColumn.class.getName());
     private DateAndTime dateAndTime;
 
     public TimeColumn(String name) {
@@ -36,6 +41,18 @@ public class TimeColumn extends Column implements IColumn<DateAndTime> {
 
     @Override
     public DateAndTime createSimpleData(Object data) {
-        return new DateAndTime((Date) data);
+        if (data instanceof String dateString) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date date = formatter.parse(dateString);
+                return new DateAndTime(date);
+            } catch (ParseException e) {
+                LOGGER.log(Level.SEVERE, "Invalid date format: {}", dateString);
+                return null;
+            }
+        } else if (data instanceof Date date) {
+            return new DateAndTime(date);
+        }
+        return null;
     }
 }

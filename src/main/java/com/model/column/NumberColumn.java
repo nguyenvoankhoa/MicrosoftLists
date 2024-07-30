@@ -40,6 +40,10 @@ public class NumberColumn extends Column implements IColumn<Number> {
 
     @Override
     public Number createSimpleData(Object data) {
+        if (data instanceof Integer) {
+            double num = (int) data;
+            return new Number(num);
+        }
         return new Number((Double) data);
     }
 

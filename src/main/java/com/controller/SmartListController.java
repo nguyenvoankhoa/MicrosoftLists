@@ -2,13 +2,11 @@ package com.controller;
 
 import com.model.Row;
 import com.model.column.ColumnType;
-import com.model.column.IColumn;
 import com.model.view.ViewType;
 import com.payload.request.*;
 import com.service.ControllerService;
 import com.view.RowDTO;
 import com.view.SmartListDTO;
-import com.view.mapper.ColumnToDTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +25,36 @@ public class SmartListController {
         this.controllerService = controllerService;
     }
 
+    @GetMapping
+    public ResponseEntity<SmartListDTO> getListSorted(@RequestParam(name = "sortBy", required = false) String sortBy,
+                                                      @RequestParam(name = "order", required = false) String order,
+                                                      @RequestParam(name = "listName") String listName,
+                                                      @RequestParam(name = "pageNum", required = false, defaultValue = "0") int pageNum,
+                                                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        SmartListDTO dto = controllerService.getSortedAndPagedSmartList(listName, sortBy, order, pageNum, pageSize);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @PostMapping("row")
+    public ResponseEntity<SmartListDTO> addRowData(@RequestBody RowDataRequest request) {
+        SmartListDTO dto = controllerService.addRowData(request);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @PostMapping("single-data")
+    public ResponseEntity<SmartListDTO> addSingleData(@RequestBody AddSingleDataRequest request) {
+        SmartListDTO dto = controllerService.addSingleData(request);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping("column-type")
+    public ResponseEntity<ColumnType[]> getColumnTypes() {
+        ColumnType[] columnTypes = ColumnType.values();
+        return new ResponseEntity<>(columnTypes, HttpStatus.OK);
+    }
     @PostMapping("columns")
     public ResponseEntity<Object> createColumn(@RequestBody AddColumnRequest addReq) {
-        IColumn<?> col = controllerService.addColumn(addReq);
-        var column = ColumnToDTOMapper.map(col);
+        var column = controllerService.addColumn(addReq);
         return new ResponseEntity<>(column, HttpStatus.OK);
     }
 
@@ -60,17 +84,6 @@ public class SmartListController {
         return new ResponseEntity<>(colNum, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<SmartListDTO> getListSorted(@RequestParam(name = "sortBy", required = false, defaultValue = "name") String sortBy,
-                                                      @RequestParam(name = "order", required = false, defaultValue = "asc") String order,
-                                                      @RequestParam(name = "listName") String listName,
-                                                      @RequestParam(name = "pageNum", required = false, defaultValue = "0") int pageNum,
-                                                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        SmartListDTO sortedList = controllerService.sort(listName, order, sortBy);
-        sortedList = controllerService.getPage(sortedList, pageNum, pageSize);
-        return new ResponseEntity<>(sortedList, HttpStatus.OK);
-    }
-
 
     @PutMapping("move-left")
     public ResponseEntity<SmartListDTO> moveLeftColumn(@RequestBody ColumnRequest cr) {
@@ -84,23 +97,6 @@ public class SmartListController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PostMapping("row")
-    public ResponseEntity<SmartListDTO> addRowData(@RequestBody RowDataRequest request) {
-        SmartListDTO dto = controllerService.addRowData(request);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
-    }
-
-    @PostMapping("single-data")
-    public ResponseEntity<SmartListDTO> addSingleData(@RequestBody AddSingleDataRequest request) {
-        SmartListDTO dto = controllerService.addSingleData(request);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
-    }
-
-    @GetMapping("column-type")
-    public ResponseEntity<ColumnType[]> getColumnTypes() {
-        ColumnType[] columnTypes = ColumnType.values();
-        return new ResponseEntity<>(columnTypes, HttpStatus.OK);
-    }
 
     @DeleteMapping("columns")
     public ResponseEntity<SmartListDTO> removeColumn(ColumnRequest cr) {

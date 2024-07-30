@@ -45,5 +45,10 @@ public class MicrosoftListController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @PostMapping("lists/save-template")
+    public ResponseEntity<MicrosoftListDTO> saveListToTemplate(@RequestBody TemplateToListRequest request){
+        MicrosoftListDTO dto = controllerService.saveListToTemplate(request);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
 
 }

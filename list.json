@@ -1,162 +1,5 @@
 {
-  "templates": [
-    {
-      "name": "Issue Tracker",
-      "columns": [
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        },
-        {
-          "minVal": 0.0,
-          "maxVal": 0.0,
-          "name": "Price",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
-        },
-        {
-          "name": "Link",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "HYPERLINK"
-        },
-        {
-          "name": "Is active",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "YESNO"
-        },
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        }
-      ]
-    },
-    {
-      "name": "Asset Manager",
-      "columns": [
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        },
-        {
-          "minVal": 0.0,
-          "maxVal": 0.0,
-          "name": "Price",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
-        },
-        {
-          "name": "Link",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "HYPERLINK"
-        },
-        {
-          "name": "Is active",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "YESNO"
-        },
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        }
-      ]
-    },
-    {
-      "name": "Gift ideas",
-      "columns": [
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        },
-        {
-          "minVal": 0.0,
-          "maxVal": 0.0,
-          "name": "Price",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
-        },
-        {
-          "name": "Link",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "HYPERLINK"
-        },
-        {
-          "name": "Is active",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "YESNO"
-        },
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        }
-      ]
-    },
-    {
-      "name": "Content scheduler",
-      "columns": [
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        },
-        {
-          "minVal": 0.0,
-          "maxVal": 0.0,
-          "name": "Price",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
-        },
-        {
-          "name": "Link",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "HYPERLINK"
-        },
-        {
-          "name": "Is active",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "YESNO"
-        },
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        }
-      ]
-    }
-  ],
+  "templates": [],
   "listCollection": [
     {
       "forms": [],
@@ -221,6 +64,8 @@
               "choices": [
                 {
                   "name": "Option 1",
+                  "shape": "ABc",
+                  "color": "red",
                   "type": "SINGLE_CHOICE"
                 }
               ],
@@ -330,7 +175,7 @@
       "permissionManagement": {
         "map": {}
       },
-      "name": "\"Senccon list\"",
+      "name": "Test New",
       "columns": []
     }
   ],

@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class MicrosoftListDTO {
-    List<Template> templates;
+    List<TemplateDTO> templates;
     List<SmartListDTO> listCollection;
     List<String> favouriteCollection;
 

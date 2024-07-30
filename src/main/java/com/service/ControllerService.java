@@ -172,9 +172,21 @@ public class ControllerService {
         return mapper.mapSmartList(sl);
     }
 
-    public Object getColumn(ColumnRequest cr) {
-        SmartList sl = microsoftListService.getListByName(microsoftList, cr.getListName());
-        IColumn col = Common.getColumnByName(sl, cr.getColName());
+    public Object getColumn(String colName, String listName) {
+        SmartList sl = microsoftListService.getListByName(microsoftList, listName);
+        IColumn col = Common.getColumnByName(sl, colName);
         return mapper.getColumnToDTOMapper().map(col);
+    }
+
+    public MicrosoftListDTO saveListToTemplate(TemplateToListRequest request) {
+        SmartList sl = microsoftListService.getListByName(microsoftList, request.getListName());
+        Common.checkNonExist(sl);
+        Template t = microsoftListService.getTemplateByName(microsoftList, request.getTemplateName());
+        Common.checkExist(t);
+        Template template = new Template(request.getTemplateName());
+        template.setColumns(sl.getColumns());
+        microsoftList.getTemplates().add(template);
+        MicrosoftListDTO dto = mapper.mapMicrosoftList(microsoftList);
+        return dto;
     }
 }

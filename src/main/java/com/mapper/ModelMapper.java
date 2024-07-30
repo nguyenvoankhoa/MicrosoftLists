@@ -1,11 +1,13 @@
 package com.mapper;
 
+import com.dto.TemplateDTO;
 import com.model.MicrosoftList;
 import com.model.Row;
 import com.model.SmartList;
 import com.dto.MicrosoftListDTO;
 import com.dto.RowDTO;
 import com.dto.SmartListDTO;
+import com.model.Template;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +21,15 @@ public class ModelMapper {
     public ModelMapper() {
         this.columnToDTOMapper = new ColumnToDTOMapper();
         this.dataToDTOMapper = new DataToDTOMapper();
+    }
+
+    public TemplateDTO mapTemplate(Template template) {
+        TemplateDTO dto = new TemplateDTO();
+        dto.setColumns(template.getColumns().stream()
+                .map(columnToDTOMapper::map)
+                .toList());
+        dto.setName(template.getName());
+        return dto;
     }
 
     public SmartListDTO mapSmartList(SmartList sl) {
@@ -35,7 +46,8 @@ public class ModelMapper {
 
     public MicrosoftListDTO mapMicrosoftList(MicrosoftList microsoftList) {
         MicrosoftListDTO dto = new MicrosoftListDTO();
-        dto.setTemplates(microsoftList.getTemplates());
+        dto.setTemplates(microsoftList.getTemplates().stream()
+                .map(this::mapTemplate).toList());
         dto.setListCollection(microsoftList.getListCollection().stream()
                 .map(this::mapSmartList)
                 .toList());

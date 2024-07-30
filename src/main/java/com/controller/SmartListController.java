@@ -53,13 +53,14 @@ public class SmartListController {
         return new ResponseEntity<>(columnTypes, HttpStatus.OK);
     }
 
-    @PostMapping("columns/get")
-    public ResponseEntity<Object> getColumn(@RequestBody ColumnRequest request){
-        var column = controllerService.getColumn(request);
+    @GetMapping("columns")
+    public ResponseEntity<Object> getColumn(@RequestParam(name = "columnName") String colName,
+                                            @RequestParam(name = "listName") String listName) {
+        var column = controllerService.getColumn(colName, listName);
         return new ResponseEntity<>(column, HttpStatus.OK);
     }
 
-    @PostMapping("columns/create")
+    @PostMapping("columns")
     public ResponseEntity<Object> createColumn(@RequestBody AddColumnRequest addReq) {
         var column = controllerService.addColumn(addReq);
         return new ResponseEntity<>(column, HttpStatus.OK);
@@ -123,5 +124,7 @@ public class SmartListController {
         SmartListDTO dto = controllerService.createView(request);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
+
+
 
 }

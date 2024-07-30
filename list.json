@@ -176,6 +176,8 @@
               "choices": [
                 {
                   "name": "Option 1",
+                  "shape": "ABc",
+                  "color": "red",
                   "type": "SINGLE_CHOICE"
                 }
               ],
@@ -216,7 +218,12 @@
               "type": "DATE_AND_TIME"
             },
             {
-              "choices": [],
+              "choices": [
+                {
+                  "name": "Option 1",
+                  "type": "SINGLE_CHOICE"
+                }
+              ],
               "type": "CHOICE"
             },
             {
@@ -262,14 +269,20 @@
           "choices": [
             {
               "name": "Option 1",
+              "shape": "ABc",
+              "color": "red",
               "type": "SINGLE_CHOICE"
             },
             {
               "name": "Option 3",
+              "shape": "ABc",
+              "color": "red",
               "type": "SINGLE_CHOICE"
             },
             {
               "name": "Option 2",
+              "shape": "ABc",
+              "color": "red",
               "type": "SINGLE_CHOICE"
             }
           ],
@@ -308,6 +321,17 @@
           "type": "YESNO"
         }
       ]
+    },
+    {
+      "forms": [],
+      "rows": [],
+      "isSave": false,
+      "views": [],
+      "permissionManagement": {
+        "map": {}
+      },
+      "name": "\"Senccon list\"",
+      "columns": []
     }
   ],
   "favouriteCollection": []

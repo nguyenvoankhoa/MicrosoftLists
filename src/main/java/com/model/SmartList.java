@@ -1,7 +1,6 @@
 package com.model;
 
 import com.model.view.View;
-import com.service.PermissionManagement;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

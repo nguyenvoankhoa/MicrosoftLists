@@ -10,7 +10,9 @@ import com.model.datatype.Number;
 import com.model.view.View;
 import com.model.view.ViewType;
 import com.service.*;
-import com.service.export.ExportStatus;
+import com.export.ExportStatus;
+import com.util.Common;
+import com.util.ConfigLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,16 +28,14 @@ class MicrosoftListsApplicationTests {
     String listPath;
     String templatePath;
     JsonService jsonService;
-
     SmartListService sls;
-
     MicrosoftListService mls;
 
 
     @BeforeEach
     public void setUp() throws IOException {
-        listPath = ConfigService.loadProperties("list.file.name");
-        templatePath = ConfigService.loadProperties("template.file.name");
+        listPath = ConfigLoader.loadProperties("list.file.name");
+        templatePath = ConfigLoader.loadProperties("template.file.name");
         jsonService = new JsonService();
         microsoftList = new MicrosoftList();
         microsoftList.setTemplates(jsonService.loadTemplatesFromJson(templatePath));
@@ -66,7 +66,7 @@ class MicrosoftListsApplicationTests {
     void testAddFavouriteList() {
         mls.addFavourite(microsoftList, "New list");
         assertNotNull(microsoftList.getFavouriteCollection().stream()
-                .filter(l -> l.getName().equals("New list"))
+                .filter(l -> l.equals("New list"))
                 .findFirst()
                 .orElse(null));
     }
@@ -345,7 +345,7 @@ class MicrosoftListsApplicationTests {
 
     @Test
     void testExportListToCSV() throws IOException {
-        String csvPath = ConfigService.loadProperties("csv.file.name");
+        String csvPath = ConfigLoader.loadProperties("csv.file.name");
         assertEquals(ExportStatus.SUCCESS, Common.exportToCSV(smartList, csvPath).getStatus());
     }
 

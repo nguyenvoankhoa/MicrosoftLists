@@ -2,6 +2,7 @@ package com.model.column;
 
 import com.model.Rule;
 import com.model.datatype.Text;
+import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,11 +32,11 @@ public class TextColumn extends Column implements IColumn<Text> {
     }
 
     @Override
-    public boolean checkConstraint(Text data) {
+    public void checkConstraint(Object data) {
         Predicate<Text> requirePredicate = d -> !isRequire() || d != null;
         Predicate<Text> maxLengthPredicate = d -> maxLength == Integer.MAX_VALUE
                 || d.getStr().length() <= getMaxLength();
-        return requirePredicate.and(maxLengthPredicate).test(data);
+        Common.checkValid(requirePredicate.and(maxLengthPredicate).test((Text) data));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.model.column;
 
 import com.model.datatype.Choice;
+import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,10 +33,10 @@ public class ChoiceColumn extends Column implements IColumn<List<Choice>> {
     }
 
     @Override
-    public boolean checkConstraint(List<Choice> data) {
+    public void checkConstraint(Object data) {
         Predicate<List<Choice>> requirePredicate = d -> !isRequire() || !d.isEmpty();
         Predicate<List<Choice>> multiSelectPredicate = d -> isMultiSelect() || d.size() <= 1;
-        return requirePredicate.and(multiSelectPredicate).test(data);
+        Common.checkValid(requirePredicate.and(multiSelectPredicate).test((List<Choice>) data));
     }
 
     @Override

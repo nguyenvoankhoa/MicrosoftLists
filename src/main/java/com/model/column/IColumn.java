@@ -13,7 +13,7 @@ public interface IColumn<T> {
 
     ColumnType getColumnType();
 
-    boolean checkConstraint(T data);
+    void checkConstraint(Object data);
 
     T createSimpleData(Object data);
 }

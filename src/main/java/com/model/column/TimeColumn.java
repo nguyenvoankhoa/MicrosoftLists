@@ -1,6 +1,7 @@
 package com.model.column;
 
 import com.model.datatype.DateAndTime;
+import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,9 +35,9 @@ public class TimeColumn extends Column implements IColumn<DateAndTime> {
     }
 
     @Override
-    public boolean checkConstraint(DateAndTime data) {
+    public void checkConstraint(Object data) {
         Predicate<DateAndTime> requirePredicate = d -> !isRequire() || d != null;
-        return requirePredicate.test(data);
+        Common.checkValid(requirePredicate.test((DateAndTime) data));
     }
 
     @Override

@@ -24,13 +24,11 @@ public class SmartListService {
 
 
     public SmartList createFormByColumnName(SmartList sl, List<String> columns, String fName) {
-        List<IColumn<?>> columnList = columns.stream()
-                .map(name -> {
-                    IColumn<?> column = Common.getColumnByName(sl, name);
-                    Common.checkNonExist(column);
-                    return column;
-                })
-                .collect(Collectors.toList());
+        List<IColumn<?>> columnList = columns.stream().map(name -> {
+            IColumn<?> column = Common.getColumnByName(sl, name);
+            Common.checkNonExist(column);
+            return column;
+        }).collect(Collectors.toList());
         return createForm(sl, columnList, fName);
     }
 
@@ -82,10 +80,16 @@ public class SmartListService {
     public SmartList addDataSimple(SmartList sl, String name, int rId, Object data) {
         IColumn<?> column = Common.getColumnByName(sl, name);
         Common.checkNonExist(column);
+        Object processedData;
         if (checkSameType(column, data)) {
-            return addData(sl, rId, column.createSimpleData(data), column);
+            processedData = column.createSimpleData(data);
+            column.checkConstraint(processedData);
+        } else {
+            List<Object> dataList = convertToList(data);
+            column.checkConstraint(dataList);
+            processedData = column.createSimpleData(dataList);
         }
-        return addData(sl, rId, column.createSimpleData(convertToList(data)), column);
+        return addData(sl, rId, processedData, column);
     }
 
 
@@ -120,13 +124,10 @@ public class SmartListService {
 
     private void addDataMatchColumns(SmartList sl, int rId, IData<?>[] dList) {
         int[] dataIndex = {0};
-        sl.getColumns().stream()
-                .filter(column -> dataIndex[0] < dList.length)
-                .filter(column -> column.getColumnType().equals(dList[dataIndex[0]].getType()))
-                .forEach(column -> {
-                    addDataSimple(sl, column.getName(), rId, dList[dataIndex[0]]);
-                    dataIndex[0]++;
-                });
+        sl.getColumns().stream().filter(column -> dataIndex[0] < dList.length).filter(column -> column.getColumnType().equals(dList[dataIndex[0]].getType())).forEach(column -> {
+            addDataSimple(sl, column.getName(), rId, dList[dataIndex[0]]);
+            dataIndex[0]++;
+        });
     }
 
     public boolean checkSize(SmartList sl, int size) {

@@ -27,7 +27,7 @@ public class MicrosoftListController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PostMapping("lists")
+    @PostMapping("lists/blank")
     public ResponseEntity<SmartListDTO> createBlankList(@RequestBody String name) {
         SmartListDTO dto = controllerService.createList(name);
         return new ResponseEntity<>(dto, HttpStatus.OK);

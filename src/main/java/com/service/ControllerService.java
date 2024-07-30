@@ -10,7 +10,7 @@ import com.util.ConfigLoader;
 import com.dto.MicrosoftListDTO;
 import com.dto.RowDTO;
 import com.dto.SmartListDTO;
-import com.dto.mapper.ModelMapper;
+import com.mapper.ModelMapper;
 import com.dto.request.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -170,5 +170,11 @@ public class ControllerService {
         SmartList sl = microsoftListService.createListFromTemplate(microsoftList, t, request.getListName());
         jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
+    }
+
+    public Object getColumn(ColumnRequest cr) {
+        SmartList sl = microsoftListService.getListByName(microsoftList, cr.getListName());
+        IColumn col = Common.getColumnByName(sl, cr.getColName());
+        return mapper.getColumnToDTOMapper().map(col);
     }
 }

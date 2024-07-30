@@ -3,7 +3,7 @@ package com.config;
 import com.service.JsonService;
 import com.service.MicrosoftListService;
 import com.service.SmartListService;
-import com.dto.mapper.ModelMapper;
+import com.mapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

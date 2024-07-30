@@ -218,7 +218,12 @@
               "type": "DATE_AND_TIME"
             },
             {
-              "choices": [],
+              "choices": [
+                {
+                  "name": "Option 1",
+                  "type": "SINGLE_CHOICE"
+                }
+              ],
               "type": "CHOICE"
             },
             {

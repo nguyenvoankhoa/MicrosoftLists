@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class ChoiceColumnDTO extends BaseColumDTO{
-    private List<ChoiceDTO> choices;
-    private boolean isMultiSelect;
-    private ColumnType type;
+    List<ChoiceDTO> choices;
+    boolean isMultiSelect;
 }

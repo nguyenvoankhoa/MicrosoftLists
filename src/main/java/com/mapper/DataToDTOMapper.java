@@ -1,4 +1,4 @@
-package com.dto.mapper;
+package com.mapper;
 
 import com.model.datatype.*;
 import com.model.datatype.Number;

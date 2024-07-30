@@ -28,9 +28,7 @@ class MicrosoftListsApplicationTests {
     String listPath;
     String templatePath;
     JsonService jsonService;
-
     SmartListService sls;
-
     MicrosoftListService mls;
 
 

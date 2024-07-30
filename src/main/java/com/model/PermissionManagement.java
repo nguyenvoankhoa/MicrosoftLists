@@ -1,7 +1,6 @@
-package com.service;
+package com.model;
 
 import com.model.datatype.Person;
-import com.model.Permission;
 import lombok.Getter;
 import lombok.Setter;
 

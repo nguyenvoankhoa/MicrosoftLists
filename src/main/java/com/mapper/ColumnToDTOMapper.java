@@ -1,4 +1,4 @@
-package com.dto.mapper;
+package com.mapper;
 
 import com.model.column.*;
 import com.model.column.IColumn;
@@ -41,6 +41,7 @@ public class ColumnToDTOMapper {
                 .toList());
         dto.setMultiSelect(choiceColumn.isMultiSelect());
         dto.setType(choiceColumn.getType());
+        dto.setRequire(choiceColumn.isRequire());
         return dto;
     }
 
@@ -49,6 +50,7 @@ public class ColumnToDTOMapper {
         dto.setName(column.getName());
         dto.setHyperLink(column.getDefaultData());
         dto.setType(column.getColumnType());
+        dto.setRequire(column.isRequire());
         return dto;
     }
 
@@ -57,6 +59,7 @@ public class ColumnToDTOMapper {
         dto.setName(column.getName());
         dto.setImage(column.getDefaultData());
         dto.setType(column.getColumnType());
+        dto.setRequire(column.isRequire());
         return dto;
     }
 
@@ -65,6 +68,9 @@ public class ColumnToDTOMapper {
         dto.setNumber(column.getDefaultData());
         dto.setName(column.getName());
         dto.setType(column.getColumnType());
+        dto.setRequire(column.isRequire());
+        dto.setMinVal(column.getMinVal());
+        dto.setMaxVal(column.getMaxVal());
         return dto;
     }
 
@@ -76,6 +82,7 @@ public class ColumnToDTOMapper {
                 .toList());
         dto.setMultiSelect(column.isMultiSelect());
         dto.setType(column.getColumnType());
+        dto.setRequire(column.isRequire());
         return dto;
     }
 
@@ -84,6 +91,9 @@ public class ColumnToDTOMapper {
         dto.setName(column.getName());
         dto.setRating(column.getDefaultData());
         dto.setType(column.getColumnType());
+        dto.setMaxRate(column.getMaxRate());
+        dto.setMinRate(column.getMinRate());
+        dto.setRequire(column.isRequire());
         return dto;
     }
 
@@ -92,6 +102,8 @@ public class ColumnToDTOMapper {
         dto.setName(column.getName());
         dto.setText(column.getDefaultData());
         dto.setType(column.getColumnType());
+        dto.setMaxLength(column.getMaxLength());
+        dto.setRequire(column.isRequire());
         return dto;
     }
 
@@ -100,6 +112,7 @@ public class ColumnToDTOMapper {
         dto.setName(column.getName());
         dto.setDateAndTime(column.getDefaultData());
         dto.setType(column.getColumnType());
+        dto.setRequire(column.isRequire());
         return dto;
     }
 
@@ -108,6 +121,7 @@ public class ColumnToDTOMapper {
         dto.setName(column.getName());
         dto.setData(column.getDefaultData());
         dto.setType(column.getColumnType());
+        dto.setRequire(column.isRequire());
         return dto;
     }
 }

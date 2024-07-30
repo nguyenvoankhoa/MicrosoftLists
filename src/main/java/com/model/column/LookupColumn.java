@@ -1,5 +1,7 @@
 package com.model.column;
 
+import com.util.Common;
+
 import java.util.function.Predicate;
 
 public class LookupColumn extends Column implements IColumn {
@@ -24,9 +26,9 @@ public class LookupColumn extends Column implements IColumn {
     }
 
     @Override
-    public boolean checkConstraint(Object data) {
+    public void checkConstraint(Object data) {
         Predicate<Object> requirePredicate = d -> !isRequire() || d != null;
-        return requirePredicate.test(data);
+        Common.checkValid(requirePredicate.test(data));
     }
 
     @Override

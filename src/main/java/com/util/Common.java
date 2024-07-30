@@ -1,5 +1,6 @@
 package com.util;
 
+import com.exception.ConstraintViolationException;
 import com.exception.ExistException;
 import com.exception.NotFoundException;
 import com.model.Form;
@@ -20,6 +21,11 @@ public class Common {
     private Common() {
     }
 
+    public static void checkValid(boolean b){
+        if(!b){
+            throw new ConstraintViolationException();
+        }
+    }
     public static void checkExist(Object o) {
         if (o != null) {
             throw new ExistException();

@@ -53,7 +53,13 @@ public class SmartListController {
         return new ResponseEntity<>(columnTypes, HttpStatus.OK);
     }
 
-    @PostMapping("columns")
+    @PostMapping("columns/get")
+    public ResponseEntity<Object> getColumn(@RequestBody ColumnRequest request){
+        var column = controllerService.getColumn(request);
+        return new ResponseEntity<>(column, HttpStatus.OK);
+    }
+
+    @PostMapping("columns/create")
     public ResponseEntity<Object> createColumn(@RequestBody AddColumnRequest addReq) {
         var column = controllerService.addColumn(addReq);
         return new ResponseEntity<>(column, HttpStatus.OK);

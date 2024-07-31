@@ -26,7 +26,7 @@ public class SmartListController {
     }
 
     @GetMapping
-    public ResponseEntity<SmartListDTO> getListSorted(@RequestParam(name = "sortBy", required = false) String sortBy,
+    public ResponseEntity<SmartListDTO> getSmartList(@RequestParam(name = "sortBy", required = false) String sortBy,
                                                       @RequestParam(name = "order", required = false) String order,
                                                       @RequestParam(name = "listName") String listName,
                                                       @RequestParam(name = "pageNum", required = false, defaultValue = "0") int pageNum,
@@ -53,22 +53,24 @@ public class SmartListController {
         return new ResponseEntity<>(columnTypes, HttpStatus.OK);
     }
 
-    @PostMapping("columns/get")
-    public ResponseEntity<Object> getColumn(@RequestBody ColumnRequest request){
-        var column = controllerService.getColumn(request);
+    @GetMapping("columns")
+    public ResponseEntity<Object> getColumn(@RequestParam(name = "columnName") String colName,
+                                            @RequestParam(name = "listName") String listName) {
+        var column = controllerService.getColumn(colName, listName);
         return new ResponseEntity<>(column, HttpStatus.OK);
     }
 
-    @PostMapping("columns/create")
+    @PostMapping("columns")
     public ResponseEntity<Object> createColumn(@RequestBody AddColumnRequest addReq) {
         var column = controllerService.addColumn(addReq);
-        return new ResponseEntity<>(column, HttpStatus.OK);
+        return new ResponseEntity<>(column, HttpStatus.CREATED);
     }
 
 
-    @PostMapping("filters")
-    public ResponseEntity<List<Object>> getColumnFilters(@RequestBody ColumnRequest cr) {
-        List<Object> filters = controllerService.getFilters(cr);
+    @GetMapping("filters")
+    public ResponseEntity<List<Object>> getColumnFilters(@RequestParam(name = "columnName") String colName,
+                                                         @RequestParam(name = "listName") String listName) {
+        List<Object> filters = controllerService.getFilters(colName, listName);
         return new ResponseEntity<>(filters, HttpStatus.OK);
     }
 
@@ -80,8 +82,8 @@ public class SmartListController {
     }
 
     @PostMapping("group")
-    public ResponseEntity<Map<Object, List<Row>>> groupByColumn(@RequestBody ColumnRequest cr) {
-        Map<Object, List<Row>> groupedRows = controllerService.groupByColumn(cr);
+    public ResponseEntity<Map<Object, List<RowDTO>>> groupByColumn(@RequestBody ColumnRequest cr) {
+        Map<Object, List<RowDTO>> groupedRows = controllerService.groupByColumn(cr);
         return new ResponseEntity<>(groupedRows, HttpStatus.OK);
     }
 
@@ -123,5 +125,6 @@ public class SmartListController {
         SmartListDTO dto = controllerService.createView(request);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
+
 
 }

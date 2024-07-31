@@ -30,13 +30,13 @@ public class MicrosoftListController {
     @PostMapping("lists/blank")
     public ResponseEntity<SmartListDTO> createBlankList(@RequestBody String name) {
         SmartListDTO dto = controllerService.createList(name);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @PostMapping("lists/from-template")
     public ResponseEntity<SmartListDTO> createListFromTemplate(@RequestBody TemplateToListRequest request) {
         SmartListDTO dto = controllerService.createListFromTemplate(request);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @PostMapping("lists/favourites")
@@ -46,7 +46,7 @@ public class MicrosoftListController {
     }
 
     @PostMapping("lists/save-template")
-    public ResponseEntity<MicrosoftListDTO> saveListToTemplate(@RequestBody TemplateToListRequest request){
+    public ResponseEntity<MicrosoftListDTO> saveListAsTemplate(@RequestBody TemplateToListRequest request){
         MicrosoftListDTO dto = controllerService.saveListToTemplate(request);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }

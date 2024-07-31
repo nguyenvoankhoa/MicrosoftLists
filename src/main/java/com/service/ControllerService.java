@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 public class ControllerService {
@@ -72,9 +73,9 @@ public class ControllerService {
     }
 
 
-    public List<Object> getFilters(ColumnRequest colReq) {
-        SmartList sl = microsoftListService.getListByName(microsoftList, colReq.getListName());
-        return Common.getListFilter(sl, colReq.getColName());
+    public List<Object> getFilters(String colName, String listName) {
+        SmartList sl = microsoftListService.getListByName(microsoftList, listName);
+        return Common.getListFilter(sl, colName);
     }
 
     public List<RowDTO> filterByColumn(FilterRequest filterReq) {
@@ -83,10 +84,19 @@ public class ControllerService {
         return rows.stream().map(mapper::mapRow).toList();
     }
 
-    public Map<Object, List<Row>> groupByColumn(ColumnRequest colReq) {
+    public Map<Object, List<RowDTO>> groupByColumn(ColumnRequest colReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, colReq.getListName());
-        return Common.groupBy(sl, colReq.getColName());
+        Map<Object, List<Row>> groupedRows = Common.groupBy(sl, colReq.getColName());
+
+        return groupedRows.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream()
+                                .map(mapper::mapRow)
+                                .toList()
+                ));
     }
+
 
     public long countByColumn(ColumnRequest colReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, colReq.getListName());
@@ -122,10 +132,7 @@ public class ControllerService {
     public SmartList getPage(String listName, int pageNumber, int pageSize) {
         SmartList sl = microsoftListService.getListByName(microsoftList, listName);
         int fromIndex = pageNumber * pageSize;
-        List<Row> rows = sl.getRows().stream()
-                .skip(fromIndex)
-                .limit(pageSize)
-                .toList();
+        List<Row> rows = sl.getRows().stream().skip(fromIndex).limit(pageSize).toList();
         sl.setRows(rows);
         return sl;
     }
@@ -167,14 +174,17 @@ public class ControllerService {
 
     public SmartListDTO createListFromTemplate(TemplateToListRequest request) {
         Template t = microsoftListService.getTemplateByName(microsoftList, request.getTemplateName());
-        SmartList sl = microsoftListService.createListFromTemplate(microsoftList, t, request.getListName());
+        Common.checkExist(t);
+        SmartList sl = microsoftListService.getListByName(microsoftList, request.getListName());
+        Common.checkNonExist(sl);
+        sl = microsoftListService.createListFromTemplate(microsoftList, t, request.getListName());
         jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
 
     public Object getColumn(String colName, String listName) {
         SmartList sl = microsoftListService.getListByName(microsoftList, listName);
-        IColumn col = Common.getColumnByName(sl, colName);
+        IColumn<?> col = Common.getColumnByName(sl, colName);
         return mapper.getColumnToDTOMapper().map(col);
     }
 
@@ -186,7 +196,7 @@ public class ControllerService {
         Template template = new Template(request.getTemplateName());
         template.setColumns(sl.getColumns());
         microsoftList.getTemplates().add(template);
-        MicrosoftListDTO dto = mapper.mapMicrosoftList(microsoftList);
-        return dto;
+        jsonService.saveToJson(microsoftList, listPath);
+        return mapper.mapMicrosoftList(microsoftList);
     }
 }

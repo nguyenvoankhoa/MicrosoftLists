@@ -30,7 +30,7 @@ public class MicrosoftListService {
         String listName = ml.getFavouriteCollection().stream()
                 .filter(c -> c.equals(name)).findFirst()
                 .orElse(null);
-        Common.checkExist(listName);
+        Common.checkNonExist(listName);
         ml.getFavouriteCollection().add(name);
         return ml;
     }

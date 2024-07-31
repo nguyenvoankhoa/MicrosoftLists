@@ -1,5 +1,6 @@
 package com.service;
 
+import com.exception.ConstraintViolationException;
 import com.factory.ViewFactory;
 import com.model.Form;
 import com.model.Row;
@@ -185,4 +186,14 @@ public class SmartListService {
     }
 
 
+    public Row getRow(SmartList sl, int rowId) {
+        if (rowId >= sl.getRows().size()) {
+            throw new ConstraintViolationException();
+        }
+        return sl.getRows().get(rowId);
+    }
+
+    public void deleteRow(SmartList sl, int rowId) {
+        sl.getRows().remove(rowId);
+    }
 }

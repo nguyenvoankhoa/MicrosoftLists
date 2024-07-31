@@ -199,4 +199,17 @@ public class ControllerService {
         jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapMicrosoftList(microsoftList);
     }
+
+    public RowDTO getRow(int rowId, String listName) {
+        SmartList sl = microsoftListService.getListByName(microsoftList, listName);
+        Common.checkNonExist(sl);
+        Row row = smartListService.getRow(sl, rowId);
+        return mapper.mapRow(row);
+    }
+
+    public void deleteRow(int rowId, String listName) {
+        SmartList sl = microsoftListService.getListByName(microsoftList, listName);
+        Common.checkNonExist(sl);
+        smartListService.deleteRow(sl, rowId);
+    }
 }

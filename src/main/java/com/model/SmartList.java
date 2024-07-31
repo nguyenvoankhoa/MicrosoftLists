@@ -15,6 +15,7 @@ import java.util.*;
 public class SmartList extends Template {
     private List<Form> forms;
     private List<Row> rows;
+
     private boolean isSave;
     private List<View> views;
     private PermissionManagement permissionManagement;

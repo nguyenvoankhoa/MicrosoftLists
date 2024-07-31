@@ -1,6 +1,5 @@
 package com.controller;
 
-import com.model.Row;
 import com.model.column.ColumnType;
 import com.model.view.ViewType;
 import com.service.ControllerService;
@@ -27,10 +26,10 @@ public class SmartListController {
 
     @GetMapping
     public ResponseEntity<SmartListDTO> getSmartList(@RequestParam(name = "sortBy", required = false) String sortBy,
-                                                      @RequestParam(name = "order", required = false) String order,
-                                                      @RequestParam(name = "listName") String listName,
-                                                      @RequestParam(name = "pageNum", required = false, defaultValue = "0") int pageNum,
-                                                      @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                                     @RequestParam(name = "order", required = false) String order,
+                                                     @RequestParam(name = "listName") String listName,
+                                                     @RequestParam(name = "pageNum", required = false, defaultValue = "0") int pageNum,
+                                                     @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
         SmartListDTO dto = controllerService.getSortedAndPagedSmartList(listName, sortBy, order, pageNum, pageSize);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
@@ -39,6 +38,20 @@ public class SmartListController {
     public ResponseEntity<SmartListDTO> addRowData(@RequestBody RowDataRequest request) {
         SmartListDTO dto = controllerService.addRowData(request);
         return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping("rows/{id}")
+    public ResponseEntity<RowDTO> getRowData(@PathVariable("id") int rowId,
+                                             @RequestParam("listName") String listName) {
+        RowDTO dto = controllerService.getRow(rowId, listName);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("rows/{id}")
+    public ResponseEntity deleteRowData(@PathVariable("id") int rowId,
+                                        @RequestParam("listName") String listName) {
+        controllerService.deleteRow(rowId, listName);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("data")
@@ -108,9 +121,9 @@ public class SmartListController {
 
 
     @DeleteMapping("columns")
-    public ResponseEntity<SmartListDTO> removeColumn(ColumnRequest cr) {
-        SmartListDTO dto = controllerService.removeColumn(cr);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+    public ResponseEntity removeColumn(ColumnRequest cr) {
+        controllerService.removeColumn(cr);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundException(ConstraintViolationException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.PRECONDITION_FAILED.value(), ex.getMessage());
-        return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(errorResponse);
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errorResponse);
     }
 }

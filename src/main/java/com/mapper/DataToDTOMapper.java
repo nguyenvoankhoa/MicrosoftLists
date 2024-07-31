@@ -30,14 +30,6 @@ public class DataToDTOMapper {
         return function.apply(data);
     }
 
-    public ChoiceDTO mapChoice(Choice choice) {
-        ChoiceDTO dto = new ChoiceDTO();
-        dto.setName(choice.getName());
-        dto.setShape(choice.getShape());
-        dto.setColor(choice.getColor());
-        dto.setType(choice.getType());
-        return dto;
-    }
 
     public DateAndTimeDTO mapDateAndTime(DateAndTime dateAndTime) {
         DateAndTimeDTO dto = new DateAndTimeDTO();
@@ -62,12 +54,29 @@ public class DataToDTOMapper {
         return dto;
     }
 
+    public ChoiceDTO mapChoice(Choice choice) {
+        ChoiceDTO dto = new ChoiceDTO();
+        dto.setName(choice.getName());
+        dto.setShape(choice.getShape());
+        dto.setColor(choice.getColor());
+        dto.setType(choice.getType());
+        return dto;
+    }
+
     public MultipleChoiceDTO mapMultipleChoice(MultipleChoice multipleChoice) {
         MultipleChoiceDTO dto = new MultipleChoiceDTO();
         dto.setChoices(multipleChoice.getData().stream()
                 .map(this::mapChoice)
                 .toList());
         dto.setType(multipleChoice.getType());
+        return dto;
+    }
+
+    public PersonDTO mapPerson(Person person) {
+        PersonDTO dto = new PersonDTO();
+        dto.setName(person.getName());
+        dto.setImage(person.getImage());
+        dto.setType(person.getType());
         return dto;
     }
 
@@ -88,13 +97,6 @@ public class DataToDTOMapper {
         return dto;
     }
 
-    public PersonDTO mapPerson(Person person) {
-        PersonDTO dto = new PersonDTO();
-        dto.setName(person.getName());
-        dto.setImage(person.getImage());
-        dto.setType(person.getType());
-        return dto;
-    }
 
     public RatingDTO mapRating(Rating rating) {
         RatingDTO dto = new RatingDTO();

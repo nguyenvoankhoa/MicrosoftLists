@@ -1,9 +1,50 @@
 {
   "templates": [
     {
-      "name": "Issue Tracker",
+      "name": "SmartList",
       "columns": [
         {
+          "maxLength": 2147483647,
+          "name": "Title",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "TEXT"
+        },
+        {
+          "name": "Start day",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "DATE_AND_TIME"
+        },
+        {
+          "choices": [
+            {
+              "name": "Option 1",
+              "shape": "ABc",
+              "color": "red",
+              "type": "SINGLE_CHOICE"
+            },
+            {
+              "name": "Option 3",
+              "shape": "ABc",
+              "color": "red",
+              "type": "SINGLE_CHOICE"
+            },
+            {
+              "name": "Option 2",
+              "shape": "ABc",
+              "color": "red",
+              "type": "SINGLE_CHOICE"
+            }
+          ],
+          "isMultiSelect": false,
+          "name": "Session type",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "CHOICE"
+        },
+        {
+          "people": [],
           "isMultiSelect": false,
           "name": "Speaker",
           "isVisible": true,
@@ -11,8 +52,8 @@
           "type": "PERSON"
         },
         {
-          "minVal": 0.0,
-          "maxVal": 0.0,
+          "minVal": 4.9E-324,
+          "maxVal": 1.7976931348623157E308,
           "name": "Price",
           "isVisible": true,
           "isRequire": false,
@@ -29,130 +70,6 @@
           "isVisible": true,
           "isRequire": false,
           "type": "YESNO"
-        },
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        }
-      ]
-    },
-    {
-      "name": "Asset Manager",
-      "columns": [
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        },
-        {
-          "minVal": 0.0,
-          "maxVal": 0.0,
-          "name": "Price",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
-        },
-        {
-          "name": "Link",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "HYPERLINK"
-        },
-        {
-          "name": "Is active",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "YESNO"
-        },
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        }
-      ]
-    },
-    {
-      "name": "Gift ideas",
-      "columns": [
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        },
-        {
-          "minVal": 0.0,
-          "maxVal": 0.0,
-          "name": "Price",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
-        },
-        {
-          "name": "Link",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "HYPERLINK"
-        },
-        {
-          "name": "Is active",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "YESNO"
-        },
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        }
-      ]
-    },
-    {
-      "name": "Content scheduler",
-      "columns": [
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        },
-        {
-          "minVal": 0.0,
-          "maxVal": 0.0,
-          "name": "Price",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
-        },
-        {
-          "name": "Link",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "HYPERLINK"
-        },
-        {
-          "name": "Is active",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "YESNO"
-        },
-        {
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
         }
       ]
     }
@@ -221,6 +138,8 @@
               "choices": [
                 {
                   "name": "Option 1",
+                  "shape": "ABc",
+                  "color": "red",
                   "type": "SINGLE_CHOICE"
                 }
               ],
@@ -330,8 +249,88 @@
       "permissionManagement": {
         "map": {}
       },
-      "name": "\"Senccon list\"",
+      "name": "Test New",
       "columns": []
+    },
+    {
+      "forms": [],
+      "rows": [],
+      "isSave": false,
+      "views": [],
+      "permissionManagement": {
+        "map": {}
+      },
+      "name": "New list",
+      "columns": [
+        {
+          "maxLength": 2147483647,
+          "name": "Title",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "TEXT"
+        },
+        {
+          "name": "Start day",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "DATE_AND_TIME"
+        },
+        {
+          "choices": [
+            {
+              "name": "Option 1",
+              "shape": "ABc",
+              "color": "red",
+              "type": "SINGLE_CHOICE"
+            },
+            {
+              "name": "Option 3",
+              "shape": "ABc",
+              "color": "red",
+              "type": "SINGLE_CHOICE"
+            },
+            {
+              "name": "Option 2",
+              "shape": "ABc",
+              "color": "red",
+              "type": "SINGLE_CHOICE"
+            }
+          ],
+          "isMultiSelect": false,
+          "name": "Session type",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "CHOICE"
+        },
+        {
+          "people": [],
+          "isMultiSelect": false,
+          "name": "Speaker",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "PERSON"
+        },
+        {
+          "minVal": 4.9E-324,
+          "maxVal": 1.7976931348623157E308,
+          "name": "Price",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "NUMBER"
+        },
+        {
+          "name": "Link",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "HYPERLINK"
+        },
+        {
+          "name": "Is active",
+          "isVisible": true,
+          "isRequire": false,
+          "type": "YESNO"
+        }
+      ]
     }
   ],
   "favouriteCollection": []

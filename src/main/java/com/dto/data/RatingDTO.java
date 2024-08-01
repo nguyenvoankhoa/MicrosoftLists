@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RatingDTO {
+public class RatingDTO  extends  BaseDataDTO{
     private double rate;
     private ColumnType type;
 

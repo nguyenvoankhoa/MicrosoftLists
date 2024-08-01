@@ -10,17 +10,17 @@ import java.util.Map;
 public class DataFactory {
     private final Map<ColumnType, IData> factory = new EnumMap<>(ColumnType.class);
 
-    public DataFactory() {
-        factory.put(ColumnType.TEXT, new Text());
-        factory.put(ColumnType.DATE_AND_TIME, new DateAndTime());
-        factory.put(ColumnType.NUMBER, new Number());
-        factory.put(ColumnType.YESNO, new YesNo());
-        factory.put(ColumnType.CHOICE, new MultipleChoice());
-        factory.put(ColumnType.HYPERLINK, new HyperLink());
-        factory.put(ColumnType.IMAGE, new Image());
-        factory.put(ColumnType.LOOKUP, new Lookup());
-        factory.put(ColumnType.PERSON, new MultiplePerson());
-        factory.put(ColumnType.SINGLE_CHOICE, new Choice());
+    public DataFactory(String colName) {
+        factory.put(ColumnType.TEXT, Text.builder().colName(colName).build());
+        factory.put(ColumnType.DATE_AND_TIME, DateAndTime.builder().colName(colName).build());
+        factory.put(ColumnType.NUMBER, Number.builder().colName(colName).build());
+        factory.put(ColumnType.YESNO, YesNo.builder().colName(colName).build());
+        factory.put(ColumnType.MULTIPLE_CHOICE, new MultipleChoice(colName));
+        factory.put(ColumnType.CHOICE, Choice.builder().colName(colName).build());
+        factory.put(ColumnType.HYPERLINK, HyperLink.builder().colName(colName).build());
+        factory.put(ColumnType.IMAGE, new Image(colName));
+        factory.put(ColumnType.PERSON, Person.builder().colName(colName).build());
+        factory.put(ColumnType.MULTIPLE_PERSON, new MultiplePerson(colName));
     }
 
 

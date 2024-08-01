@@ -9,23 +9,30 @@ import java.util.List;
 
 @Getter
 @Setter
-public class MultipleChoice implements IData<List<Choice>> {
-    List<Choice> choices;
+public class MultipleChoice extends BaseData  implements IData<MultipleChoice> {
+    private List<Choice> choices;
 
-    private ColumnType type = ColumnType.CHOICE;
+    private final ColumnType type = ColumnType.MULTIPLE_CHOICE;
 
-    public MultipleChoice() {
+    public MultipleChoice(String colName) {
+        super(colName);
         this.choices = new ArrayList<>();
     }
 
-    @Override
-    public List<Choice> getData() {
-        return choices;
+    public MultipleChoice(String colName, List<Choice> choices) {
+        super(colName);
+        this.choices = choices;
     }
 
     @Override
-    public void setData(List<Choice> data) {
-        setChoices(data);
+    public MultipleChoice getData() {
+        return this;
+    }
+
+    @Override
+    public void setData(MultipleChoice data) {
+        setChoices(data.getChoices());
+        setColName(data.getColName());
     }
 
     @Override

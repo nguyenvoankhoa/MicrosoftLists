@@ -1,21 +1,28 @@
 package com.model.datatype;
 
 import com.model.column.ColumnType;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Comparator;
 
-@Setter
-@Getter
-@NoArgsConstructor
-public class Image implements IData<Image>, Comparator<Image> {
+@Data
+@SuperBuilder
+public class Image extends BaseData implements IData<Image>, Comparator<Image> {
     private byte[] img;
     private int size;
-    private ColumnType type = ColumnType.HYPERLINK;
+    private final ColumnType type = ColumnType.HYPERLINK;
 
-    public Image(byte[] img) {
+    public Image(String colName) {
+        super(colName);
+        this.img = new byte[8];
+    }
+
+    public Image(String colName, byte[] img) {
+        super(colName);
         this.img = img;
     }
 
@@ -27,6 +34,7 @@ public class Image implements IData<Image>, Comparator<Image> {
     @Override
     public void setData(Image data) {
         setImg(data.getImg());
+        setColName(data.getColName());
     }
 
     @Override

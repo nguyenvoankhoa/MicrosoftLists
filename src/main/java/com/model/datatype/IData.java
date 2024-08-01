@@ -10,4 +10,6 @@ public interface IData<T> {
     Object getImportantData();
 
     ColumnType getType();
+
+    void setColName(String colName);
 }

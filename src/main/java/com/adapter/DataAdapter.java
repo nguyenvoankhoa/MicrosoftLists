@@ -12,20 +12,19 @@ import java.util.Optional;
 
 public class DataAdapter implements JsonSerializer<IData<?>>, JsonDeserializer<IData<?>> {
     private static final Map<ColumnType, Class<? extends IData<?>>> typeRegistry = new EnumMap<>(ColumnType.class);
-    private static final Map<ColumnType, JsonDeserializer<? extends IData<?>>> deserializerRegistry = new EnumMap<>(ColumnType.class);
 
     static {
         typeRegistry.put(ColumnType.TEXT, Text.class);
-        typeRegistry.put(ColumnType.CHOICE, MultipleChoice.class);
+        typeRegistry.put(ColumnType.CHOICE, Choice.class);
         typeRegistry.put(ColumnType.DATE_AND_TIME, DateAndTime.class);
         typeRegistry.put(ColumnType.HYPERLINK, HyperLink.class);
         typeRegistry.put(ColumnType.IMAGE, Image.class);
         typeRegistry.put(ColumnType.NUMBER, Number.class);
-        typeRegistry.put(ColumnType.PERSON, MultiplePerson.class);
+        typeRegistry.put(ColumnType.PERSON, Person.class);
         typeRegistry.put(ColumnType.AVERAGE_RATING, Rating.class);
         typeRegistry.put(ColumnType.YESNO, YesNo.class);
-        deserializerRegistry.put(ColumnType.CHOICE, new ChoiceDeserializer());
-        deserializerRegistry.put(ColumnType.PEOPLE, new PersonDeserializer());
+        typeRegistry.put(ColumnType.MULTIPLE_PERSON, MultiplePerson.class);
+        typeRegistry.put(ColumnType.MULTIPLE_CHOICE, MultipleChoice.class);
     }
 
     @Override
@@ -39,13 +38,8 @@ public class DataAdapter implements JsonSerializer<IData<?>>, JsonDeserializer<I
     public IData<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
         ColumnType type = ColumnType.valueOf(jsonObject.get("type").getAsString());
-
-        return Optional.ofNullable(deserializerRegistry.get(type))
-                .map(deserializer -> deserializer.deserialize(json, typeOfT, context))
-                .orElseGet(() -> {
-                    Class<? extends IData<?>> clazz = Optional.ofNullable(typeRegistry.get(type))
-                            .orElseThrow(() -> new JsonParseException("Unknown type: " + type));
-                    return context.deserialize(jsonObject, clazz);
-                });
+        Class<? extends IData<?>> clazz = Optional.ofNullable(typeRegistry.get(type))
+                .orElseThrow(() -> new JsonParseException("Unknown type: " + type));
+        return context.deserialize(jsonObject, clazz);
     }
 }

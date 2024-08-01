@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TextDTO {
+public class TextDTO  extends  BaseDataDTO{
     private String str;
     private ColumnType type;
 }

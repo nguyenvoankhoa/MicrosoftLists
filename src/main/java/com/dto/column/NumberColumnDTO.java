@@ -1,13 +1,13 @@
 package com.dto.column;
 
-import com.model.datatype.Number;
+import com.dto.data.NumberDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class NumberColumnDTO extends BaseColumDTO{
-    Number number;
+    NumberDTO number;
     double minVal;
     double maxVal;
 }

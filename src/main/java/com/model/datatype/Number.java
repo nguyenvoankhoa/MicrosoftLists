@@ -1,23 +1,25 @@
 package com.model.datatype;
 
 import com.model.column.ColumnType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Comparator;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Number implements IData<Number>, Comparator<Number> {
+@Data
+@SuperBuilder
+public class Number extends BaseData implements IData<Number>, Comparator<Number> {
     private double num;
     private byte[] icon;
-    private ColumnType type = ColumnType.NUMBER;
-    public Number(double num) {
-        this.num = num;
+    private final ColumnType type = ColumnType.NUMBER;
+
+    public Number(String colName, String... arg) {
+        super(colName);
+        if (arg.length > 0) {
+            this.num = Double.parseDouble(arg[0]);
+            this.icon = arg[0].getBytes();
+        }
+
     }
 
     @Override
@@ -29,6 +31,7 @@ public class Number implements IData<Number>, Comparator<Number> {
     public void setData(Number data) {
         setNum(data.getNum());
         setIcon(data.getIcon());
+        setColName(data.getColName());
     }
 
     @Override

@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AddSingleDataRequest extends BaseRequest{
+public class SingleCellRequestDTO extends BaseRequest{
     String colName;
     int rowId;
-    Object data;
+    String data;
 }

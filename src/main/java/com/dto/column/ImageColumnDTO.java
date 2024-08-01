@@ -1,12 +1,12 @@
 package com.dto.column;
 
-import com.model.datatype.Image;
+import com.dto.data.ImageDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class ImageColumnDTO extends BaseColumDTO{
-    Image image;
+    ImageDTO image;
 }
 

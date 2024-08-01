@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -51,6 +52,12 @@ public class ControllerService {
         return mapper.mapMicrosoftList(microsoftList);
     }
 
+    public List<SmartListDTO> getAllLists() {
+        return microsoftList.getListCollection().stream()
+                .map(mapper::mapSmartList)
+                .toList();
+    }
+
     public MicrosoftListDTO addFavouriteList(String name) {
         MicrosoftList ml = microsoftListService.addFavourite(microsoftList, name);
         jsonService.saveToJson(ml, listPath);
@@ -65,9 +72,12 @@ public class ControllerService {
     }
 
 
-    public Object addColumn(AddColumnRequest addReq) {
+    public Object addColumn(CreateColumnRequestDTO addReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, addReq.getListName());
-        IColumn<?> column = smartListService.createNewColumn(sl, addReq.getColType(), addReq.getColName());
+        IColumn<?> column = smartListService
+                .createNewColumn(sl, addReq.getColType(), addReq.getColName(), addReq.isAllowDefault());
+        Optional.ofNullable(addReq.getData())
+                .ifPresent(column::setDefaultData);
         jsonService.saveToJson(microsoftList, listPath);
         return mapper.getColumnToDTOMapper().map(column);
     }
@@ -78,13 +88,13 @@ public class ControllerService {
         return Common.getListFilter(sl, colName);
     }
 
-    public List<RowDTO> filterByColumn(FilterRequest filterReq) {
+    public List<RowDTO> filterByColumn(FilterRequestDTO filterReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, filterReq.getListName());
         List<Row> rows = Common.filter(sl, filterReq.getColName(), filterReq.getFilter());
         return rows.stream().map(mapper::mapRow).toList();
     }
 
-    public Map<Object, List<RowDTO>> groupByColumn(ColumnRequest colReq) {
+    public Map<Object, List<RowDTO>> groupByColumn(ColumnRequestDTO colReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, colReq.getListName());
         Map<Object, List<Row>> groupedRows = Common.groupBy(sl, colReq.getColName());
 
@@ -98,28 +108,29 @@ public class ControllerService {
     }
 
 
-    public long countByColumn(ColumnRequest colReq) {
+    public long countByColumn(ColumnRequestDTO colReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, colReq.getListName());
         return Common.count(sl, colReq.getColName());
     }
 
-    public SmartListDTO moveLeft(ColumnRequest colReq) {
+    public SmartListDTO moveLeft(ColumnRequestDTO colReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, colReq.getListName());
         sl = smartListService.moveLeft(sl, colReq.getColName());
         jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
 
-    public SmartListDTO moveRight(ColumnRequest colReq) {
+    public SmartListDTO moveRight(ColumnRequestDTO colReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, colReq.getListName());
         sl = smartListService.moveRight(sl, colReq.getColName());
         jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
 
-    public SmartListDTO addSingleData(AddSingleDataRequest request) {
+    public SmartListDTO addCellData(SingleCellRequestDTO request) {
         SmartList sl = microsoftListService.getListByName(microsoftList, request.getListName());
-        sl = smartListService.addDataSimple(sl, request.getColName(), request.getRowId(), request.getData());
+        sl = smartListService
+                .addCellData(sl, request.getColName(), request.getRowId(), request.getData());
         jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
@@ -145,7 +156,7 @@ public class ControllerService {
         return mapper.mapSmartList(list);
     }
 
-    public SmartListDTO createView(CreateViewRequest request) {
+    public SmartListDTO createView(CreateViewRequestDTO request) {
         SmartList sl = microsoftListService.getListByName(microsoftList, request.getListName());
         smartListService.createView(sl, request.getViewType(), request.getData());
         jsonService.saveToJson(microsoftList, listPath);
@@ -154,8 +165,8 @@ public class ControllerService {
 
     public SmartListDTO addRowData(RowDataRequest request) {
         SmartList sl = microsoftListService.getListByName(microsoftList, request.getListName());
-        Map<String, Object> mData = new HashMap<>();
-        for (AddDataRequest req : request.getRowData()) {
+        Map<String, String> mData = new HashMap<>();
+        for (AddDataRequestDTO req : request.getRowData()) {
             mData.put(req.getColName(), req.getData());
         }
         sl = smartListService.addRowData(sl, mData);
@@ -164,7 +175,7 @@ public class ControllerService {
     }
 
 
-    public SmartListDTO removeColumn(ColumnRequest cr) {
+    public SmartListDTO removeColumn(ColumnRequestDTO cr) {
         SmartList sl = microsoftListService.getListByName(microsoftList, cr.getListName());
         sl = smartListService.removeColumn(sl, cr.getColName());
         jsonService.saveToJson(microsoftList, listPath);
@@ -172,12 +183,10 @@ public class ControllerService {
     }
 
 
-    public SmartListDTO createListFromTemplate(TemplateToListRequest request) {
+    public SmartListDTO createListFromTemplate(TemplateToListRequestDTO request) {
         Template t = microsoftListService.getTemplateByName(microsoftList, request.getTemplateName());
-        Common.checkExist(t);
-        SmartList sl = microsoftListService.getListByName(microsoftList, request.getListName());
-        Common.checkNonExist(sl);
-        sl = microsoftListService.createListFromTemplate(microsoftList, t, request.getListName());
+        Common.checkNonExist(t);
+        SmartList sl = microsoftListService.createListFromTemplate(microsoftList, t, request.getListName());
         jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }
@@ -188,7 +197,7 @@ public class ControllerService {
         return mapper.getColumnToDTOMapper().map(col);
     }
 
-    public MicrosoftListDTO saveListToTemplate(TemplateToListRequest request) {
+    public MicrosoftListDTO saveListToTemplate(TemplateToListRequestDTO request) {
         SmartList sl = microsoftListService.getListByName(microsoftList, request.getListName());
         Common.checkNonExist(sl);
         Template t = microsoftListService.getTemplateByName(microsoftList, request.getTemplateName());

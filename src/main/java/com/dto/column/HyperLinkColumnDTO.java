@@ -1,12 +1,12 @@
 package com.dto.column;
 
-import com.model.datatype.HyperLink;
+import com.dto.data.HyperLinkDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class HyperLinkColumnDTO extends BaseColumDTO {
-    HyperLink hyperLink;
+    HyperLinkDTO hyperLink;
 }
 

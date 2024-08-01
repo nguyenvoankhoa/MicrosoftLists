@@ -1,23 +1,23 @@
 package com.model.datatype;
 
 import com.model.column.ColumnType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Comparator;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class HyperLink implements IData<HyperLink>, Comparator<HyperLink> {
+@SuperBuilder
+public class HyperLink extends BaseData implements IData<HyperLink>, Comparator<HyperLink> {
     private String link;
-    private ColumnType type = ColumnType.HYPERLINK;
+    private String displayText;
+    private final ColumnType type = ColumnType.HYPERLINK;
 
-    public HyperLink(String link) {
-        this.link = link;
+    public HyperLink(String colName, String... args) {
+        super(colName);
+        this.link = args[0];
+        this.displayText = args[1];
     }
 
     @Override
@@ -28,6 +28,7 @@ public class HyperLink implements IData<HyperLink>, Comparator<HyperLink> {
     @Override
     public void setData(HyperLink data) {
         setLink(data.getLink());
+        setColName(data.getColName());
     }
 
     @Override

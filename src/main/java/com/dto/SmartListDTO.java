@@ -9,8 +9,6 @@ import java.util.List;
 @Setter
 public class SmartListDTO {
     String name;
-    List<RowDTO> rows;
     List<Object> columns;
-
-
+    List<RowDTO> rows;
 }

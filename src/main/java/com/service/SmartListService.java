@@ -17,21 +17,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Component
 public class SmartListService {
-
-
-    public SmartList createFormByColumnName(SmartList sl, List<String> columns, String fName) {
-        List<IColumn<?>> columnList = columns.stream().map(name -> {
-            IColumn<?> column = Common.getColumnByName(sl, name);
-            Common.checkNonExist(column);
-            return column;
-        }).collect(Collectors.toList());
-        return createForm(sl, columnList, fName);
-    }
 
     public SmartList createForm(SmartList sl, List<IColumn<?>> columns, String name) {
         Form form = new Form(sl, columns, name);
@@ -43,11 +32,11 @@ public class SmartListService {
     public IColumn createNewColumn(SmartList sl, ColumnType type, String name) {
         IColumn c = Common.getColumnByName(sl, name);
         Common.checkExist(c);
-        ColumnFactory columnFactory = new ColumnFactory(name);
+        ColumnFactory columnFactory = new ColumnFactory(name, type);
         IColumn<?> column = columnFactory.getColumn(type);
         sl.getColumns().add(column);
         for (Row row : sl.getRows()) {
-            DataFactory df = new DataFactory();
+            DataFactory df = new DataFactory(column.getName());
             row.getIDataList().add(df.createData(column.getColumnType()));
         }
         return column;
@@ -66,7 +55,7 @@ public class SmartListService {
         sl.getRows().add(newRow);
         List<IData> rowData = newRow.getIDataList();
         for (IColumn<?> column : sl.getColumns()) {
-            DataFactory df = new DataFactory();
+            DataFactory df = new DataFactory(column.getName());
             rowData.add(df.createData(column.getColumnType()));
         }
         return sl.getRows().size() - 1;
@@ -78,35 +67,13 @@ public class SmartListService {
         return sl;
     }
 
-    public SmartList addDataSimple(SmartList sl, String name, int rId, Object data) {
+    public SmartList addCellData(SmartList sl, String name, int rId, String data) {
         IColumn<?> column = Common.getColumnByName(sl, name);
         Common.checkNonExist(column);
-        Object processedData;
-        if (checkSameType(column, data)) {
-            processedData = column.createSimpleData(data);
-            column.checkConstraint(processedData);
-        } else {
-            List<Object> dataList = convertToList(data);
-            column.checkConstraint(dataList);
-            processedData = column.createSimpleData(dataList);
-        }
-        return addData(sl, rId, processedData, column);
+        Object value = column.handleCreateData(data, name);
+        column.checkConstraint(value);
+        return addData(sl, rId, value, column);
     }
-
-
-    public boolean checkSameType(IColumn<?> a, Object b) {
-        boolean bothAreLists = a.getDefaultData() instanceof List && b instanceof List;
-        boolean bothAreNotList = !(a.getDefaultData() instanceof List) && !(b instanceof List);
-        return bothAreLists || bothAreNotList;
-    }
-
-
-    public List<Object> convertToList(Object data) {
-        ArrayList<Object> list = new ArrayList<>();
-        list.add(data);
-        return list;
-    }
-
 
     public Object getData(SmartList sl, String name, int rId) {
         int cId = Common.getColumnIndexByName(sl, name);
@@ -114,32 +81,10 @@ public class SmartListService {
     }
 
 
-    public boolean addRowData(SmartList sl, IData<?>... dList) {
-        if (checkSize(sl, dList.length)) {
-            int rId = createNewRow(sl);
-            addDataMatchColumns(sl, rId, dList);
-            return true;
-        }
-        return false;
-    }
-
-    private void addDataMatchColumns(SmartList sl, int rId, IData<?>[] dList) {
-        int[] dataIndex = {0};
-        sl.getColumns().stream().filter(column -> dataIndex[0] < dList.length).filter(column -> column.getColumnType().equals(dList[dataIndex[0]].getType())).forEach(column -> {
-            addDataSimple(sl, column.getName(), rId, dList[dataIndex[0]]);
-            dataIndex[0]++;
-        });
-    }
-
-    public boolean checkSize(SmartList sl, int size) {
-        return size <= sl.getColumns().size();
-    }
-
-
-    public SmartList addRowData(SmartList sl, Map<String, Object> mData) {
+    public SmartList addRowData(SmartList sl, Map<String, String> mData) {
         int rId = createNewRow(sl);
-        for (Map.Entry<String, Object> entry : mData.entrySet()) {
-            addDataSimple(sl, entry.getKey(), rId, entry.getValue());
+        for (Map.Entry<String, String> entry : mData.entrySet()) {
+            addCellData(sl, entry.getKey(), rId, entry.getValue());
         }
         return sl;
     }

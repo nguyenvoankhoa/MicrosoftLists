@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ImageDTO {
+public class ImageDTO  extends  BaseDataDTO{
     private byte[] img;
     private int size;
     private ColumnType type;

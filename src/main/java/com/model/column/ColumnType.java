@@ -2,12 +2,11 @@ package com.model.column;
 
 public enum ColumnType {
     TEXT,
+    MULTIPLE_CHOICE,
     CHOICE,
-    SINGLE_CHOICE,
     DATE_AND_TIME,
-    MULTIPLE_LINES,
     PERSON,
-    PEOPLE,
+    MULTIPLE_PERSON,
     NUMBER,
     YESNO,
     HYPERLINK,

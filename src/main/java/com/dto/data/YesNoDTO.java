@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class YesNoDTO {
+public class YesNoDTO extends BaseDataDTO {
     private boolean isChosen;
     private ColumnType type;
 }

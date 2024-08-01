@@ -1,10 +1,13 @@
 package com.model.column;
 
+import com.model.datatype.Number;
 import com.model.datatype.Rating;
 import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 
 @Getter
@@ -16,9 +19,9 @@ public class RatingColumn extends Column implements IColumn<Rating> {
 
     private double minRate = 0;
 
-    public RatingColumn(String name) {
+    public RatingColumn(String name, ColumnType columnType) {
         super(name);
-        setType(ColumnType.AVERAGE_RATING);
+        setType(columnType);
     }
 
     @Override
@@ -27,19 +30,26 @@ public class RatingColumn extends Column implements IColumn<Rating> {
     }
 
     @Override
+    public void setDefaultData(String str) {
+        setRating(Rating.builder().rate(Double.parseDouble(str)).build());
+    }
+
+    @Override
     public ColumnType getColumnType() {
         return getType();
     }
 
     @Override
-    public void checkConstraint(Object data) {
-        Predicate<Rating> requirePredicate = d -> !isRequire() || d != null;
-        Predicate<Rating> minMaxPredicate = d -> d.getRate() <= maxRate && d.getRate() >= minRate;
-        Common.checkValid(requirePredicate.and(minMaxPredicate).test((Rating) data));
+    public boolean checkConstraint(Object data) {
+        if (isRequire() && data == null) return false;
+        Number num = (Number) data;
+        return num.getNum() >= getMinRate() && num.getNum() <= getMaxRate();
     }
 
     @Override
-    public Rating createSimpleData(Object data) {
-        return new Rating((Double) data);
+    public Object handleCreateData(String data, String colName) {
+        String[] arr = data.split(";");
+        return new Rating(colName, arr);
     }
+
 }

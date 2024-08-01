@@ -57,7 +57,7 @@ public class ModelMapper {
 
     public RowDTO mapRow(Row row) {
         RowDTO dto = new RowDTO();
-        dto.setIDataList(row.getIDataList().stream()
+        dto.setRow(row.getIDataList().stream()
                 .map(dataToDTOMapper::map)
                 .toList());
         return dto;

@@ -1,27 +1,22 @@
 package com.model.column;
 
 import com.model.datatype.DateAndTime;
-import com.util.Common;
+import com.util.DataConvert;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 @Setter
 @Getter
 public class TimeColumn extends Column implements IColumn<DateAndTime> {
-    private static final Logger LOGGER = Logger.getLogger(TimeColumn.class.getName());
+
     private DateAndTime dateAndTime;
 
-    public TimeColumn(String name) {
+    public TimeColumn(String name, ColumnType columnType) {
         super(name);
-        setType(ColumnType.DATE_AND_TIME);
+        setType(columnType);
     }
 
     @Override
@@ -30,30 +25,24 @@ public class TimeColumn extends Column implements IColumn<DateAndTime> {
     }
 
     @Override
+    public void setDefaultData(String str) {
+        DataConvert dc = new DataConvert();
+        Date date = dc.convertStringToDate(str);
+        setDateAndTime(DateAndTime.builder().date(date).build());
+    }
+
+    @Override
     public ColumnType getColumnType() {
         return getType();
     }
 
     @Override
-    public void checkConstraint(Object data) {
-        Predicate<DateAndTime> requirePredicate = d -> !isRequire() || d != null;
-        Common.checkValid(requirePredicate.test((DateAndTime) data));
+    public boolean checkConstraint(Object data) {
+        return isRequire() && data == null;
     }
 
     @Override
-    public DateAndTime createSimpleData(Object data) {
-        if (data instanceof String dateString) {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                Date date = formatter.parse(dateString);
-                return new DateAndTime(date);
-            } catch (ParseException e) {
-                LOGGER.log(Level.SEVERE, "Invalid date format: {}", dateString);
-                return null;
-            }
-        } else if (data instanceof Date date) {
-            return new DateAndTime(date);
-        }
-        return null;
+    public Object handleCreateData(String data, String colName) {
+        return new DateAndTime(colName, data);
     }
 }

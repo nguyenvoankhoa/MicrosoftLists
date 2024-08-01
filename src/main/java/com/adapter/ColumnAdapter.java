@@ -20,6 +20,8 @@ public class ColumnAdapter implements JsonSerializer<IColumn<?>>, JsonDeserializ
         typeRegistry.put(ColumnType.DATE_AND_TIME, TimeColumn.class);
         typeRegistry.put(ColumnType.NUMBER, NumberColumn.class);
         typeRegistry.put(ColumnType.HYPERLINK, HyperLinkColumn.class);
+        typeRegistry.put(ColumnType.MULTIPLE_CHOICE, ChoiceColumn.class);
+        typeRegistry.put(ColumnType.MULTIPLE_PERSON, PersonColumn.class);
     }
 
     @Override

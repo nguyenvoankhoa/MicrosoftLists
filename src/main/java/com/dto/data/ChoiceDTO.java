@@ -6,11 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChoiceDTO {
+public class ChoiceDTO extends BaseDataDTO{
     private String name;
-    private String shape;
-    private String color;
     private ColumnType type;
-
 }
 

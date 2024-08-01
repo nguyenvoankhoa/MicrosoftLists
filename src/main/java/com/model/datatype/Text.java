@@ -1,21 +1,20 @@
 package com.model.datatype;
 
 import com.model.column.ColumnType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Comparator;
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class Text implements IData<Text>, Comparator<Text> {
+@Data
+@SuperBuilder
+public class Text extends BaseData implements IData<Text>, Comparator<Text> {
     private String str;
-    private ColumnType type = ColumnType.TEXT;
+    private final ColumnType type = ColumnType.TEXT;
 
-    public Text(String text) {
-        this.str = text;
+    public Text(String colName, String str) {
+        super(colName);
+        this.str = str;
     }
 
     @Override
@@ -26,6 +25,7 @@ public class Text implements IData<Text>, Comparator<Text> {
     @Override
     public void setData(Text data) {
         setStr(data.getStr());
+        setColName(data.getColName());
     }
 
     @Override

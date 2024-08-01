@@ -10,23 +10,30 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class MultiplePerson implements IData<List<Person>> {
-    List<Person> people;
+public class MultiplePerson extends BaseData implements IData<MultiplePerson> {
+    private List<Person> people;
 
-    private ColumnType type = ColumnType.PEOPLE;
+    private final ColumnType type = ColumnType.MULTIPLE_PERSON;
 
-    public MultiplePerson() {
+    public MultiplePerson(String colName) {
+        super(colName);
         this.people = new ArrayList<>();
     }
 
-    @Override
-    public List<Person> getData() {
-        return this.people;
+    public MultiplePerson(String colName, List<Person> people) {
+        super(colName);
+        this.people = people;
     }
 
     @Override
-    public void setData(List<Person> data) {
-        setPeople(data);
+    public MultiplePerson getData() {
+        return this;
+    }
+
+    @Override
+    public void setData(MultiplePerson data) {
+        setPeople(data.getPeople());
+        setColName(data.getColName());
     }
 
 

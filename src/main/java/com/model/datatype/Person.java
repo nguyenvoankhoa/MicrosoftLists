@@ -1,30 +1,24 @@
 package com.model.datatype;
 
 import com.model.column.ColumnType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Comparator;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class Person implements IData<Person>, Comparator<Person> {
+@Data
+@SuperBuilder
+public class Person extends BaseData  implements IData<Person>, Comparator<Person> {
     private String name;
     private byte[] image;
-    private ColumnType type = ColumnType.PERSON;
+    private final ColumnType type = ColumnType.PERSON;
 
-    public Person(String name, byte[] image) {
+    public Person(String name, byte[] image, String colName) {
+        super(colName);
         this.name = name;
         this.image = image;
     }
 
-    public Person(String name) {
-        this.name = name;
-    }
 
     @Override
     public Person getData() {
@@ -35,6 +29,7 @@ public class Person implements IData<Person>, Comparator<Person> {
     public void setData(Person data) {
         setName(data.getName());
         setImage(data.getImage());
+        setColName(data.getColName());
     }
 
     @Override

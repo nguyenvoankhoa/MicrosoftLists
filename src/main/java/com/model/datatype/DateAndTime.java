@@ -1,30 +1,23 @@
 package com.model.datatype;
 
 import com.model.column.ColumnType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.util.DataConvert;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-import java.sql.Time;
 import java.util.Comparator;
 import java.util.Date;
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class DateAndTime implements IData<DateAndTime>, Comparator<DateAndTime> {
+@Data
+@SuperBuilder
+public class DateAndTime extends BaseData implements IData<DateAndTime>, Comparator<DateAndTime> {
     private Date date;
-    private Time time;
-    private ColumnType type = ColumnType.DATE_AND_TIME;
+    private final ColumnType type = ColumnType.DATE_AND_TIME;
 
-    public DateAndTime(Date date) {
-        this.date = date;
-    }
-
-    public DateAndTime(Date date, Time time) {
-        this.date = date;
-        this.time = time;
+    public DateAndTime(String colName, String data) {
+        super(colName);
+        DataConvert dc = new DataConvert();
+        this.date = dc.convertStringToDate(data);
     }
 
     @Override
@@ -35,7 +28,7 @@ public class DateAndTime implements IData<DateAndTime>, Comparator<DateAndTime> 
     @Override
     public void setData(DateAndTime data) {
         setDate(data.getDate());
-        setTime(data.getTime());
+        setColName(data.getColName());
     }
 
     @Override
@@ -43,10 +36,10 @@ public class DateAndTime implements IData<DateAndTime>, Comparator<DateAndTime> 
         return this.date;
     }
 
+
     @Override
     public int compare(DateAndTime o1, DateAndTime o2) {
         return Comparator.comparing(DateAndTime::getDate)
-                .thenComparing(DateAndTime::getTime)
                 .compare(o2, o1);
     }
 }

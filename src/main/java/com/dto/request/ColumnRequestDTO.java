@@ -3,6 +3,6 @@ package com.dto.request;
 import lombok.Data;
 
 @Data
-public class ColumnRequest extends BaseRequest{
+public class ColumnRequestDTO extends BaseRequest{
     String colName;
 }

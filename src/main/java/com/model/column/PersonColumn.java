@@ -1,30 +1,32 @@
 package com.model.column;
 
+import com.model.datatype.MultiplePerson;
 import com.model.datatype.Person;
-import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 public class PersonColumn extends Column implements IColumn<List<Person>> {
-    private List<Person> people;
-    private boolean isMultiSelect;
 
-    public PersonColumn(String name) {
+    public PersonColumn(String name, ColumnType columnType) {
         super(name);
-        isMultiSelect = false;
-        this.people = new ArrayList<>();
-        setType(ColumnType.PERSON);
+        setType(columnType);
     }
 
     @Override
     public List<Person> getDefaultData() {
-        return people;
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void setDefaultData(String str) {
+        //
     }
 
     @Override
@@ -33,17 +35,25 @@ public class PersonColumn extends Column implements IColumn<List<Person>> {
     }
 
     @Override
-    public void checkConstraint(Object data) {
-        Predicate<List<Person>> requirePredicate = d -> !isRequire() || !d.isEmpty();
-        Predicate<List<Person>> multiSelectPredicate = d -> isMultiSelect() || d.size() <= 1;
-        Common.checkValid(requirePredicate.and(multiSelectPredicate).test((List<Person>) data));
+    public boolean checkConstraint(Object data) {
+        if (isRequire() && data == null) return false;
+        if (getColumnType() == ColumnType.MULTIPLE_PERSON) {
+            return data instanceof List<?>;
+        }
+        return data instanceof Person;
     }
 
     @Override
-    public List<Person> createSimpleData(Object data) {
-        List<String> lists = (List<String>) data;
-        return lists.stream()
-                .map(Person::new)
-                .toList();
+    public Object handleCreateData(String data, String colName) {
+        return getColumnType() == ColumnType.MULTIPLE_PERSON ?
+                new MultiplePerson(colName, createSimpleData(data))
+                : Person.builder().name(data).build();
     }
+
+    public List<Person> createSimpleData(String data) {
+        return Arrays.stream(data.split(";"))
+                .map(d -> Person.builder().name(d).build())
+                .collect(Collectors.toList());
+    }
+
 }

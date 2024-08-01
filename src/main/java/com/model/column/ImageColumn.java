@@ -1,20 +1,18 @@
 package com.model.column;
 
 import com.model.datatype.Image;
-import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.function.Predicate;
 
 @Getter
 @Setter
 public class ImageColumn extends Column implements IColumn<Image> {
     private Image image;
 
-    public ImageColumn(String name) {
+    public ImageColumn(String name, ColumnType columnType) {
         super(name);
-        setType(ColumnType.IMAGE);
+        setType(columnType);
     }
 
     @Override
@@ -23,18 +21,23 @@ public class ImageColumn extends Column implements IColumn<Image> {
     }
 
     @Override
+    public void setDefaultData(String str) {
+        setImage(Image.builder().img(str.getBytes()).build());
+    }
+
+    @Override
     public ColumnType getColumnType() {
         return getType();
     }
 
     @Override
-    public void checkConstraint(Object data) {
-        Predicate<Image> requirePredicate = d -> !isRequire() || d != null;
-        Common.checkValid(requirePredicate.test((Image) data));
+    public boolean checkConstraint(Object data) {
+        return isRequire() && data == null;
     }
 
     @Override
-    public Image createSimpleData(Object data) {
-        return new Image((byte[]) data);
+    public Object handleCreateData(String data, String colName) {
+        return new Image(colName, data.getBytes());
     }
+
 }

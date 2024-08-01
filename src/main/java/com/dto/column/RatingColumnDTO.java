@@ -1,13 +1,13 @@
 package com.dto.column;
 
-import com.model.datatype.Rating;
+import com.dto.data.RatingDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class RatingColumnDTO extends BaseColumDTO{
-    Rating rating;
+    RatingDTO rating;
     double maxRate;
     double minRate;
 }

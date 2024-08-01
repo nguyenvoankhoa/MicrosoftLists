@@ -39,16 +39,16 @@ public class ColumnToDTOMapper {
         dto.setChoices(choiceColumn.getChoices().stream()
                 .map(dataToDTOMapper::mapChoice)
                 .toList());
-        dto.setMultiSelect(choiceColumn.isMultiSelect());
         dto.setType(choiceColumn.getType());
         dto.setRequire(choiceColumn.isRequire());
         return dto;
     }
 
+
     public HyperLinkColumnDTO mapHyperLinkColumn(HyperLinkColumn column) {
         HyperLinkColumnDTO dto = new HyperLinkColumnDTO();
         dto.setName(column.getName());
-        dto.setHyperLink(column.getDefaultData());
+        dto.setHyperLink(dataToDTOMapper.mapHyperLink(column.getDefaultData()));
         dto.setType(column.getColumnType());
         dto.setRequire(column.isRequire());
         return dto;
@@ -57,7 +57,7 @@ public class ColumnToDTOMapper {
     public ImageColumnDTO mapImageColumn(ImageColumn column) {
         ImageColumnDTO dto = new ImageColumnDTO();
         dto.setName(column.getName());
-        dto.setImage(column.getDefaultData());
+        dto.setImage(dataToDTOMapper.mapImage(column.getDefaultData()));
         dto.setType(column.getColumnType());
         dto.setRequire(column.isRequire());
         return dto;
@@ -65,7 +65,7 @@ public class ColumnToDTOMapper {
 
     public NumberColumnDTO mapNumberColumn(NumberColumn column) {
         NumberColumnDTO dto = new NumberColumnDTO();
-        dto.setNumber(column.getDefaultData());
+        dto.setNumber(dataToDTOMapper.mapNumber(column.getDefaultData()));
         dto.setName(column.getName());
         dto.setType(column.getColumnType());
         dto.setRequire(column.isRequire());
@@ -77,10 +77,6 @@ public class ColumnToDTOMapper {
     public PersonColumnDTO mapPersonColumn(PersonColumn column) {
         PersonColumnDTO dto = new PersonColumnDTO();
         dto.setName(column.getName());
-        dto.setPeople(column.getPeople().stream()
-                .map(dataToDTOMapper::mapPerson)
-                .toList());
-        dto.setMultiSelect(column.isMultiSelect());
         dto.setType(column.getColumnType());
         dto.setRequire(column.isRequire());
         return dto;
@@ -89,7 +85,7 @@ public class ColumnToDTOMapper {
     public RatingColumnDTO mapRatingColumn(RatingColumn column) {
         RatingColumnDTO dto = new RatingColumnDTO();
         dto.setName(column.getName());
-        dto.setRating(column.getDefaultData());
+        dto.setRating(dataToDTOMapper.mapRating(column.getDefaultData()));
         dto.setType(column.getColumnType());
         dto.setMaxRate(column.getMaxRate());
         dto.setMinRate(column.getMinRate());
@@ -100,7 +96,7 @@ public class ColumnToDTOMapper {
     public TextColumnDTO mapTextColumn(TextColumn column) {
         TextColumnDTO dto = new TextColumnDTO();
         dto.setName(column.getName());
-        dto.setText(column.getDefaultData());
+        dto.setText(dataToDTOMapper.mapText(column.getDefaultData()));
         dto.setType(column.getColumnType());
         dto.setMaxLength(column.getMaxLength());
         dto.setRequire(column.isRequire());
@@ -110,7 +106,7 @@ public class ColumnToDTOMapper {
     public TimeColumnDTO mapTimeColumn(TimeColumn column) {
         TimeColumnDTO dto = new TimeColumnDTO();
         dto.setName(column.getName());
-        dto.setDateAndTime(column.getDefaultData());
+        dto.setDateAndTime(dataToDTOMapper.mapDateAndTime(column.getDefaultData()));
         dto.setType(column.getColumnType());
         dto.setRequire(column.isRequire());
         return dto;
@@ -119,7 +115,7 @@ public class ColumnToDTOMapper {
     public YesNoColumnDTO mapYesNoColumn(YesNoColumn column) {
         YesNoColumnDTO dto = new YesNoColumnDTO();
         dto.setName(column.getName());
-        dto.setData(column.getDefaultData());
+        dto.setData(dataToDTOMapper.mapYesNo(column.getDefaultData()));
         dto.setType(column.getColumnType());
         dto.setRequire(column.isRequire());
         return dto;

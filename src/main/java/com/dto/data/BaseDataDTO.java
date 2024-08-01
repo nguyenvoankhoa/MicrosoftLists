@@ -1,11 +1,10 @@
-package com.dto.request;
+package com.dto.data;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class AddDataRequest {
+public class BaseDataDTO {
     String colName;
-    Object data;
 }

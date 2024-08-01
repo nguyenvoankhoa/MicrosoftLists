@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class MultipleChoiceDTO {
+public class MultipleChoiceDTO extends BaseDataDTO{
     private List<ChoiceDTO> choices;
     private ColumnType type;
 }

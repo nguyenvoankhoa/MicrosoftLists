@@ -3,8 +3,10 @@ package com.dto.request;
 import com.model.column.ColumnType;
 import lombok.Data;
 
+
 @Data
-public class AddColumnRequest extends BaseRequest{
+public class CreateColumnRequestDTO extends BaseRequest {
     String colName;
     ColumnType colType;
+    String data = null;
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class NumberDTO {
+public class NumberDTO  extends  BaseDataDTO{
     private double num;
     private byte[] icon;
     private ColumnType type;

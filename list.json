@@ -1,75 +1,73 @@
 {
   "templates": [
     {
-      "name": "SmartList",
+      "name": "Temple",
       "columns": [
         {
+          "text": {
+            "str": "string",
+            "type": "TEXT"
+          },
           "maxLength": 2147483647,
           "name": "Title",
           "isVisible": true,
-          "isRequire": false,
-          "type": "TEXT"
-        },
-        {
-          "name": "Start day",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "DATE_AND_TIME"
+          "type": "TEXT",
+          "allowDefault": false
         },
         {
           "choices": [
             {
-              "name": "Option 1",
-              "shape": "ABc",
-              "color": "red",
-              "type": "SINGLE_CHOICE"
-            },
-            {
-              "name": "Option 3",
-              "shape": "ABc",
-              "color": "red",
-              "type": "SINGLE_CHOICE"
-            },
-            {
-              "name": "Option 2",
-              "shape": "ABc",
-              "color": "red",
-              "type": "SINGLE_CHOICE"
+              "name": "Choice 1",
+              "type": "CHOICE"
             }
           ],
-          "isMultiSelect": false,
-          "name": "Session type",
+          "name": "Single option",
           "isVisible": true,
-          "isRequire": false,
-          "type": "CHOICE"
+          "type": "CHOICE",
+          "allowDefault": false
         },
         {
-          "people": [],
-          "isMultiSelect": false,
-          "name": "Speaker",
+          "choices": [
+            {
+              "name": "Choice 1",
+              "type": "CHOICE"
+            },
+            {
+              "name": " Choice 2",
+              "type": "CHOICE"
+            },
+            {
+              "name": " Choice 3",
+              "type": "CHOICE"
+            }
+          ],
+          "name": "Multiple option",
           "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
+          "type": "MULTIPLE_CHOICE",
+          "allowDefault": false
         },
         {
+          "text": {
+            "str": "This is comment",
+            "type": "TEXT"
+          },
+          "maxLength": 2147483647,
+          "name": "Comment",
+          "isVisible": true,
+          "type": "TEXT",
+          "allowDefault": false
+        },
+        {
+          "number": {
+            "num": 15.0,
+            "type": "NUMBER"
+          },
           "minVal": 4.9E-324,
           "maxVal": 1.7976931348623157E308,
           "name": "Price",
           "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
-        },
-        {
-          "name": "Link",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "HYPERLINK"
-        },
-        {
-          "name": "Is active",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "YESNO"
+          "type": "NUMBER",
+          "allowDefault": false
         }
       ]
     }
@@ -81,46 +79,40 @@
         {
           "iDataList": [
             {
-              "str": "text data",
-              "type": "TEXT"
+              "type": "TEXT",
+              "colName": "Title"
             },
             {
-              "date": "Jul 26, 2024, 4:16:58 PM",
-              "time": "04:16:58 PM",
-              "type": "DATE_AND_TIME"
+              "name": "Option 1; Option 2",
+              "type": "CHOICE",
+              "colName": "Single option"
             },
             {
               "choices": [
                 {
                   "name": "Option 1",
-                  "shape": "ABc",
-                  "color": "red",
-                  "type": "SINGLE_CHOICE"
-                }
-              ],
-              "type": "CHOICE"
-            },
-            {
-              "people": [
+                  "type": "CHOICE"
+                },
                 {
-                  "name": "Khoa",
-                  "image": [],
-                  "type": "PERSON"
+                  "name": " Option 2",
+                  "type": "CHOICE"
                 }
               ],
-              "type": "PEOPLE"
+              "type": "MULTIPLE_CHOICE",
+              "colName": "Multiple option"
             },
             {
-              "num": 4.5,
-              "type": "NUMBER"
+              "type": "TEXT",
+              "colName": "Comment"
             },
             {
-              "link": "facebook.com",
-              "type": "HYPERLINK"
+              "num": 0.0,
+              "type": "NUMBER",
+              "colName": "Price"
             },
             {
-              "isChosen": true,
-              "type": "YESNO"
+              "type": "TEXT",
+              "colName": "Task"
             }
           ],
           "comments": []
@@ -128,207 +120,180 @@
         {
           "iDataList": [
             {
-              "str": "string f",
-              "type": "TEXT"
+              "str": "new line",
+              "type": "TEXT",
+              "colName": "Title"
             },
             {
-              "type": "DATE_AND_TIME"
+              "type": "CHOICE",
+              "colName": "Single option"
             },
             {
-              "choices": [
-                {
-                  "name": "Option 1",
-                  "shape": "ABc",
-                  "color": "red",
-                  "type": "SINGLE_CHOICE"
-                }
-              ],
-              "type": "CHOICE"
+              "choices": [],
+              "type": "MULTIPLE_CHOICE",
+              "colName": "Multiple option"
             },
             {
-              "people": [],
-              "type": "PEOPLE"
+              "type": "TEXT",
+              "colName": "Comment"
             },
             {
               "num": 0.0,
-              "type": "NUMBER"
+              "type": "NUMBER",
+              "colName": "Price"
             },
             {
-              "type": "HYPERLINK"
+              "str": "None",
+              "type": "TEXT"
+            }
+          ],
+          "comments": []
+        },
+        {
+          "iDataList": [
+            {
+              "str": "new line",
+              "type": "TEXT",
+              "colName": "Title"
             },
             {
-              "isChosen": false,
-              "type": "YESNO"
+              "type": "CHOICE",
+              "colName": "Single option"
+            },
+            {
+              "choices": [],
+              "type": "MULTIPLE_CHOICE",
+              "colName": "Multiple option"
+            },
+            {
+              "type": "TEXT",
+              "colName": "Comment"
+            },
+            {
+              "num": 0.0,
+              "type": "NUMBER",
+              "colName": "Price"
+            },
+            {
+              "str": "None",
+              "type": "TEXT"
+            }
+          ],
+          "comments": []
+        },
+        {
+          "iDataList": [
+            {
+              "str": "another line",
+              "type": "TEXT",
+              "colName": "Title"
+            },
+            {
+              "type": "CHOICE",
+              "colName": "Single option"
+            },
+            {
+              "choices": [],
+              "type": "MULTIPLE_CHOICE",
+              "colName": "Multiple option"
+            },
+            {
+              "type": "TEXT",
+              "colName": "Comment"
+            },
+            {
+              "num": 0.0,
+              "type": "NUMBER",
+              "colName": "Price"
+            },
+            {
+              "str": "None",
+              "type": "TEXT",
+              "colName": "Task"
             }
           ],
           "comments": []
         }
       ],
-      "isSave": false,
       "views": [],
-      "permissionManagement": {
-        "map": {}
-      },
       "name": "New list",
       "columns": [
         {
+          "text": {
+            "str": "string",
+            "type": "TEXT"
+          },
           "maxLength": 2147483647,
           "name": "Title",
           "isVisible": true,
-          "isRequire": false,
-          "type": "TEXT"
-        },
-        {
-          "name": "Start day",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "DATE_AND_TIME"
+          "type": "TEXT",
+          "allowDefault": false
         },
         {
           "choices": [
             {
-              "name": "Option 1",
-              "shape": "ABc",
-              "color": "red",
-              "type": "SINGLE_CHOICE"
-            },
-            {
-              "name": "Option 3",
-              "shape": "ABc",
-              "color": "red",
-              "type": "SINGLE_CHOICE"
-            },
-            {
-              "name": "Option 2",
-              "shape": "ABc",
-              "color": "red",
-              "type": "SINGLE_CHOICE"
+              "name": "Choice 1",
+              "type": "CHOICE"
             }
           ],
-          "isMultiSelect": false,
-          "name": "Session type",
+          "name": "Single option",
           "isVisible": true,
-          "isRequire": false,
-          "type": "CHOICE"
-        },
-        {
-          "people": [],
-          "isMultiSelect": false,
-          "name": "Speaker",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
-        },
-        {
-          "minVal": 4.9E-324,
-          "maxVal": 1.7976931348623157E308,
-          "name": "Price",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
-        },
-        {
-          "name": "Link",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "HYPERLINK"
-        },
-        {
-          "name": "Is active",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "YESNO"
-        }
-      ]
-    },
-    {
-      "forms": [],
-      "rows": [],
-      "isSave": false,
-      "views": [],
-      "permissionManagement": {
-        "map": {}
-      },
-      "name": "Test New",
-      "columns": []
-    },
-    {
-      "forms": [],
-      "rows": [],
-      "isSave": false,
-      "views": [],
-      "permissionManagement": {
-        "map": {}
-      },
-      "name": "New list",
-      "columns": [
-        {
-          "maxLength": 2147483647,
-          "name": "Title",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "TEXT"
-        },
-        {
-          "name": "Start day",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "DATE_AND_TIME"
+          "type": "CHOICE",
+          "allowDefault": false
         },
         {
           "choices": [
             {
-              "name": "Option 1",
-              "shape": "ABc",
-              "color": "red",
-              "type": "SINGLE_CHOICE"
+              "name": "Choice 1",
+              "type": "CHOICE"
             },
             {
-              "name": "Option 3",
-              "shape": "ABc",
-              "color": "red",
-              "type": "SINGLE_CHOICE"
+              "name": " Choice 2",
+              "type": "CHOICE"
             },
             {
-              "name": "Option 2",
-              "shape": "ABc",
-              "color": "red",
-              "type": "SINGLE_CHOICE"
+              "name": " Choice 3",
+              "type": "CHOICE"
             }
           ],
-          "isMultiSelect": false,
-          "name": "Session type",
+          "name": "Multiple option",
           "isVisible": true,
-          "isRequire": false,
-          "type": "CHOICE"
+          "type": "MULTIPLE_CHOICE",
+          "allowDefault": false
         },
         {
-          "people": [],
-          "isMultiSelect": false,
-          "name": "Speaker",
+          "text": {
+            "str": "This is comment",
+            "type": "TEXT"
+          },
+          "maxLength": 2147483647,
+          "name": "Comment",
           "isVisible": true,
-          "isRequire": false,
-          "type": "PERSON"
+          "type": "TEXT",
+          "allowDefault": false
         },
         {
+          "number": {
+            "num": 15.0,
+            "type": "NUMBER"
+          },
           "minVal": 4.9E-324,
           "maxVal": 1.7976931348623157E308,
           "name": "Price",
           "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
+          "type": "NUMBER",
+          "allowDefault": false
         },
         {
-          "name": "Link",
+          "text": {
+            "str": "None",
+            "type": "TEXT"
+          },
+          "maxLength": 2147483647,
+          "name": "Task",
           "isVisible": true,
-          "isRequire": false,
-          "type": "HYPERLINK"
-        },
-        {
-          "name": "Is active",
-          "isVisible": true,
-          "isRequire": false,
-          "type": "YESNO"
+          "type": "TEXT",
+          "allowDefault": true
         }
       ]
     }

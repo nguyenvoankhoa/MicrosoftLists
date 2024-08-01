@@ -8,5 +8,5 @@ import java.util.List;
 @Getter
 @Setter
 public class RowDataRequest extends BaseRequest {
-    List<AddDataRequest> rowData;
+    List<AddDataRequestDTO> rowData;
 }

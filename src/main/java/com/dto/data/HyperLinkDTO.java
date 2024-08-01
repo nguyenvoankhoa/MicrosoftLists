@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class HyperLinkDTO {
+public class HyperLinkDTO  extends  BaseDataDTO{
     private String link;
     private ColumnType type;
 }

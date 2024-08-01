@@ -34,8 +34,8 @@ public class DataToDTOMapper {
     public DateAndTimeDTO mapDateAndTime(DateAndTime dateAndTime) {
         DateAndTimeDTO dto = new DateAndTimeDTO();
         dto.setDate(dateAndTime.getDate());
-        dto.setTime(dateAndTime.getTime());
         dto.setType(dateAndTime.getType());
+        dto.setColName(dateAndTime.getColName());
         return dto;
     }
 
@@ -43,6 +43,7 @@ public class DataToDTOMapper {
         HyperLinkDTO dto = new HyperLinkDTO();
         dto.setLink(hyperLink.getLink());
         dto.setType(hyperLink.getType());
+        dto.setColName(hyperLink.getColName());
         return dto;
     }
 
@@ -51,24 +52,25 @@ public class DataToDTOMapper {
         dto.setImg(image.getImg());
         dto.setSize(image.getSize());
         dto.setType(image.getType());
+        dto.setColName(image.getColName());
         return dto;
     }
 
     public ChoiceDTO mapChoice(Choice choice) {
         ChoiceDTO dto = new ChoiceDTO();
         dto.setName(choice.getName());
-        dto.setShape(choice.getShape());
-        dto.setColor(choice.getColor());
         dto.setType(choice.getType());
+        dto.setColName(choice.getColName());
         return dto;
     }
 
     public MultipleChoiceDTO mapMultipleChoice(MultipleChoice multipleChoice) {
         MultipleChoiceDTO dto = new MultipleChoiceDTO();
-        dto.setChoices(multipleChoice.getData().stream()
+        dto.setChoices(multipleChoice.getChoices().stream()
                 .map(this::mapChoice)
                 .toList());
         dto.setType(multipleChoice.getType());
+        dto.setColName(multipleChoice.getColName());
         return dto;
     }
 
@@ -77,15 +79,17 @@ public class DataToDTOMapper {
         dto.setName(person.getName());
         dto.setImage(person.getImage());
         dto.setType(person.getType());
+        dto.setColName(person.getColName());
         return dto;
     }
 
     public MultiplePersonDTO mapMultiplePerson(MultiplePerson multiplePerson) {
         MultiplePersonDTO dto = new MultiplePersonDTO();
-        dto.setPeople(multiplePerson.getData().stream()
+        dto.setPeople(multiplePerson.getPeople().stream()
                 .map(this::mapPerson)
                 .toList());
         dto.setType(multiplePerson.getType());
+        dto.setColName(multiplePerson.getColName());
         return dto;
     }
 
@@ -94,6 +98,7 @@ public class DataToDTOMapper {
         dto.setNum(number.getNum());
         dto.setIcon(number.getIcon());
         dto.setType(number.getType());
+        dto.setColName(number.getColName());
         return dto;
     }
 
@@ -102,6 +107,7 @@ public class DataToDTOMapper {
         RatingDTO dto = new RatingDTO();
         dto.setRate(rating.getRate());
         dto.setType(rating.getType());
+        dto.setColName(rating.getColName());
         return dto;
     }
 
@@ -109,6 +115,7 @@ public class DataToDTOMapper {
         TextDTO dto = new TextDTO();
         dto.setStr(text.getStr());
         dto.setType(text.getType());
+        dto.setColName(text.getColName());
         return dto;
     }
 
@@ -116,6 +123,7 @@ public class DataToDTOMapper {
         YesNoDTO dto = new YesNoDTO();
         dto.setChosen(yesNo.isChosen());
         dto.setType(yesNo.getType());
+        dto.setColName(yesNo.getColName());
         return dto;
     }
 }

@@ -33,95 +33,99 @@ public class ColumnToDTOMapper {
         return function.apply(column);
     }
 
-    public ChoiceColumnDTO mapChoiceColumn(ChoiceColumn choiceColumn) {
+    public ChoiceColumnDTO mapChoiceColumn(ChoiceColumn column) {
         ChoiceColumnDTO dto = new ChoiceColumnDTO();
-        dto.setName(choiceColumn.getName());
-        dto.setChoices(choiceColumn.getChoices().stream()
+        dto.setName(column.getName());
+        dto.setChoices(column.getChoices().stream()
                 .map(dataToDTOMapper::mapChoice)
                 .toList());
-        dto.setMultiSelect(choiceColumn.isMultiSelect());
-        dto.setType(choiceColumn.getType());
-        dto.setRequire(choiceColumn.isRequire());
+        dto.setType(column.getType());
+        
+        dto.setAllowDefault(column.isAllowDefault());
         return dto;
     }
+
 
     public HyperLinkColumnDTO mapHyperLinkColumn(HyperLinkColumn column) {
         HyperLinkColumnDTO dto = new HyperLinkColumnDTO();
         dto.setName(column.getName());
-        dto.setHyperLink(column.getDefaultData());
+        dto.setHyperLink(dataToDTOMapper.mapHyperLink(column.getDefaultData()));
         dto.setType(column.getColumnType());
-        dto.setRequire(column.isRequire());
+        
+        dto.setAllowDefault(column.isAllowDefault());
         return dto;
     }
 
     public ImageColumnDTO mapImageColumn(ImageColumn column) {
         ImageColumnDTO dto = new ImageColumnDTO();
         dto.setName(column.getName());
-        dto.setImage(column.getDefaultData());
+        dto.setImage(dataToDTOMapper.mapImage(column.getDefaultData()));
         dto.setType(column.getColumnType());
-        dto.setRequire(column.isRequire());
+        
+        dto.setAllowDefault(column.isAllowDefault());
         return dto;
     }
 
     public NumberColumnDTO mapNumberColumn(NumberColumn column) {
         NumberColumnDTO dto = new NumberColumnDTO();
-        dto.setNumber(column.getDefaultData());
+        dto.setNumber(dataToDTOMapper.mapNumber(column.getDefaultData()));
         dto.setName(column.getName());
         dto.setType(column.getColumnType());
-        dto.setRequire(column.isRequire());
+        
         dto.setMinVal(column.getMinVal());
         dto.setMaxVal(column.getMaxVal());
+        dto.setAllowDefault(column.isAllowDefault());
         return dto;
     }
 
     public PersonColumnDTO mapPersonColumn(PersonColumn column) {
         PersonColumnDTO dto = new PersonColumnDTO();
         dto.setName(column.getName());
-        dto.setPeople(column.getPeople().stream()
-                .map(dataToDTOMapper::mapPerson)
-                .toList());
-        dto.setMultiSelect(column.isMultiSelect());
         dto.setType(column.getColumnType());
-        dto.setRequire(column.isRequire());
+        
+        dto.setAllowDefault(column.isAllowDefault());
         return dto;
     }
 
     public RatingColumnDTO mapRatingColumn(RatingColumn column) {
         RatingColumnDTO dto = new RatingColumnDTO();
         dto.setName(column.getName());
-        dto.setRating(column.getDefaultData());
+        dto.setRating(dataToDTOMapper.mapRating(column.getDefaultData()));
         dto.setType(column.getColumnType());
         dto.setMaxRate(column.getMaxRate());
         dto.setMinRate(column.getMinRate());
-        dto.setRequire(column.isRequire());
+        
+        dto.setAllowDefault(column.isAllowDefault());
         return dto;
     }
 
     public TextColumnDTO mapTextColumn(TextColumn column) {
         TextColumnDTO dto = new TextColumnDTO();
         dto.setName(column.getName());
-        dto.setText(column.getDefaultData());
+        dto.setText(dataToDTOMapper.mapText(column.getDefaultData()));
         dto.setType(column.getColumnType());
         dto.setMaxLength(column.getMaxLength());
-        dto.setRequire(column.isRequire());
+        
+        dto.setAllowDefault(column.isAllowDefault());
         return dto;
     }
 
     public TimeColumnDTO mapTimeColumn(TimeColumn column) {
         TimeColumnDTO dto = new TimeColumnDTO();
         dto.setName(column.getName());
-        dto.setDateAndTime(column.getDefaultData());
+        dto.setDateAndTime(dataToDTOMapper.mapDateAndTime(column.getDefaultData()));
         dto.setType(column.getColumnType());
-        dto.setRequire(column.isRequire());
+        dto.setAllowDefault(column.isAllowDefault());
         return dto;
     }
 
     public YesNoColumnDTO mapYesNoColumn(YesNoColumn column) {
         YesNoColumnDTO dto = new YesNoColumnDTO();
         dto.setName(column.getName());
-        dto.setData(column.getDefaultData());
+        dto.setData(dataToDTOMapper.mapYesNo(column.getDefaultData()));
         dto.setType(column.getColumnType());
-        dto.setRequire(column.isRequire());
+        
+        dto.setAllowDefault(column.isAllowDefault());
         return dto;
     }
 }

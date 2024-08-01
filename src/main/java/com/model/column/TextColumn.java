@@ -6,19 +6,17 @@ import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.function.Predicate;
-
 @Getter
 @Setter
 public class TextColumn extends Column implements IColumn<Text> {
-    private Text text;
+    Text text;
     private int maxLength = Integer.MAX_VALUE;
 
     private Rule rule;
 
-    public TextColumn(String name) {
+    public TextColumn(String name, ColumnType columnType) {
         super(name);
-        setType(ColumnType.TEXT);
+        setType(columnType);
     }
 
     @Override
@@ -27,20 +25,23 @@ public class TextColumn extends Column implements IColumn<Text> {
     }
 
     @Override
+    public void setDefaultData(String str) {
+        setText(Text.builder().str(str).build());
+    }
+
+    @Override
     public ColumnType getColumnType() {
         return getType();
     }
 
     @Override
-    public void checkConstraint(Object data) {
-        Predicate<Text> requirePredicate = d -> !isRequire() || d != null;
-        Predicate<Text> maxLengthPredicate = d -> maxLength == Integer.MAX_VALUE
-                || d.getStr().length() <= getMaxLength();
-        Common.checkValid(requirePredicate.and(maxLengthPredicate).test((Text) data));
+    public boolean checkConstraint(Object data) {
+        return Common.checkType(data.getClass(), Text.class);
     }
 
     @Override
-    public Text createSimpleData(Object data) {
-        return new Text((String) data);
+    public Object handleCreateData(String data, String colName) {
+        return new Text(colName, data);
     }
+
 }

@@ -1,13 +1,13 @@
 package com.dto.column;
 
-import com.model.datatype.Text;
+import com.dto.data.TextDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class TextColumnDTO extends BaseColumDTO{
-    Text text;
+    TextDTO text;
     int maxLength;
 }
 

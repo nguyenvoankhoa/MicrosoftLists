@@ -7,13 +7,19 @@ public interface IColumn<T> {
 
     T getDefaultData();
 
+    void setDefaultData(String str);
+
     void setVisible(boolean data);
 
     boolean isVisible();
 
+    boolean isAllowDefault();
+
+    void setAllowDefault(boolean allowDefault);
+
     ColumnType getColumnType();
 
-    void checkConstraint(Object data);
+    boolean checkConstraint(Object data);
 
-    T createSimpleData(Object data);
+    Object handleCreateData(String data, String colName);
 }

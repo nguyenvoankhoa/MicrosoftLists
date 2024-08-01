@@ -1,22 +1,21 @@
 package com.model.datatype;
 
 import com.model.column.ColumnType;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Comparator;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class YesNo implements IData<YesNo>, Comparator<YesNo> {
+@SuperBuilder
+public class YesNo extends BaseData implements IData<YesNo>, Comparator<YesNo> {
     private boolean isChosen;
-    private ColumnType type = ColumnType.YESNO;
+    private final ColumnType type = ColumnType.YESNO;
 
-    public YesNo(boolean isChosen) {
+    public YesNo(String colName, boolean isChosen) {
+        super(colName);
         this.isChosen = isChosen;
     }
 
@@ -28,6 +27,7 @@ public class YesNo implements IData<YesNo>, Comparator<YesNo> {
     @Override
     public void setData(YesNo data) {
         setChosen(data.isChosen());
+        setColName(data.getColName());
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 
 @Getter
@@ -12,9 +14,9 @@ import java.util.function.Predicate;
 public class HyperLinkColumn extends Column implements IColumn<HyperLink> {
     private HyperLink hyperLink;
 
-    public HyperLinkColumn(String name) {
+    public HyperLinkColumn(String name, ColumnType columnType) {
         super(name);
-        setType(ColumnType.HYPERLINK);
+        setType(columnType);
     }
 
     @Override
@@ -23,18 +25,25 @@ public class HyperLinkColumn extends Column implements IColumn<HyperLink> {
     }
 
     @Override
+    public void setDefaultData(String str) {
+        setHyperLink(new HyperLink(str));
+    }
+
+    @Override
     public ColumnType getColumnType() {
         return getType();
     }
 
     @Override
-    public void checkConstraint(Object data) {
-        Predicate<HyperLink> requirePredicate = d -> !isRequire() || d != null;
-        Common.checkValid(requirePredicate.test((HyperLink) data));
+    public boolean checkConstraint(Object data) {
+        Common.checkExist(data);
+        return Common.checkType(data.getClass(), HyperLink.class);
     }
 
     @Override
-    public HyperLink createSimpleData(Object data) {
-        return new HyperLink((String) data);
+    public Object handleCreateData(String data, String colName) {
+        String[] parts = data.split(";");
+        return new HyperLink(colName, parts);
     }
+
 }

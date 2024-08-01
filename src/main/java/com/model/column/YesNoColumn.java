@@ -12,9 +12,9 @@ import java.util.function.Predicate;
 public class YesNoColumn extends Column implements IColumn<YesNo> {
     private YesNo data;
 
-    public YesNoColumn(String name) {
+    public YesNoColumn(String name, ColumnType columnType) {
         super(name);
-        setType(ColumnType.YESNO);
+        setType(columnType);
     }
 
     @Override
@@ -23,18 +23,22 @@ public class YesNoColumn extends Column implements IColumn<YesNo> {
     }
 
     @Override
+    public void setDefaultData(String str) {
+        setData(YesNo.builder().isChosen(Boolean.parseBoolean(str)).build());
+    }
+
+    @Override
     public ColumnType getColumnType() {
         return getType();
     }
 
     @Override
-    public void checkConstraint(Object data) {
-        Predicate<YesNo> requirePredicate = d -> !isRequire() || d != null;
-        Common.checkValid(requirePredicate.test((YesNo) data));
+    public boolean checkConstraint(Object data) {
+        return Common.checkType(data.getClass(), YesNo.class);
     }
 
     @Override
-    public YesNo createSimpleData(Object data) {
-        return new YesNo((Boolean) data);
+    public Object handleCreateData(String data, String colName) {
+        return new YesNo(colName, Boolean.parseBoolean(data));
     }
 }

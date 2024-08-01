@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class DateAndTimeDTO {
+public class DateAndTimeDTO extends  BaseDataDTO{
     private Date date;
     private Time time;
     private ColumnType type;

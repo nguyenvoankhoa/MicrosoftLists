@@ -1,25 +1,25 @@
 package com.model.column;
 
 import com.model.datatype.Choice;
+import com.model.datatype.MultipleChoice;
 import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 public class ChoiceColumn extends Column implements IColumn<List<Choice>> {
     private List<Choice> choices;
-    private boolean isMultiSelect;
 
-    public ChoiceColumn(String name) {
+    public ChoiceColumn(String name, ColumnType columnType) {
         super(name);
         choices = new ArrayList<>();
-        isMultiSelect = false;
-        setType(ColumnType.CHOICE);
+        setType(columnType);
     }
 
     @Override
@@ -27,24 +27,36 @@ public class ChoiceColumn extends Column implements IColumn<List<Choice>> {
         return choices;
     }
 
+
     @Override
     public ColumnType getColumnType() {
         return getType();
     }
 
     @Override
-    public void checkConstraint(Object data) {
-        Predicate<List<Choice>> requirePredicate = d -> !isRequire() || !d.isEmpty();
-        Predicate<List<Choice>> multiSelectPredicate = d -> isMultiSelect() || d.size() <= 1;
-        Common.checkValid(requirePredicate.and(multiSelectPredicate).test((List<Choice>) data));
+    public boolean checkConstraint(Object data) {
+        return getColumnType() == ColumnType.CHOICE
+                && Common.checkType(data.getClass(), Choice.class);
     }
 
     @Override
-    public List<Choice> createSimpleData(Object data) {
-        List<String> lists = (List<String>) data;
-        return lists.stream()
-                .map(Choice::new)
-                .toList();
+    public void setDefaultData(String str) {
+        setChoices(createSimpleData(str));
     }
+
+    @Override
+    public Object handleCreateData(String data, String colName) {
+        Common.checkNonExist(data);
+        return getColumnType().equals(ColumnType.MULTIPLE_CHOICE)
+                ? new MultipleChoice(colName, createSimpleData(data))
+                : Choice.builder().colName(colName).name(data).build();
+    }
+
+    public List<Choice> createSimpleData(String data) {
+        return Arrays.stream(data.split(";"))
+                .map(c -> (Choice) Choice.builder().name(c).build())
+                .collect(Collectors.toList());
+    }
+
 
 }

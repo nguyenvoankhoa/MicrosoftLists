@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CreateFormRequest extends BaseRequest {
+public class CreateFormRequestDTO extends BaseRequest {
     String formName;
     List<String> columns;
 }

@@ -21,11 +21,21 @@ public class Common {
     private Common() {
     }
 
-    public static void checkValid(boolean b){
-        if(!b){
+    public static void checkOutOfRange(int src, int target){
+        if(src >= target){
             throw new ConstraintViolationException();
         }
     }
+    public static boolean checkType(Class<?> srcClass, Class<?> targetClass) {
+        return targetClass.isAssignableFrom(srcClass);
+    }
+
+    public static void checkValid(boolean b) {
+        if (!b) {
+            throw new ConstraintViolationException();
+        }
+    }
+
     public static void checkExist(Object o) {
         if (o != null) {
             throw new ExistException();
@@ -77,7 +87,6 @@ public class Common {
                                 .get(cId)
                                 .getImportantData()));
     }
-
 
 
     public static boolean checkExistName(MicrosoftList ml, String name) {

@@ -13,6 +13,10 @@ public interface IColumn<T> {
 
     boolean isVisible();
 
+    boolean isAllowDefault();
+
+    void setAllowDefault(boolean allowDefault);
+
     ColumnType getColumnType();
 
     boolean checkConstraint(Object data);

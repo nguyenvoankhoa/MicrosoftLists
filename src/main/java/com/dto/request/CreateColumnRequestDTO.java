@@ -8,5 +8,6 @@ import lombok.Data;
 public class CreateColumnRequestDTO extends BaseRequest {
     String colName;
     ColumnType colType;
+    boolean allowDefault;
     String data = null;
 }

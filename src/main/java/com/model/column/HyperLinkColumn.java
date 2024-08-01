@@ -36,7 +36,8 @@ public class HyperLinkColumn extends Column implements IColumn<HyperLink> {
 
     @Override
     public boolean checkConstraint(Object data) {
-        return isRequire() && data == null;
+        Common.checkExist(data);
+        return Common.checkType(data.getClass(), HyperLink.class);
     }
 
     @Override

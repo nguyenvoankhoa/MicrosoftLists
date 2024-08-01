@@ -6,6 +6,5 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PersonColumnDTO extends BaseColumDTO{
-    boolean isMultiSelect;
+public class PersonColumnDTO extends BaseColumDTO {
 }

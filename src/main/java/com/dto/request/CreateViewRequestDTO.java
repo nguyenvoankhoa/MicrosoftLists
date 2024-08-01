@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 public class CreateViewRequestDTO extends BaseRequest {
     ViewType viewType;
-    Object[] data;
+    String data;
 }

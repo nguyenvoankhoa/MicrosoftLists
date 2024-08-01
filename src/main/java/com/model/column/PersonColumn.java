@@ -2,6 +2,7 @@ package com.model.column;
 
 import com.model.datatype.MultiplePerson;
 import com.model.datatype.Person;
+import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,11 +37,8 @@ public class PersonColumn extends Column implements IColumn<List<Person>> {
 
     @Override
     public boolean checkConstraint(Object data) {
-        if (isRequire() && data == null) return false;
-        if (getColumnType() == ColumnType.MULTIPLE_PERSON) {
-            return data instanceof List<?>;
-        }
-        return data instanceof Person;
+        return getColumnType() == ColumnType.PERSON
+                && Common.checkType(data.getClass(), Person.class);
     }
 
     @Override

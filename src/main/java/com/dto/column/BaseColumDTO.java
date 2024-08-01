@@ -10,4 +10,5 @@ public class BaseColumDTO {
     String name;
     boolean isRequire;
     ColumnType type;
+    private boolean allowDefault;
 }

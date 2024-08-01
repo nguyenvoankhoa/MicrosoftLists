@@ -1,6 +1,7 @@
 package com.model.column;
 
 import com.model.datatype.Image;
+import com.util.Common;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +33,8 @@ public class ImageColumn extends Column implements IColumn<Image> {
 
     @Override
     public boolean checkConstraint(Object data) {
-        return isRequire() && data == null;
+        Common.checkExist(data);
+        return Common.checkType(data.getClass(), Image.class);
     }
 
     @Override

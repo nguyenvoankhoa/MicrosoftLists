@@ -40,9 +40,7 @@ public class NumberColumn extends Column implements IColumn<Number> {
 
     @Override
     public boolean checkConstraint(Object data) {
-        if (isRequire() && data == null) return false;
-        Number num = (Number) data;
-        return num.getNum() >= getMinVal() && num.getNum() <= getMaxVal();
+        return Common.checkType(data.getClass(), Number.class);
     }
 
     @Override

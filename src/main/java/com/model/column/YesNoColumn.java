@@ -34,7 +34,7 @@ public class YesNoColumn extends Column implements IColumn<YesNo> {
 
     @Override
     public boolean checkConstraint(Object data) {
-        return isRequire() && data == null;
+        return Common.checkType(data.getClass(), YesNo.class);
     }
 
     @Override

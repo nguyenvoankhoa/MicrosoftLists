@@ -7,5 +7,4 @@ import java.util.List;
 @Data
 public class ChoiceColumnDTO extends BaseColumDTO{
     List<ChoiceDTO> choices;
-    boolean isMultiSelect;
 }

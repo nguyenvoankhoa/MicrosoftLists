@@ -35,11 +35,8 @@ public class ChoiceColumn extends Column implements IColumn<List<Choice>> {
 
     @Override
     public boolean checkConstraint(Object data) {
-        if (isRequire() && data == null) return false;
-        if (getColumnType() == ColumnType.MULTIPLE_CHOICE) {
-            return data instanceof List<?>;
-        }
-        return data instanceof Choice;
+        return getColumnType() == ColumnType.CHOICE
+                && Common.checkType(data.getClass(), Choice.class);
     }
 
     @Override

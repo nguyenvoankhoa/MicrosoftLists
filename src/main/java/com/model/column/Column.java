@@ -9,9 +9,8 @@ public class Column {
     private String name;
     private boolean isVisible;
 
-    private boolean isRequire;
-
     private ColumnType type;
+    private boolean allowDefault;
 
     public Column(String name) {
         this.name = name;

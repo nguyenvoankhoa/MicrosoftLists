@@ -1,14 +1,10 @@
 package com.model.column;
 
 import com.model.Rule;
-import com.model.datatype.Number;
 import com.model.datatype.Text;
 import com.util.Common;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.function.Predicate;
 
 @Getter
 @Setter
@@ -40,9 +36,7 @@ public class TextColumn extends Column implements IColumn<Text> {
 
     @Override
     public boolean checkConstraint(Object data) {
-        if (isRequire() && data == null) return false;
-        Text txt = (Text) data;
-        return txt.getStr().length() <= getMaxLength();
+        return Common.checkType(data.getClass(), Text.class);
     }
 
     @Override

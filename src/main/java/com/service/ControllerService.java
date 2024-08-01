@@ -74,7 +74,8 @@ public class ControllerService {
 
     public Object addColumn(CreateColumnRequestDTO addReq) {
         SmartList sl = microsoftListService.getListByName(microsoftList, addReq.getListName());
-        IColumn<?> column = smartListService.createNewColumn(sl, addReq.getColType(), addReq.getColName());
+        IColumn<?> column = smartListService
+                .createNewColumn(sl, addReq.getColType(), addReq.getColName(), addReq.isAllowDefault());
         Optional.ofNullable(addReq.getData())
                 .ifPresent(column::setDefaultData);
         jsonService.saveToJson(microsoftList, listPath);
@@ -184,10 +185,8 @@ public class ControllerService {
 
     public SmartListDTO createListFromTemplate(TemplateToListRequestDTO request) {
         Template t = microsoftListService.getTemplateByName(microsoftList, request.getTemplateName());
-        Common.checkExist(t);
-        SmartList sl = microsoftListService.getListByName(microsoftList, request.getListName());
-        Common.checkNonExist(sl);
-        sl = microsoftListService.createListFromTemplate(microsoftList, t, request.getListName());
+        Common.checkNonExist(t);
+        SmartList sl = microsoftListService.createListFromTemplate(microsoftList, t, request.getListName());
         jsonService.saveToJson(microsoftList, listPath);
         return mapper.mapSmartList(sl);
     }

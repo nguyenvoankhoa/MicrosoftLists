@@ -1,76 +1,7 @@
 {
-  "templates": [],
-  "listCollection": [
+  "templates": [
     {
-      "forms": [],
-      "rows": [
-        {
-          "iDataList": [
-            {
-              "str": "Title",
-              "type": "TEXT"
-            },
-            {
-              "name": "Single option",
-              "type": "CHOICE"
-            },
-            {
-              "choices": [
-                {
-                  "name": "Option 1",
-                  "type": "CHOICE"
-                },
-                {
-                  "name": " Option 2",
-                  "type": "CHOICE"
-                }
-              ],
-              "type": "MULTIPLE_CHOICE",
-              "colName": "Multiple option"
-            },
-            {
-              "str": "Comment",
-              "type": "TEXT"
-            },
-            {
-              "num": 0.0,
-              "type": "NUMBER",
-              "colName": "Price"
-            }
-          ],
-          "comments": []
-        },
-        {
-          "iDataList": [
-            {
-              "str": "Title",
-              "type": "TEXT"
-            },
-            {
-              "name": "Choice 1",
-              "type": "CHOICE",
-              "colName": "Single option"
-            },
-            {
-              "choices": [],
-              "type": "MULTIPLE_CHOICE",
-              "colName": "Multiple option"
-            },
-            {
-              "str": "Comment",
-              "type": "TEXT"
-            },
-            {
-              "num": 0.0,
-              "type": "NUMBER",
-              "colName": "Price"
-            }
-          ],
-          "comments": []
-        }
-      ],
-      "views": [],
-      "name": "New list",
+      "name": "Temple",
       "columns": [
         {
           "text": {
@@ -80,8 +11,8 @@
           "maxLength": 2147483647,
           "name": "Title",
           "isVisible": true,
-          "isRequire": false,
-          "type": "TEXT"
+          "type": "TEXT",
+          "allowDefault": false
         },
         {
           "choices": [
@@ -92,8 +23,8 @@
           ],
           "name": "Single option",
           "isVisible": true,
-          "isRequire": false,
-          "type": "CHOICE"
+          "type": "CHOICE",
+          "allowDefault": false
         },
         {
           "choices": [
@@ -112,8 +43,8 @@
           ],
           "name": "Multiple option",
           "isVisible": true,
-          "isRequire": false,
-          "type": "MULTIPLE_CHOICE"
+          "type": "MULTIPLE_CHOICE",
+          "allowDefault": false
         },
         {
           "text": {
@@ -123,8 +54,8 @@
           "maxLength": 2147483647,
           "name": "Comment",
           "isVisible": true,
-          "isRequire": false,
-          "type": "TEXT"
+          "type": "TEXT",
+          "allowDefault": false
         },
         {
           "number": {
@@ -135,8 +66,234 @@
           "maxVal": 1.7976931348623157E308,
           "name": "Price",
           "isVisible": true,
-          "isRequire": false,
-          "type": "NUMBER"
+          "type": "NUMBER",
+          "allowDefault": false
+        }
+      ]
+    }
+  ],
+  "listCollection": [
+    {
+      "forms": [],
+      "rows": [
+        {
+          "iDataList": [
+            {
+              "type": "TEXT",
+              "colName": "Title"
+            },
+            {
+              "name": "Option 1; Option 2",
+              "type": "CHOICE",
+              "colName": "Single option"
+            },
+            {
+              "choices": [
+                {
+                  "name": "Option 1",
+                  "type": "CHOICE"
+                },
+                {
+                  "name": " Option 2",
+                  "type": "CHOICE"
+                }
+              ],
+              "type": "MULTIPLE_CHOICE",
+              "colName": "Multiple option"
+            },
+            {
+              "type": "TEXT",
+              "colName": "Comment"
+            },
+            {
+              "num": 0.0,
+              "type": "NUMBER",
+              "colName": "Price"
+            },
+            {
+              "type": "TEXT",
+              "colName": "Task"
+            }
+          ],
+          "comments": []
+        },
+        {
+          "iDataList": [
+            {
+              "str": "new line",
+              "type": "TEXT",
+              "colName": "Title"
+            },
+            {
+              "type": "CHOICE",
+              "colName": "Single option"
+            },
+            {
+              "choices": [],
+              "type": "MULTIPLE_CHOICE",
+              "colName": "Multiple option"
+            },
+            {
+              "type": "TEXT",
+              "colName": "Comment"
+            },
+            {
+              "num": 0.0,
+              "type": "NUMBER",
+              "colName": "Price"
+            },
+            {
+              "str": "None",
+              "type": "TEXT"
+            }
+          ],
+          "comments": []
+        },
+        {
+          "iDataList": [
+            {
+              "str": "new line",
+              "type": "TEXT",
+              "colName": "Title"
+            },
+            {
+              "type": "CHOICE",
+              "colName": "Single option"
+            },
+            {
+              "choices": [],
+              "type": "MULTIPLE_CHOICE",
+              "colName": "Multiple option"
+            },
+            {
+              "type": "TEXT",
+              "colName": "Comment"
+            },
+            {
+              "num": 0.0,
+              "type": "NUMBER",
+              "colName": "Price"
+            },
+            {
+              "str": "None",
+              "type": "TEXT"
+            }
+          ],
+          "comments": []
+        },
+        {
+          "iDataList": [
+            {
+              "str": "another line",
+              "type": "TEXT",
+              "colName": "Title"
+            },
+            {
+              "type": "CHOICE",
+              "colName": "Single option"
+            },
+            {
+              "choices": [],
+              "type": "MULTIPLE_CHOICE",
+              "colName": "Multiple option"
+            },
+            {
+              "type": "TEXT",
+              "colName": "Comment"
+            },
+            {
+              "num": 0.0,
+              "type": "NUMBER",
+              "colName": "Price"
+            },
+            {
+              "str": "None",
+              "type": "TEXT",
+              "colName": "Task"
+            }
+          ],
+          "comments": []
+        }
+      ],
+      "views": [],
+      "name": "New list",
+      "columns": [
+        {
+          "text": {
+            "str": "string",
+            "type": "TEXT"
+          },
+          "maxLength": 2147483647,
+          "name": "Title",
+          "isVisible": true,
+          "type": "TEXT",
+          "allowDefault": false
+        },
+        {
+          "choices": [
+            {
+              "name": "Choice 1",
+              "type": "CHOICE"
+            }
+          ],
+          "name": "Single option",
+          "isVisible": true,
+          "type": "CHOICE",
+          "allowDefault": false
+        },
+        {
+          "choices": [
+            {
+              "name": "Choice 1",
+              "type": "CHOICE"
+            },
+            {
+              "name": " Choice 2",
+              "type": "CHOICE"
+            },
+            {
+              "name": " Choice 3",
+              "type": "CHOICE"
+            }
+          ],
+          "name": "Multiple option",
+          "isVisible": true,
+          "type": "MULTIPLE_CHOICE",
+          "allowDefault": false
+        },
+        {
+          "text": {
+            "str": "This is comment",
+            "type": "TEXT"
+          },
+          "maxLength": 2147483647,
+          "name": "Comment",
+          "isVisible": true,
+          "type": "TEXT",
+          "allowDefault": false
+        },
+        {
+          "number": {
+            "num": 15.0,
+            "type": "NUMBER"
+          },
+          "minVal": 4.9E-324,
+          "maxVal": 1.7976931348623157E308,
+          "name": "Price",
+          "isVisible": true,
+          "type": "NUMBER",
+          "allowDefault": false
+        },
+        {
+          "text": {
+            "str": "None",
+            "type": "TEXT"
+          },
+          "maxLength": 2147483647,
+          "name": "Task",
+          "isVisible": true,
+          "type": "TEXT",
+          "allowDefault": true
         }
       ]
     }

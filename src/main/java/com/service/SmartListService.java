@@ -1,6 +1,5 @@
 package com.service;
 
-import com.exception.ConstraintViolationException;
 import com.factory.ViewFactory;
 import com.model.Form;
 import com.model.Row;
@@ -29,11 +28,12 @@ public class SmartListService {
     }
 
 
-    public IColumn createNewColumn(SmartList sl, ColumnType type, String name) {
+    public IColumn createNewColumn(SmartList sl, ColumnType type, String name, boolean isDefault) {
         IColumn c = Common.getColumnByName(sl, name);
         Common.checkExist(c);
         ColumnFactory columnFactory = new ColumnFactory(name, type);
         IColumn<?> column = columnFactory.getColumn(type);
+        column.setAllowDefault(isDefault);
         sl.getColumns().add(column);
         for (Row row : sl.getRows()) {
             DataFactory df = new DataFactory(column.getName());
@@ -53,12 +53,25 @@ public class SmartListService {
     public int createNewRow(SmartList sl) {
         Row newRow = new Row();
         sl.getRows().add(newRow);
-        List<IData> rowData = newRow.getIDataList();
-        for (IColumn<?> column : sl.getColumns()) {
-            DataFactory df = new DataFactory(column.getName());
-            rowData.add(df.createData(column.getColumnType()));
-        }
+        populateRowData(newRow, sl);
         return sl.getRows().size() - 1;
+    }
+
+    private void populateRowData(Row row, SmartList sl) {
+        List<IData> rowData = row.getIDataList();
+        for (IColumn<?> column : sl.getColumns()) {
+            IData prototype = createDataPrototype(column);
+            if (column.isAllowDefault()) {
+                prototype.setData(column.getDefaultData());
+                prototype.setColName(column.getName());
+            }
+            rowData.add(prototype);
+        }
+    }
+
+    private IData createDataPrototype(IColumn<?> column) {
+        DataFactory df = new DataFactory(column.getName());
+        return df.createData(column.getColumnType());
     }
 
     public SmartList addData(SmartList sl, int rId, Object data, IColumn<?> column) {
@@ -71,7 +84,7 @@ public class SmartListService {
         IColumn<?> column = Common.getColumnByName(sl, name);
         Common.checkNonExist(column);
         Object value = column.handleCreateData(data, name);
-        column.checkConstraint(value);
+        Common.checkValid(column.checkConstraint(value));
         return addData(sl, rId, value, column);
     }
 
@@ -95,7 +108,6 @@ public class SmartListService {
         int newIndex = cId + direction;
         List<IColumn> columns = sl.getColumns();
         Collections.swap(columns, cId, newIndex);
-
         for (Row row : sl.getRows()) {
             List<IData> rowData = row.getIDataList();
             Collections.swap(rowData, cId, newIndex);
@@ -132,9 +144,7 @@ public class SmartListService {
 
 
     public Row getRow(SmartList sl, int rowId) {
-        if (rowId >= sl.getRows().size()) {
-            throw new ConstraintViolationException();
-        }
+        Common.checkOutOfRange(rowId, sl.getRows().size());
         return sl.getRows().get(rowId);
     }
 

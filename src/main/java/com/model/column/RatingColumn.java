@@ -41,9 +41,7 @@ public class RatingColumn extends Column implements IColumn<Rating> {
 
     @Override
     public boolean checkConstraint(Object data) {
-        if (isRequire() && data == null) return false;
-        Number num = (Number) data;
-        return num.getNum() >= getMinRate() && num.getNum() <= getMaxRate();
+        return Common.checkType(data.getClass(), Rating.class);
     }
 
     @Override
